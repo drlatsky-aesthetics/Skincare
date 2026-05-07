@@ -1,11 +1,10 @@
 import os
-from pathlib import Path
 import anthropic
 from dotenv import load_dotenv
+from knowledge_loader import load_knowledge
 
 load_dotenv()
 
-KNOWLEDGE_DIR = Path(__file__).parent / "knowledge"
 MODEL = "claude-sonnet-4-6"
 
 SYSTEM_INTRO = """You are the Treasury Aesthetics AI treatment advisor — the knowledgeable, warm voice of Treasury Aesthetics, a physician-led medical aesthetics clinic in Toronto founded by Dr. Jason Latsky, MD.
@@ -42,19 +41,6 @@ Think of yourself as a knowledgeable friend who happens to be a physician: enthu
 - Contact: aesthetics@treasuryhealth.ca | Website: treasuryhealth.ca"""
 
 
-def _load_knowledge() -> str:
-    """Read all .md and .txt files from the knowledge directory."""
-    if not KNOWLEDGE_DIR.exists():
-        return ""
-    chunks = []
-    for ext in ("*.md", "*.txt"):
-        for f in sorted(KNOWLEDGE_DIR.glob(ext)):
-            content = f.read_text(encoding="utf-8").strip()
-            if content:
-                chunks.append(f"=== {f.stem.replace('_', ' ').title()} ===\n{content}")
-    return "\n\n".join(chunks)
-
-
 def _build_system_blocks(knowledge: str) -> list[dict]:
     """
     Build system prompt blocks with prompt caching on the large knowledge base
@@ -73,7 +59,7 @@ def _build_system_blocks(knowledge: str) -> list[dict]:
 class SkincareAgent:
     def __init__(self):
         self.client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-        knowledge = _load_knowledge()
+        knowledge = load_knowledge()
         self.system = _build_system_blocks(knowledge)
 
     def chat(self, user_message: str, history: list[dict]) -> str:

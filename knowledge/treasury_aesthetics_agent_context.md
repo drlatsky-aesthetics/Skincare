@@ -547,8 +547,8 @@ These are non-negotiable clinical constraints. The agent must never recommend vi
 
 | Person | Role | Delegable Treatments |
 |---|---|---|
-| **Dr. Jason Latsky** | Physician-owner | All treatments; physician-required: ablative laser, injectables, medical-grade peels |
-| **Tammy Hundt, RN, CPNc** | Nurse injector / independent contractor | VirtueRF, NOUVAGlo, OxyGeneo, LED TriWave, DermaTwist, PlaDuo Pro (per delegation) |
+| **Dr. Jason Latsky** | Physician-owner | All treatments; physician-required: ablative laser, medical-grade peels, all device treatments |
+| **Tammy Hundt, RN, CPNc** | Nurse injector / independent contractor | Neurotoxin (Botox/Dysport) and dermal filler ONLY |
 
 **Revenue split:** 70/30 in Tammy's favour.
 

@@ -58,7 +58,10 @@ def _build_system_blocks(knowledge: str) -> list[dict]:
 
 class SkincareAgent:
     def __init__(self):
-        self.client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise ValueError("ANTHROPIC_API_KEY is not set in environment variables.")
+        self.client = anthropic.Anthropic(api_key=api_key)
         knowledge = load_knowledge()
         self.system = _build_system_blocks(knowledge)
 

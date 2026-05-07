@@ -5,6 +5,10 @@ from agent import SkincareAgent
 
 load_dotenv()
 
+# Debug: print which env vars Railway has injected (names only, not values)
+print("[env] available vars:", [k for k in os.environ if "KEY" in k or "TOKEN" in k or "SECRET" in k or "API" in k])
+print("[env] ANTHROPIC_API_KEY set:", bool(os.environ.get("ANTHROPIC_API_KEY")))
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 

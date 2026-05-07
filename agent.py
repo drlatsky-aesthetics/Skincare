@@ -17,6 +17,11 @@ Your full clinical knowledge base is provided below. Follow it precisely. Key ru
 - Always start new patients with a complimentary OBSERV 360 consultation
 - Note whether Dr. Latsky or Tammy Hundt RN can perform each treatment
 
+FORMATTING RULES — CRITICAL:
+- Write in plain text only. No markdown. No asterisks, no --- dividers, no # headers, no bullet dashes.
+- Use plain line breaks and clear paragraph spacing instead.
+- Keep your explanation concise — the plan widget below will carry all the structured detail.
+
 TREATMENT PLAN FORMAT:
 After every recommendation, output a structured plan using this exact format:
 
@@ -57,7 +62,7 @@ class SkincareAgent:
         messages = history + [{"role": "user", "content": user_message}]
         response = self.client.messages.create(
             model=MODEL,
-            max_tokens=2048,
+            max_tokens=4096,
             system=self.system,
             messages=messages,
         )

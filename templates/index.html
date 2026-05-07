@@ -143,14 +143,16 @@
       font-size: 0.9rem; color: var(--gold); flex: 1;
       letter-spacing: 0.04em;
     }
-    .plan-copy-btn {
+    .plan-copy-btn, .plan-export-btn {
       font-family: 'DM Mono', monospace; font-size: 0.62rem;
-      color: var(--text-muted); background: none;
-      border: 1px solid var(--text-dim); border-radius: 4px;
+      background: none; border: 1px solid var(--text-dim); border-radius: 4px;
       padding: 3px 9px; cursor: pointer; letter-spacing: 0.06em;
       text-transform: uppercase; transition: color 0.15s, border-color 0.15s;
     }
-    .plan-copy-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .plan-copy-btn   { color: var(--text-muted); }
+    .plan-export-btn { color: var(--gold); border-color: var(--gold-dim); }
+    .plan-copy-btn:hover   { color: var(--gold);  border-color: var(--gold-dim); }
+    .plan-export-btn:hover { color: #fff; border-color: var(--gold); background: var(--gold-dim); }
 
     .plan-sections { padding: 4px 0; }
 
@@ -359,10 +361,12 @@ To get started, tell me about your skin. What are your main concerns, and what r
     header.innerHTML = `
       <span class="plan-header-icon">◆</span>
       <span class="plan-title">${escHtml(plan.title || 'Treatment Plan')}</span>
+      <button class="plan-export-btn">↓ Word</button>
       <button class="plan-copy-btn">Copy</button>`;
     widget.appendChild(header);
 
     header.querySelector('.plan-copy-btn').addEventListener('click', () => copyPlan(widget, plan));
+    header.querySelector('.plan-export-btn').addEventListener('click', () => exportPlan(widget, plan));
 
     // Sections
     const sectionsEl = document.createElement('div');
@@ -471,6 +475,52 @@ To get started, tell me about your skin. What are your main concerns, and what r
       btn.textContent = 'Copied!';
       setTimeout(() => btn.textContent = 'Copy', 2000);
     });
+  }
+
+  /* ── Export plan as Word doc ── */
+  async function exportPlan(widget, originalPlan) {
+    const btn = widget.querySelector('.plan-export-btn');
+    btn.textContent = 'Exporting…';
+    btn.disabled = true;
+
+    // Collect current widget state (user may have edited items)
+    const livePlan = { title: originalPlan.title, sections: [] };
+    widget.querySelectorAll('.plan-section').forEach(sec => {
+      const name  = sec.querySelector('.plan-section-name')?.textContent || '';
+      const items = [];
+      sec.querySelectorAll('.plan-item').forEach(item => {
+        items.push({
+          name:    item.querySelector('.plan-item-name')?.textContent  || '',
+          detail:  item.querySelector('.plan-item-detail')?.textContent || '',
+          checked: item.querySelector('.plan-item-check')?.checked ?? true,
+        });
+      });
+      if (items.length) livePlan.sections.push({ name, items });
+    });
+
+    try {
+      const res = await fetch('/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: livePlan }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Treasury_Aesthetics_${livePlan.title.replace(/\s+/g,'_').slice(0,60)}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      btn.textContent = '✓ Downloaded';
+      setTimeout(() => { btn.textContent = '↓ Word'; btn.disabled = false; }, 2500);
+    } catch (err) {
+      btn.textContent = 'Error';
+      setTimeout(() => { btn.textContent = '↓ Word'; btn.disabled = false; }, 2500);
+      console.error('Export failed:', err);
+    }
   }
 
   /* ── Add a message row to the chat ── */

@@ -1,7 +1,9 @@
+import io
 import os
 from flask import Flask, render_template, request, jsonify, send_file
 from dotenv import load_dotenv
 from agent import SkincareAgent
+from export_docx import generate_plan_docx
 
 load_dotenv()
 
@@ -50,6 +52,26 @@ def chat():
     except Exception as e:
         print(f"[chat] error: {e}")
         return jsonify({"error": f"Something went wrong: {e}"}), 500
+
+
+@app.route("/export", methods=["POST"])
+def export():
+    data = request.get_json(silent=True) or {}
+    plan = data.get("plan")
+    if not plan or not isinstance(plan, dict):
+        return jsonify({"error": "No plan provided"}), 400
+    try:
+        docx_bytes = generate_plan_docx(plan)
+        title = plan.get("title", "Treatment Plan").replace(" ", "_")[:60]
+        return send_file(
+            io.BytesIO(docx_bytes),
+            mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            as_attachment=True,
+            download_name=f"Treasury_Aesthetics_{title}.docx",
+        )
+    except Exception as e:
+        print(f"[export] error: {e}")
+        return jsonify({"error": f"Export failed: {e}"}), 500
 
 
 if __name__ == "__main__":

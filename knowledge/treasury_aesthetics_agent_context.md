@@ -3,6 +3,10 @@
 
 > **For Claude Code:** This document is the authoritative source of truth for building the Treasury Aesthetics AI consultation agent. Read this entirely before writing any code. The agent's primary jobs are: (1) determine pre- and post-treatment care for any device in our stack, (2) recommend a full curated skincare regimen from our retail brands, and (3) suggest add-ons and biologics where clinically appropriate.
 
+> **IMPORTANT — SPF:** Treasury Aesthetics does NOT currently carry Pavise. Wherever this document references "Pavise DiamondCore SPF", substitute with: advise the client to use a professional-grade broad-spectrum SPF 50+ of their choice. Do not recommend Pavise by name.
+
+> **IMPORTANT — Product names:** Always use the exact product names listed in this document (e.g. "Noon HydroCalming + Vit Complex", "Epicutis Lipid Serum", "Noon Lacto-S Oil Control"). Never invent generic descriptions like "anti-redness serum" or "calming serum".
+
 ---
 
 ## 1. Clinic Identity

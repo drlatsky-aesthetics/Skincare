@@ -11,24 +11,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --charcoal:    #0C0C0C;
-      --charcoal-2:  #1A1A1A;
-      --charcoal-3:  #242424;
-      --charcoal-4:  #2E2E2E;
-      --gold:        #C4954A;
-      --gold-light:  #D4AF37;
-      --gold-dim:    #8a6830;
-      --text:        #E8E2D9;
-      --text-muted:  #7A7060;
-      --text-dim:    #4A4540;
-      --border:      #2A2520;
-      --radius:      14px;
+      --charcoal:   #0C0C0C;
+      --charcoal-2: #1A1A1A;
+      --charcoal-3: #222222;
+      --charcoal-4: #2C2C2C;
+      --charcoal-5: #363636;
+      --gold:       #C4954A;
+      --gold-light: #D4AF37;
+      --gold-dim:   #7a5c2a;
+      --gold-bg:    #1e1608;
+      --text:       #E8E2D9;
+      --text-muted: #7A7060;
+      --text-dim:   #4A4540;
+      --border:     #2A2520;
+      --radius:     14px;
     }
 
-    html, body {
-      height: 100%;
-    }
-
+    html, body { height: 100%; }
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--charcoal);
@@ -49,136 +48,72 @@
       gap: 14px;
       flex-shrink: 0;
     }
-
     .logo-mark {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       background: linear-gradient(135deg, var(--gold), var(--gold-light));
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .logo-mark svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--charcoal);
-    }
-
+    .logo-mark svg { width: 20px; height: 20px; fill: var(--charcoal); }
     .header-text h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text);
+      font-size: 1rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
     }
-    .header-text p {
-      font-size: 0.7rem;
-      font-weight: 300;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-      margin-top: 1px;
-    }
-
+    .header-text p { font-size: 0.7rem; font-weight: 300; color: var(--text-muted); margin-top: 1px; letter-spacing: 0.06em; }
     .header-badge {
       margin-left: auto;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      color: var(--gold);
-      border: 1px solid var(--gold-dim);
-      border-radius: 4px;
-      padding: 3px 8px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-family: 'DM Mono', monospace; font-size: 0.62rem;
+      color: var(--gold); border: 1px solid var(--gold-dim);
+      border-radius: 4px; padding: 3px 8px; letter-spacing: 0.08em; text-transform: uppercase;
     }
 
     /* ── Messages ── */
     #messages {
-      flex: 1;
-      overflow-y: auto;
+      flex: 1; overflow-y: auto;
       padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      display: flex; flex-direction: column; gap: 20px;
       scroll-behavior: smooth;
     }
-
     #messages::-webkit-scrollbar { width: 4px; }
-    #messages::-webkit-scrollbar-track { background: transparent; }
     #messages::-webkit-scrollbar-thumb { background: var(--charcoal-4); border-radius: 2px; }
 
-    .msg-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-    }
+    .msg-row { display: flex; align-items: flex-start; gap: 10px; }
     .msg-row.user  { justify-content: flex-end; }
     .msg-row.bot   { justify-content: flex-start; }
 
     .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 12px;
+      width: 30px; height: 30px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
     }
-    .avatar.bot-av {
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    }
-    .avatar.bot-av svg {
-      width: 15px;
-      height: 15px;
-      fill: var(--charcoal);
-    }
-    .avatar.user-av {
-      background: var(--charcoal-4);
-      color: var(--text-muted);
-      font-size: 10px;
-      letter-spacing: 0.05em;
-      font-family: 'DM Mono', monospace;
-    }
+    .avatar.bot-av { background: linear-gradient(135deg, var(--gold), var(--gold-light)); }
+    .avatar.bot-av svg { width: 15px; height: 15px; fill: var(--charcoal); }
+    .avatar.user-av { background: var(--charcoal-4); color: var(--text-muted); font-size: 9px; letter-spacing: 0.04em; font-family: 'DM Mono', monospace; }
+
+    .msg-content { display: flex; flex-direction: column; gap: 10px; max-width: min(76%, 680px); }
+    .msg-row.user .msg-content { align-items: flex-end; }
 
     .bubble {
-      max-width: min(74%, 620px);
-      padding: 13px 16px;
-      border-radius: var(--radius);
-      font-size: 0.875rem;
-      line-height: 1.72;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-weight: 300;
+      padding: 13px 16px; border-radius: var(--radius);
+      font-size: 0.875rem; line-height: 1.72; white-space: pre-wrap;
+      word-break: break-word; font-weight: 300;
     }
     .msg-row.user .bubble {
-      background: var(--charcoal-4);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-bottom-right-radius: 3px;
+      background: var(--charcoal-4); color: var(--text);
+      border: 1px solid var(--border); border-bottom-right-radius: 3px;
     }
     .msg-row.bot .bubble {
-      background: var(--charcoal-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 3px;
+      background: var(--charcoal-2); color: var(--text);
+      border: 1px solid var(--border); border-bottom-left-radius: 3px;
     }
 
-    /* ── Typing indicator ── */
-    .typing-dots {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 14px 18px;
-    }
+    /* ── Typing dots ── */
+    .typing-dots { display: flex; align-items: center; gap: 5px; padding: 14px 18px; }
     .typing-dots span {
-      display: block;
-      width: 6px;
-      height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
+      display: block; width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
       animation: pulse 1.3s infinite ease-in-out;
     }
     .typing-dots span:nth-child(2) { animation-delay: 0.18s; }
@@ -188,68 +123,159 @@
       40%            { transform: scale(1);   opacity: 1; }
     }
 
-    /* ── Input area ── */
-    #input-area {
-      background: var(--charcoal-2);
-      border-top: 1px solid var(--border);
-      padding: 14px 16px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-      flex-shrink: 0;
+    /* ── Plan Widget ── */
+    .plan-widget {
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--charcoal-3);
+      width: 100%;
+    }
+    .plan-header {
+      background: var(--gold-bg);
+      border-bottom: 1px solid var(--gold-dim);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .plan-header-icon { color: var(--gold); font-size: 12px; }
+    .plan-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem; color: var(--gold); flex: 1;
+      letter-spacing: 0.04em;
+    }
+    .plan-copy-btn {
+      font-family: 'DM Mono', monospace; font-size: 0.62rem;
+      color: var(--text-muted); background: none;
+      border: 1px solid var(--text-dim); border-radius: 4px;
+      padding: 3px 9px; cursor: pointer; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: color 0.15s, border-color 0.15s;
+    }
+    .plan-copy-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+    .plan-sections { padding: 4px 0; }
+
+    .plan-section { border-bottom: 1px solid var(--border); }
+    .plan-section:last-child { border-bottom: none; }
+
+    .plan-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px 6px;
+    }
+    .plan-section-name {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .add-item-btn {
+      font-size: 0.7rem; color: var(--text-dim); background: none;
+      border: none; cursor: pointer; padding: 2px 4px;
+      transition: color 0.15s;
+    }
+    .add-item-btn:hover { color: var(--gold); }
+
+    .plan-items { padding: 0 10px 8px; }
+
+    .plan-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 6px 6px; border-radius: 6px;
+      transition: background 0.1s;
+    }
+    .plan-item:hover { background: var(--charcoal-4); }
+    .plan-item:hover .delete-item-btn { opacity: 1; }
+
+    .plan-item-check {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1.5px solid var(--text-dim); cursor: pointer;
+      flex-shrink: 0; margin-top: 2px;
+      appearance: none; -webkit-appearance: none;
+      background: transparent; transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .plan-item-check:checked {
+      background: var(--gold); border-color: var(--gold);
+    }
+    .plan-item-check:checked::after {
+      content: '✓'; position: absolute;
+      top: -1px; left: 1px;
+      font-size: 11px; color: var(--charcoal); font-weight: 700;
     }
 
+    .plan-item-body { flex: 1; min-width: 0; }
+    .plan-item-name {
+      font-size: 0.83rem; font-weight: 400; color: var(--text);
+      display: block; line-height: 1.4;
+    }
+    .plan-item[data-checked="false"] .plan-item-name { color: var(--text-muted); }
+    .plan-item-detail {
+      font-size: 0.72rem; color: var(--text-dim); font-weight: 300;
+      display: block; margin-top: 1px; line-height: 1.4;
+    }
+
+    .delete-item-btn {
+      opacity: 0; background: none; border: none;
+      color: var(--text-dim); cursor: pointer; font-size: 14px;
+      padding: 0 4px; flex-shrink: 0;
+      transition: color 0.15s, opacity 0.15s;
+      line-height: 1;
+    }
+    .delete-item-btn:hover { color: #c0392b; }
+
+    /* add-item inline input */
+    .add-item-row {
+      display: flex; gap: 6px; padding: 4px 6px 6px;
+    }
+    .add-item-input {
+      flex: 1; background: var(--charcoal-4);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 5px 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; color: var(--text); outline: none;
+    }
+    .add-item-input:focus { border-color: var(--gold-dim); }
+    .add-item-input::placeholder { color: var(--text-dim); }
+    .add-item-confirm {
+      background: var(--gold-dim); border: none; border-radius: 6px;
+      color: var(--text); font-size: 0.75rem; padding: 5px 10px;
+      cursor: pointer;
+    }
+    .add-item-confirm:hover { background: var(--gold); color: var(--charcoal); }
+    .add-item-cancel {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 0.75rem; padding: 5px 8px; cursor: pointer;
+    }
+
+    /* ── Input area ── */
+    #input-area {
+      background: var(--charcoal-2); border-top: 1px solid var(--border);
+      padding: 14px 16px; display: flex; gap: 10px;
+      align-items: flex-end; flex-shrink: 0;
+    }
     #user-input {
-      flex: 1;
-      resize: none;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 300;
-      color: var(--text);
-      background: var(--charcoal-3);
-      outline: none;
-      max-height: 130px;
-      line-height: 1.55;
+      flex: 1; resize: none; border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+      font-weight: 300; color: var(--text); background: var(--charcoal-3);
+      outline: none; max-height: 130px; line-height: 1.55;
       transition: border-color 0.15s;
     }
     #user-input:focus   { border-color: var(--gold-dim); }
     #user-input::placeholder { color: var(--text-dim); }
 
     #send-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 9px;
+      width: 40px; height: 40px; border-radius: 9px;
       background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: opacity 0.15s, transform 0.1s;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: opacity 0.15s, transform 0.1s;
     }
-    #send-btn:hover   { opacity: 0.88; }
-    #send-btn:active  { transform: scale(0.93); }
-    #send-btn:disabled {
-      background: var(--charcoal-4);
-      cursor: not-allowed;
-      opacity: 1;
-    }
+    #send-btn:hover  { opacity: 0.88; }
+    #send-btn:active { transform: scale(0.93); }
+    #send-btn:disabled { background: var(--charcoal-4); cursor: not-allowed; opacity: 1; }
     #send-btn svg { width: 16px; height: 16px; fill: var(--charcoal); }
     #send-btn:disabled svg { fill: var(--text-dim); }
 
     footer {
-      text-align: center;
-      font-size: 0.65rem;
-      font-weight: 300;
-      color: var(--text-dim);
-      padding: 6px 20px 10px;
-      letter-spacing: 0.04em;
-      background: var(--charcoal-2);
-      flex-shrink: 0;
+      text-align: center; font-size: 0.65rem; font-weight: 300;
+      color: var(--text-dim); padding: 6px 20px 10px;
+      letter-spacing: 0.04em; background: var(--charcoal-2); flex-shrink: 0;
     }
     footer a { color: var(--gold-dim); text-decoration: none; }
 
@@ -265,10 +291,7 @@
 
 <header>
   <div class="logo-mark">
-    <!-- Treasury vault/diamond icon -->
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-    </svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
   </div>
   <div class="header-text">
     <h1>Treasury Aesthetics</h1>
@@ -280,112 +303,262 @@
 <div id="messages">
   <div class="msg-row bot">
     <div class="avatar bot-av">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
-    <div class="bubble">Welcome to Treasury Aesthetics. I'm your treatment advisor — here to help you build a personalized skincare and treatment plan with Dr. Latsky's team.
+    <div class="msg-content">
+      <div class="bubble">Welcome to Treasury Aesthetics. I'm your treatment advisor — here to help you build a personalized skincare and treatment plan with Dr. Latsky's team.
 
-To get started, tell me a little about your skin. What are your main concerns, and what results are you hoping to invest in?</div>
+To get started, tell me about your skin. What are your main concerns, and what results are you hoping to invest in?</div>
+    </div>
   </div>
 </div>
 
 <div id="input-area">
-  <textarea
-    id="user-input"
-    rows="1"
-    placeholder="Describe your skin concerns or ask anything…"
-    aria-label="Your message"
-  ></textarea>
+  <textarea id="user-input" rows="1" placeholder="Describe your skin concerns or ask anything…" aria-label="Your message"></textarea>
   <button id="send-btn" aria-label="Send">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-    </svg>
+    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
   </button>
 </div>
 
-<footer>
-  Treasury Aesthetics · Toronto · <a href="mailto:aesthetics@treasuryhealth.ca">aesthetics@treasuryhealth.ca</a>
-</footer>
+<footer>Treasury Aesthetics · Toronto · <a href="mailto:aesthetics@treasuryhealth.ca">aesthetics@treasuryhealth.ca</a></footer>
 
 <script>
   const messagesEl = document.getElementById('messages');
   const inputEl    = document.getElementById('user-input');
   const sendBtn    = document.getElementById('send-btn');
+  const BOT_ICON   = `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`;
 
   let history = [];
 
-  const BOT_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`;
+  /* ── Scroll ── */
+  function scrollBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
 
-  function scrollBottom() {
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+  /* ── Parse plan tags out of a response ── */
+  function parseResponse(text) {
+    const match = text.match(/<plan>([\s\S]*?)<\/plan>/i);
+    if (!match) return { textBefore: text, plan: null, textAfter: '' };
+    const before = text.slice(0, match.index).trim();
+    const after  = text.slice(match.index + match[0].length).trim();
+    try {
+      const plan = JSON.parse(match[1].trim());
+      return { textBefore: before, plan, textAfter: after };
+    } catch {
+      // JSON parse failed — treat whole thing as text
+      return { textBefore: text, plan: null, textAfter: '' };
+    }
   }
 
-  function addBubble(role, text) {
+  /* ── Build plan widget DOM ── */
+  function buildPlanWidget(plan) {
+    const widget = document.createElement('div');
+    widget.className = 'plan-widget';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'plan-header';
+    header.innerHTML = `
+      <span class="plan-header-icon">◆</span>
+      <span class="plan-title">${escHtml(plan.title || 'Treatment Plan')}</span>
+      <button class="plan-copy-btn">Copy</button>`;
+    widget.appendChild(header);
+
+    header.querySelector('.plan-copy-btn').addEventListener('click', () => copyPlan(widget, plan));
+
+    // Sections
+    const sectionsEl = document.createElement('div');
+    sectionsEl.className = 'plan-sections';
+
+    (plan.sections || []).forEach(section => {
+      sectionsEl.appendChild(buildSection(section));
+    });
+
+    widget.appendChild(sectionsEl);
+    return widget;
+  }
+
+  function buildSection(section) {
+    const el = document.createElement('div');
+    el.className = 'plan-section';
+
+    const headerEl = document.createElement('div');
+    headerEl.className = 'plan-section-header';
+    headerEl.innerHTML = `
+      <span class="plan-section-name">${escHtml(section.name || '')}</span>
+      <button class="add-item-btn">＋ Add</button>`;
+    el.appendChild(headerEl);
+
+    const itemsEl = document.createElement('div');
+    itemsEl.className = 'plan-items';
+    (section.items || []).forEach(item => itemsEl.appendChild(buildItem(item)));
+    el.appendChild(itemsEl);
+
+    headerEl.querySelector('.add-item-btn').addEventListener('click', () => {
+      showAddItemRow(itemsEl);
+    });
+
+    return el;
+  }
+
+  function buildItem(item) {
+    const row = document.createElement('div');
+    row.className = 'plan-item';
+    const isChecked = item.checked !== false;
+    row.dataset.checked = isChecked;
+
+    row.innerHTML = `
+      <input type="checkbox" class="plan-item-check" ${isChecked ? 'checked' : ''}>
+      <div class="plan-item-body">
+        <span class="plan-item-name">${escHtml(item.name || '')}</span>
+        ${item.detail ? `<span class="plan-item-detail">${escHtml(item.detail)}</span>` : ''}
+      </div>
+      <button class="delete-item-btn" title="Remove">×</button>`;
+
+    row.querySelector('.plan-item-check').addEventListener('change', e => {
+      row.dataset.checked = e.target.checked;
+    });
+    row.querySelector('.delete-item-btn').addEventListener('click', () => {
+      row.remove();
+    });
+
+    return row;
+  }
+
+  function showAddItemRow(itemsEl) {
+    // Don't add duplicate input rows
+    if (itemsEl.querySelector('.add-item-row')) return;
+
+    const row = document.createElement('div');
+    row.className = 'add-item-row';
+    row.innerHTML = `
+      <input class="add-item-input" placeholder="Product or treatment name…" />
+      <button class="add-item-confirm">Add</button>
+      <button class="add-item-cancel">Cancel</button>`;
+
+    const input = row.querySelector('.add-item-input');
+    row.querySelector('.add-item-confirm').addEventListener('click', () => {
+      const val = input.value.trim();
+      if (val) {
+        itemsEl.insertBefore(buildItem({ name: val, checked: true }), row);
+      }
+      row.remove();
+    });
+    row.querySelector('.add-item-cancel').addEventListener('click', () => row.remove());
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') row.querySelector('.add-item-confirm').click();
+      if (e.key === 'Escape') row.remove();
+    });
+
+    itemsEl.appendChild(row);
+    input.focus();
+  }
+
+  /* ── Copy plan as plain text ── */
+  function copyPlan(widget, originalPlan) {
+    const lines = [originalPlan.title || 'Treatment Plan', ''];
+    widget.querySelectorAll('.plan-section').forEach(sec => {
+      const name = sec.querySelector('.plan-section-name')?.textContent || '';
+      lines.push(name.toUpperCase());
+      sec.querySelectorAll('.plan-item').forEach(item => {
+        const checked = item.querySelector('.plan-item-check')?.checked;
+        const name    = item.querySelector('.plan-item-name')?.textContent || '';
+        const detail  = item.querySelector('.plan-item-detail')?.textContent || '';
+        lines.push(`${checked ? '✓' : '○'} ${name}${detail ? ' — ' + detail : ''}`);
+      });
+      lines.push('');
+    });
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      const btn = widget.querySelector('.plan-copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+
+  /* ── Add a message row to the chat ── */
+  function addMessage(role, text) {
     const row = document.createElement('div');
     row.className = `msg-row ${role === 'user' ? 'user' : 'bot'}`;
 
-    if (role !== 'user') {
-      const av = document.createElement('div');
-      av.className = 'avatar bot-av';
-      av.innerHTML = BOT_ICON;
-      row.appendChild(av);
-    }
+    const av = document.createElement('div');
+    av.className = role === 'user' ? 'avatar user-av' : 'avatar bot-av';
+    av.innerHTML = role === 'user' ? 'YOU' : BOT_ICON;
 
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.textContent = text;
-    row.appendChild(bubble);
+    const content = document.createElement('div');
+    content.className = 'msg-content';
 
     if (role === 'user') {
-      const av = document.createElement('div');
-      av.className = 'avatar user-av';
-      av.textContent = 'YOU';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      content.appendChild(bubble);
+      row.appendChild(content);
       row.appendChild(av);
+    } else {
+      const { textBefore, plan, textAfter } = parseResponse(text);
+
+      if (textBefore) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = textBefore;
+        content.appendChild(bubble);
+      }
+
+      if (plan) {
+        content.appendChild(buildPlanWidget(plan));
+      }
+
+      if (textAfter) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = textAfter;
+        content.appendChild(bubble);
+      }
+
+      // Fallback if nothing rendered
+      if (!textBefore && !plan && !textAfter) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = text;
+        content.appendChild(bubble);
+      }
+
+      row.appendChild(av);
+      row.appendChild(content);
     }
 
     messagesEl.appendChild(row);
     scrollBottom();
-    return bubble;
   }
 
+  /* ── Typing indicator ── */
   function showTyping() {
     const row = document.createElement('div');
-    row.className = 'msg-row bot';
-    row.id = 'typing-row';
-
+    row.className = 'msg-row bot'; row.id = 'typing-row';
     const av = document.createElement('div');
-    av.className = 'avatar bot-av';
-    av.innerHTML = BOT_ICON;
-    row.appendChild(av);
-
+    av.className = 'avatar bot-av'; av.innerHTML = BOT_ICON;
+    const content = document.createElement('div');
+    content.className = 'msg-content';
     const bubble = document.createElement('div');
     bubble.className = 'bubble typing-dots';
     bubble.innerHTML = '<span></span><span></span><span></span>';
-    row.appendChild(bubble);
-
+    content.appendChild(bubble);
+    row.appendChild(av); row.appendChild(content);
     messagesEl.appendChild(row);
     scrollBottom();
   }
+  function hideTyping() { document.getElementById('typing-row')?.remove(); }
 
-  function hideTyping() {
-    const el = document.getElementById('typing-row');
-    if (el) el.remove();
-  }
-
+  /* ── Send ── */
   async function send() {
     const text = inputEl.value.trim();
     if (!text) return;
-
-    inputEl.value = '';
-    inputEl.style.height = 'auto';
+    inputEl.value = ''; inputEl.style.height = 'auto';
     sendBtn.disabled = true;
 
-    addBubble('user', text);
+    addMessage('user', text);
     showTyping();
 
     try {
-      const res = await fetch('/chat', {
+      const res  = await fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, history }),
@@ -394,37 +567,34 @@ To get started, tell me a little about your skin. What are your main concerns, a
       hideTyping();
 
       const reply = data.reply || data.error || 'Something went wrong. Please try again.';
-      addBubble('assistant', reply);
+      addMessage('assistant', reply);
 
       history.push({ role: 'user',      content: text  });
       history.push({ role: 'assistant', content: reply });
-
-      // Cap at 40 turns to keep payloads reasonable
       if (history.length > 40) history = history.slice(-40);
 
     } catch {
       hideTyping();
-      addBubble('assistant', 'Connection error — please check your network and try again.');
+      addMessage('assistant', 'Connection error — please check your network and try again.');
     } finally {
       sendBtn.disabled = false;
       inputEl.focus();
     }
   }
 
+  /* ── Helpers ── */
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   inputEl.addEventListener('input', () => {
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 130) + 'px';
   });
-
-  inputEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    }
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   });
-
   sendBtn.addEventListener('click', send);
 </script>
-
 </body>
 </html>

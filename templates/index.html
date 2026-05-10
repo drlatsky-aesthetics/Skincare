@@ -135,7 +135,7 @@
       background: var(--gold-bg);
       border-bottom: 1px solid var(--gold-dim);
       padding: 12px 16px;
-      display: flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; gap: 8px;
     }
     .plan-header-icon { color: var(--gold); font-size: 12px; }
     .plan-title {
@@ -143,16 +143,19 @@
       font-size: 0.9rem; color: var(--gold); flex: 1;
       letter-spacing: 0.04em;
     }
-    .plan-copy-btn, .plan-export-btn {
+    .plan-copy-btn, .plan-export-btn, .plan-page-btn {
       font-family: 'DM Mono', monospace; font-size: 0.62rem;
       background: none; border: 1px solid var(--text-dim); border-radius: 4px;
       padding: 3px 9px; cursor: pointer; letter-spacing: 0.06em;
-      text-transform: uppercase; transition: color 0.15s, border-color 0.15s;
+      text-transform: uppercase; transition: color 0.15s, border-color 0.15s, background 0.15s;
+      white-space: nowrap;
     }
     .plan-copy-btn   { color: var(--text-muted); }
     .plan-export-btn { color: var(--gold); border-color: var(--gold-dim); }
+    .plan-page-btn   { color: var(--gold-light); border-color: var(--gold-dim); }
     .plan-copy-btn:hover   { color: var(--gold);  border-color: var(--gold-dim); }
     .plan-export-btn:hover { color: #fff; border-color: var(--gold); background: var(--gold-dim); }
+    .plan-page-btn:hover   { color: #000; border-color: var(--gold-light); background: var(--gold-light); }
 
     .plan-sections { padding: 4px 0; }
 
@@ -221,7 +224,6 @@
     }
     .delete-item-btn:hover { color: #c0392b; }
 
-    /* add-item inline input */
     .add-item-row {
       display: flex; gap: 6px; padding: 4px 6px 6px;
     }
@@ -281,11 +283,106 @@
     }
     footer a { color: var(--gold-dim); text-decoration: none; }
 
+    /* ── Generate Page Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.82);
+      z-index: 300; display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .modal {
+      background: var(--charcoal-2); border: 1px solid var(--border);
+      border-radius: var(--radius); width: 100%; max-width: 460px;
+      max-height: 90dvh; display: flex; flex-direction: column;
+      overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 18px; border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .modal-head-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.92rem; font-weight: 500; color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .modal-close {
+      background: none; border: none; color: var(--text-muted);
+      font-size: 20px; cursor: pointer; padding: 0 4px; line-height: 1;
+      transition: color 0.15s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-tabs {
+      display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .modal-tab {
+      flex: 1; padding: 9px 12px; background: none; border: none;
+      color: var(--text-muted); font-family: 'DM Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .modal-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .modal-body {
+      flex: 1; overflow-y: auto; padding: 18px;
+      display: flex; flex-direction: column; gap: 13px;
+    }
+    .modal-body::-webkit-scrollbar { width: 4px; }
+    .modal-body::-webkit-scrollbar-thumb { background: var(--charcoal-4); border-radius: 2px; }
+    .mf-row { display: flex; gap: 10px; }
+    .mf-row .modal-field { flex: 1; }
+    .modal-field { display: flex; flex-direction: column; gap: 4px; }
+    .modal-label {
+      font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .modal-input, .modal-textarea {
+      background: var(--charcoal-3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 11px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.83rem;
+      color: var(--text); outline: none; width: 100%;
+      transition: border-color 0.15s;
+    }
+    .modal-input:focus, .modal-textarea:focus { border-color: var(--gold-dim); }
+    .modal-textarea { resize: vertical; min-height: 72px; line-height: 1.55; }
+    .modal-hint {
+      font-size: 0.67rem; color: var(--text-dim); font-weight: 300; line-height: 1.4;
+    }
+    .modal-hint code { font-family: 'DM Mono', monospace; background: var(--charcoal-4); padding: 1px 4px; border-radius: 3px; }
+    .modal-footer {
+      padding: 12px 18px; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
+    }
+    .modal-actions { display: flex; gap: 8px; }
+    .modal-btn {
+      flex: 1; padding: 9px 14px; border: none; border-radius: 8px;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.03em;
+      transition: opacity 0.15s, background 0.15s, color 0.15s;
+    }
+    .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .modal-btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000;
+    }
+    .modal-btn-primary:not(:disabled):hover { opacity: 0.88; }
+    .modal-btn-secondary {
+      background: var(--charcoal-4); color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .modal-btn-secondary:not(:disabled):hover { color: var(--text); border-color: var(--charcoal-5); }
+    .modal-status {
+      font-size: 0.74rem; text-align: center; font-weight: 300; min-height: 16px;
+      word-break: break-all;
+    }
+    .modal-status.ok  { color: #6dbf67; }
+    .modal-status.err { color: #e07070; }
+    .modal-status.loading { color: var(--text-muted); }
+
     @media (max-width: 480px) {
       header { padding: 12px 16px; }
       .header-badge { display: none; }
       #messages { padding: 18px 12px; }
       #input-area { padding: 12px; }
+      .plan-page-btn { display: none; }
     }
   </style>
 </head>
@@ -335,6 +432,11 @@ To get started, tell me about your skin. What are your main concerns, and what r
   /* ── Scroll ── */
   function scrollBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
 
+  /* ── HTML escape ── */
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   /* ── Parse plan tags out of a response ── */
   function parseResponse(text) {
     const match = text.match(/<plan>([\s\S]*?)<\/plan>/i);
@@ -345,7 +447,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
       const plan = JSON.parse(match[1].trim());
       return { textBefore: before, plan, textAfter: after };
     } catch {
-      // JSON parse failed — treat whole thing as text
       return { textBefore: text, plan: null, textAfter: '' };
     }
   }
@@ -355,20 +456,20 @@ To get started, tell me about your skin. What are your main concerns, and what r
     const widget = document.createElement('div');
     widget.className = 'plan-widget';
 
-    // Header
     const header = document.createElement('div');
     header.className = 'plan-header';
     header.innerHTML = `
       <span class="plan-header-icon">◆</span>
       <span class="plan-title">${escHtml(plan.title || 'Treatment Plan')}</span>
+      <button class="plan-page-btn">↗ Page</button>
       <button class="plan-export-btn">↓ Word</button>
       <button class="plan-copy-btn">Copy</button>`;
     widget.appendChild(header);
 
     header.querySelector('.plan-copy-btn').addEventListener('click', () => copyPlan(widget, plan));
     header.querySelector('.plan-export-btn').addEventListener('click', () => exportPlan(widget, plan));
+    header.querySelector('.plan-page-btn').addEventListener('click', () => openGenerateModal(plan));
 
-    // Sections
     const sectionsEl = document.createElement('div');
     sectionsEl.className = 'plan-sections';
 
@@ -428,7 +529,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
   }
 
   function showAddItemRow(itemsEl) {
-    // Don't add duplicate input rows
     if (itemsEl.querySelector('.add-item-row')) return;
 
     const row = document.createElement('div');
@@ -483,7 +583,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
     btn.textContent = 'Exporting…';
     btn.disabled = true;
 
-    // Collect current widget state (user may have edited items)
     const livePlan = { title: originalPlan.title, sections: [] };
     widget.querySelectorAll('.plan-section').forEach(sec => {
       const name  = sec.querySelector('.plan-section-name')?.textContent || '';
@@ -563,7 +662,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
         content.appendChild(bubble);
       }
 
-      // Fallback if nothing rendered
       if (!textBefore && !plan && !textAfter) {
         const bubble = document.createElement('div');
         bubble.className = 'bubble';
@@ -632,11 +730,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
     }
   }
 
-  /* ── Helpers ── */
-  function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
   inputEl.addEventListener('input', () => {
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 130) + 'px';
@@ -645,6 +738,632 @@ To get started, tell me about your skin. What are your main concerns, and what r
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   });
   sendBtn.addEventListener('click', send);
+
+  /* ═══════════════════════════════════════════════════════════════
+     PATIENT PAGE GENERATOR
+  ═══════════════════════════════════════════════════════════════ */
+
+  /* ── TX session interval lookup ── */
+  const TX_INTERVALS = [
+    { test: n => /virturf|smartrf|deeprf|exactrf|rf microneedl/i.test(n), wk: 5 },
+    { test: n => /nouvaderm.*ablat|ablat.*laser|ablative/i.test(n),        wk: 10 },
+    { test: n => /nouvaglo|nouvaderm/i.test(n),                            wk: 4  },
+    { test: n => /oxygeneo/i.test(n),                                      wk: 3  },
+    { test: n => /dermatwist|collagen induction|\bcit\b/i.test(n),         wk: 4  },
+    { test: n => /pladuo.*acne|acne.*argon|argon.*acne/i.test(n),          wk: 1  },
+    { test: n => /pladuo|plasma/i.test(n),                                 wk: 4  },
+    { test: n => /\bled\b|triwave/i.test(n),                               wk: 1  },
+    { test: n => /quanta.*carbon|carbon.*facial/i.test(n),                 wk: 3  },
+    { test: n => /quanta/i.test(n),                                        wk: 4  },
+  ];
+
+  function txInterval(name) {
+    const n = name.toLowerCase();
+    for (const e of TX_INTERVALS) if (e.test(n)) return e.wk;
+    return 4;
+  }
+
+  function parseSessionCount(detail) {
+    if (!detail) return 3;
+    const m = detail.match(/(\d+)/);
+    if (!m) return 3;
+    return Math.min(Math.max(parseInt(m[1]), 1), 12);
+  }
+
+  function addWeeks(dateStr, weeks) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + weeks * 7);
+    return d;
+  }
+
+  function fmtDateLong(d) {
+    if (!d) return 'Date TBD';
+    return d.toLocaleDateString('en-CA', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function slugify(first, last) {
+    return ((first || '') + (last || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function pwFromDob(dob) {
+    if (!dob) return '';
+    const parts = dob.split('-');
+    return (parts[1] || '') + (parts[2] || '') + (parts[0] || '');
+  }
+
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+  /* ── Patient page CSS (embedded in generated file) ── */
+  const PATIENT_CSS = [
+    '*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}',
+    ':root{--g:#C4954A;--g2:#D4AF37;--bg:#080808;--card:#111111;--card2:#181818;',
+    '--b:#1E1E1E;--b2:#2A2A2A;--t:#EDE8E0;--m:#666666;--m2:#3a3a3a;--rad:10px}',
+    'body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--t);-webkit-font-smoothing:antialiased}',
+    'a{color:inherit;text-decoration:none}',
+
+    /* Gate */
+    '.gate-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}',
+    '.gate-box{background:var(--card);border:1px solid var(--b2);border-radius:16px;padding:44px 36px;width:100%;max-width:380px;text-align:center}',
+    '.gate-logo{font-family:"Cormorant Garamond",serif;font-size:1rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--g);margin-bottom:28px}',
+    '.gate-title{font-family:"Cormorant Garamond",serif;font-size:1.75rem;font-weight:400;color:var(--t);margin-bottom:8px}',
+    '.gate-sub{font-size:.83rem;font-weight:300;color:var(--m);line-height:1.6;margin-bottom:4px}',
+    '.gate-hint{font-family:"DM Mono",monospace;font-size:.62rem;color:var(--m2);letter-spacing:.1em;margin-bottom:22px}',
+    '.gate-input{width:100%;background:var(--card2);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;font-family:"DM Mono",monospace;font-size:1.1rem;color:var(--t);letter-spacing:.2em;text-align:center;outline:none;margin-bottom:10px;transition:border-color .15s}',
+    '.gate-input:focus{border-color:var(--g)}',
+    '.gate-input::placeholder{color:var(--m2);letter-spacing:.06em;font-size:.85rem}',
+    '.gate-btn{width:100%;background:linear-gradient(135deg,var(--g),var(--g2));border:none;border-radius:8px;padding:13px;font-family:"DM Sans",sans-serif;font-size:.875rem;font-weight:500;color:#000;cursor:pointer;letter-spacing:.05em;transition:opacity .15s}',
+    '.gate-btn:hover{opacity:.9}',
+    '.gate-err{font-size:.76rem;color:#d06060;margin-top:8px;min-height:16px}',
+
+    /* Header */
+    '.site-header{background:var(--card);border-bottom:1px solid var(--b);padding:16px 0}',
+    '.site-header-inner{max-width:880px;margin:0 auto;padding:0 28px;display:flex;align-items:baseline;gap:14px}',
+    '.site-name{font-family:"Cormorant Garamond",serif;font-size:.95rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--g)}',
+    '.site-sub{font-size:.7rem;font-weight:300;color:var(--m);letter-spacing:.05em}',
+
+    /* Hero */
+    '.hero{background:linear-gradient(160deg,#0d0b06 0%,#0f0e09 50%,#0a0a0a 100%);border-bottom:1px solid var(--b);padding:60px 28px 52px}',
+    '.hero-inner{max-width:880px;margin:0 auto}',
+    '.hero-tag{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--g);margin-bottom:14px}',
+    '.hero-name{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,6vw,3.4rem);font-weight:400;line-height:1.1;color:var(--t);margin-bottom:10px}',
+    '.hero-concern{font-size:.95rem;font-weight:300;color:var(--m);margin-bottom:32px;max-width:500px}',
+    '.hero-stats{display:flex;align-items:center;gap:18px;flex-wrap:wrap}',
+    '.hs-val{font-family:"DM Mono",monospace;font-size:.85rem;color:var(--t);margin-bottom:2px}',
+    '.hs-label{font-size:.68rem;font-weight:300;color:var(--m);letter-spacing:.04em}',
+    '.hero-stat-div{width:1px;height:26px;background:var(--b2)}',
+
+    /* Content sections */
+    '.content-section{padding:52px 28px}',
+    '.content-section.alt-bg{background:var(--card)}',
+    '.section-inner{max-width:880px;margin:0 auto}',
+    '.section-num{font-family:"DM Mono",monospace;font-size:.6rem;color:var(--g);letter-spacing:.16em;margin-bottom:4px}',
+    '.section-title{font-family:"Cormorant Garamond",serif;font-size:1.75rem;font-weight:400;color:var(--t);margin-bottom:32px;border-bottom:1px solid var(--b);padding-bottom:14px}',
+
+    /* Treatment groups */
+    '.tx-group{margin-bottom:32px}',
+    '.tx-group:last-child{margin-bottom:0}',
+    '.tx-group-head{margin-bottom:12px}',
+    '.tx-name{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:500;color:var(--t)}',
+    '.tx-meta{font-family:"DM Mono",monospace;font-size:.62rem;color:var(--m);letter-spacing:.05em;margin-top:2px}',
+    '.session-row{display:flex;gap:10px;flex-wrap:wrap}',
+    '.session-card{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--b);border-left:2px solid var(--g);border-radius:var(--rad);padding:13px 16px;min-width:170px;flex:1 1 170px;max-width:230px}',
+    '.session-card.sc-done{border-left-color:var(--m2);opacity:.65}',
+    '.sc-num{font-family:"DM Mono",monospace;font-size:1.3rem;color:var(--g);min-width:28px}',
+    '.session-card.sc-done .sc-num{color:var(--m2)}',
+    '.sc-date{font-size:.78rem;font-weight:400;color:var(--t);line-height:1.3}',
+    '.sc-badge{font-family:"DM Mono",monospace;font-size:.54rem;letter-spacing:.1em;margin-top:3px}',
+    '.sc-badge.sb-next{color:var(--g)}',
+    '.sc-badge.sb-done{color:var(--m2)}',
+
+    /* Home care */
+    '.homecare-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}',
+    '@media(max-width:600px){.homecare-grid{grid-template-columns:1fr}.session-card{max-width:none}}',
+    '.routine-header{display:flex;align-items:center;gap:8px;font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m);margin-bottom:12px}',
+    '.rh-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}',
+    '.am-dot{background:var(--g)}',
+    '.pm-dot{background:var(--m2)}',
+    '.product-list{display:flex;flex-direction:column;gap:8px}',
+    '.product-card{background:var(--bg);border:1px solid var(--b);border-radius:8px;padding:11px 14px}',
+    '.product-name{font-size:.82rem;font-weight:400;color:var(--t)}',
+    '.product-detail{font-size:.71rem;font-weight:300;color:var(--m);margin-top:3px;line-height:1.4}',
+
+    /* Extra sections */
+    '.extra-sec{margin-bottom:26px}',
+    '.extra-sec:last-child{margin-bottom:0}',
+    '.extra-sec-name{font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--g);margin-bottom:10px}',
+    '.extra-items{display:flex;flex-direction:column;gap:7px}',
+    '.extra-item{display:flex;align-items:flex-start;gap:10px;background:var(--card2);border:1px solid var(--b);border-radius:8px;padding:11px 13px}',
+    '.ei-check{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--m2);flex-shrink:0;margin-top:1px;width:14px;text-align:center}',
+    '.ei-checked .ei-check{color:var(--g)}',
+    '.ei-name{font-size:.82rem;font-weight:400;color:var(--m)}',
+    '.ei-checked .ei-name{color:var(--t)}',
+    '.ei-detail{font-size:.71rem;font-weight:300;color:var(--m);margin-top:2px;line-height:1.4}',
+
+    /* Notes */
+    '.notes-section{background:#0a0806;border-top:1px solid var(--b);border-bottom:1px solid var(--b);padding:40px 28px}',
+    '.section-tag{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--g);margin-bottom:14px}',
+    '.notes-body{font-size:.875rem;font-weight:300;color:var(--t);line-height:1.8;max-width:620px}',
+
+    /* CTA */
+    '.cta-section{padding:60px 28px;text-align:center}',
+    '.cta-inner{max-width:380px;margin:0 auto}',
+    '.cta-sub{font-size:.83rem;font-weight:300;color:var(--m);margin-bottom:18px}',
+    '.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-family:"DM Sans",sans-serif;font-weight:500;font-size:.875rem;letter-spacing:.05em;padding:14px 30px;border-radius:8px;transition:opacity .15s}',
+    '.cta-btn:hover{opacity:.9}',
+
+    /* Footer */
+    '.site-footer{background:var(--card);border-top:1px solid var(--b);padding:28px}',
+    '.footer-inner{max-width:880px;margin:0 auto;text-align:center}',
+    '.footer-clinic{font-family:"Cormorant Garamond",serif;font-size:.88rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g);margin-bottom:6px}',
+    '.footer-detail{font-size:.73rem;color:var(--m);font-weight:300;margin-bottom:6px}',
+    '.footer-detail a:hover{color:var(--g)}',
+    '.footer-note{font-size:.68rem;color:var(--m2);font-style:italic}',
+    '@media(max-width:480px){.hero{padding:36px 18px}.content-section{padding:36px 18px}.notes-section{padding:32px 18px}}',
+  ].join('');
+
+  /* ── Build the complete patient HTML page ── */
+  function buildPatientHTML(plan, pt) {
+    const e = str => escHtml(str);
+    const firstName  = (pt.firstName || '').trim();
+    const lastName   = (pt.lastName  || '').trim();
+    const fullName   = [firstName, lastName].filter(Boolean).join(' ');
+    const displayName = firstName || fullName || 'Your';
+    const password   = pwFromDob(pt.dob);
+    const concern    = (pt.concern || plan.title || '').trim();
+    const startDate  = pt.startDate || '';
+    const notes      = (pt.notes || '').trim();
+    const today      = new Date();
+
+    const sections   = plan.sections || [];
+    const clinicSec  = sections.find(s => s.name === 'In-Clinic Treatments');
+    const amSec      = sections.find(s => s.name === 'Morning Routine');
+    const pmSec      = sections.find(s => s.name === 'Evening Routine');
+    const postSec    = sections.find(s => s.name === 'Post-Procedure Recovery');
+    const extraSecs  = sections.filter(s =>
+      !['In-Clinic Treatments','Morning Routine','Evening Routine','Post-Procedure Recovery'].includes(s.name)
+    );
+
+    /* Treatment groups */
+    const txItems  = (clinicSec ? clinicSec.items || [] : []).filter(i => i.checked !== false);
+    let totalSess  = 0;
+    const txGroups = txItems.map(item => {
+      const count = parseSessionCount(item.detail);
+      const wk    = txInterval(item.name);
+      const sess  = [];
+      for (let i = 0; i < count; i++) {
+        const d = startDate ? addWeeks(startDate, wk * i) : null;
+        sess.push({ num: i + 1, date: d, past: d ? d <= today : false });
+      }
+      totalSess += count;
+      return { item, count, wk, sess };
+    });
+
+    /* Build treatment journey HTML */
+    let txHtml = '';
+    txGroups.forEach(g => {
+      const wkLabel = g.wk === 0 ? 'One-time' : g.wk === 1 ? '1 week apart' : g.wk + ' weeks apart';
+      txHtml += '<div class="tx-group">';
+      txHtml += '<div class="tx-group-head">';
+      txHtml += '<div class="tx-name">' + e(g.item.name) + '</div>';
+      txHtml += '<div class="tx-meta">' + e(g.count + ' session' + (g.count > 1 ? 's' : '') + '  ·  ' + wkLabel) + '</div>';
+      txHtml += '</div><div class="session-row">';
+      g.sess.forEach(s => {
+        const cls   = 'session-card' + (s.past ? ' sc-done' : '');
+        const badge = s.past ? 'COMPLETED' : 'UPCOMING';
+        const bCls  = s.past ? 'sc-badge sb-done' : 'sc-badge sb-next';
+        txHtml += '<div class="' + cls + '">';
+        txHtml += '<div class="sc-num">' + pad2(s.num) + '</div>';
+        txHtml += '<div class="sc-body"><div class="sc-date">' + e(fmtDateLong(s.date)) + '</div>';
+        txHtml += '<div class="' + bCls + '">' + badge + '</div></div></div>';
+      });
+      txHtml += '</div></div>';
+    });
+
+    /* Build routine items HTML */
+    function routineItems(sec) {
+      if (!sec) return '';
+      let h = '<div class="product-list">';
+      (sec.items || []).filter(i => i.checked !== false).forEach(item => {
+        h += '<div class="product-card"><div class="product-name">' + e(item.name) + '</div>';
+        if (item.detail) h += '<div class="product-detail">' + e(item.detail) + '</div>';
+        h += '</div>';
+      });
+      return h + '</div>';
+    }
+
+    /* Build extra sections HTML */
+    const allExtra = postSec ? [postSec, ...extraSecs] : extraSecs;
+    let extraHtml = '';
+    allExtra.forEach(sec => {
+      const items = (sec.items || []);
+      if (!items.length) return;
+      extraHtml += '<div class="extra-sec">';
+      extraHtml += '<div class="extra-sec-name">' + e(sec.name) + '</div>';
+      extraHtml += '<div class="extra-items">';
+      items.forEach(item => {
+        const ck = item.checked !== false;
+        extraHtml += '<div class="extra-item' + (ck ? ' ei-checked' : '') + '">';
+        extraHtml += '<div class="ei-check">' + (ck ? '✓' : '○') + '</div>';
+        extraHtml += '<div class="ei-body"><div class="ei-name">' + e(item.name) + '</div>';
+        if (item.detail) extraHtml += '<div class="ei-detail">' + e(item.detail) + '</div>';
+        extraHtml += '</div></div>';
+      });
+      extraHtml += '</div></div>';
+    });
+
+    /* Section counter */
+    let sn = 1;
+    const secNum = () => { const n = sn; sn++; return pad2(n); };
+
+    /* Start date display */
+    const startDisp = startDate
+      ? new Date(startDate + 'T00:00:00').toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' })
+      : 'To Be Confirmed';
+
+    /* Inline gate script — no template literals, safe concatenation */
+    const gateScript =
+      '(function(){' +
+      'var PW="' + password + '";' +
+      'function chk(){' +
+      'var v=document.getElementById("gi").value.trim();' +
+      'if(v===PW){sessionStorage.setItem("ta-u","1");' +
+      'document.getElementById("gate").style.display="none";' +
+      'document.getElementById("main").removeAttribute("hidden");}' +
+      'else{document.getElementById("ge").textContent="Incorrect — please try again.";}' +
+      '}' +
+      'document.getElementById("gi").addEventListener("keydown",function(ev){if(ev.key==="Enter")chk();});' +
+      'document.getElementById("gb").addEventListener("click",chk);' +
+      'if(sessionStorage.getItem("ta-u")==="1"){' +
+      'document.getElementById("gate").style.display="none";' +
+      'document.getElementById("main").removeAttribute("hidden");}' +
+      '})();';
+
+    let h = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
+    h += '<meta charset="UTF-8">\n';
+    h += '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n';
+    h += '<title>Treasury Aesthetics — ' + e(fullName || 'Your Plan') + '</title>\n';
+    h += '<link rel="preconnect" href="https://fonts.googleapis.com">\n';
+    h += '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n';
+    h += '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">\n';
+    h += '<style>' + PATIENT_CSS + '</style>\n';
+    h += '</head>\n<body>\n';
+
+    /* Gate overlay */
+    h += '<div id="gate" class="gate-overlay">';
+    h += '<div class="gate-box">';
+    h += '<div class="gate-logo">Treasury Aesthetics</div>';
+    h += '<h2 class="gate-title">Your Plan is Ready</h2>';
+    h += '<p class="gate-sub">Enter your date of birth to access your personalized plan.</p>';
+    h += '<div class="gate-hint">Format: MMDDYYYY</div>';
+    h += '<input id="gi" class="gate-input" type="password" placeholder="01151990" maxlength="8" inputmode="numeric">';
+    h += '<button id="gb" class="gate-btn">Access My Plan</button>';
+    h += '<p id="ge" class="gate-err"></p>';
+    h += '</div></div>';
+
+    /* Main content */
+    h += '<div id="main" hidden>';
+
+    /* Site header */
+    h += '<header class="site-header"><div class="site-header-inner">';
+    h += '<div class="site-name">Treasury Aesthetics</div>';
+    h += '<div class="site-sub">Toronto, Ontario</div>';
+    h += '</div></header>';
+
+    /* Hero */
+    h += '<section class="hero"><div class="hero-inner">';
+    h += '<div class="hero-tag">Personalized Treatment Plan</div>';
+    h += '<h1 class="hero-name">' + e(displayName) + (firstName ? '&#39;s' : '') + ' Investment</h1>';
+    if (concern) h += '<p class="hero-concern">' + e(concern) + '</p>';
+    h += '<div class="hero-stats">';
+    if (totalSess > 0) {
+      h += '<div class="hero-stat"><div class="hs-val">' + totalSess + '</div><div class="hs-label">Planned Sessions</div></div>';
+      h += '<div class="hero-stat-div"></div>';
+    }
+    h += '<div class="hero-stat"><div class="hs-val">' + e(startDisp) + '</div><div class="hs-label">Plan Start</div></div>';
+    h += '</div></div></section>';
+
+    /* Treatment Journey */
+    if (txGroups.length > 0) {
+      h += '<section class="content-section"><div class="section-inner">';
+      h += '<div class="section-num">' + secNum() + '</div>';
+      h += '<h2 class="section-title">Treatment Journey</h2>';
+      h += txHtml;
+      h += '</div></section>';
+    }
+
+    /* Home Care Protocol */
+    if (amSec || pmSec) {
+      h += '<section class="content-section alt-bg"><div class="section-inner">';
+      h += '<div class="section-num">' + secNum() + '</div>';
+      h += '<h2 class="section-title">Home Care Protocol</h2>';
+      h += '<div class="homecare-grid">';
+      if (amSec) {
+        h += '<div class="routine-col"><div class="routine-header">';
+        h += '<span class="rh-dot am-dot"></span>Morning Routine</div>';
+        h += routineItems(amSec) + '</div>';
+      }
+      if (pmSec) {
+        h += '<div class="routine-col"><div class="routine-header">';
+        h += '<span class="rh-dot pm-dot"></span>Evening Routine</div>';
+        h += routineItems(pmSec) + '</div>';
+      }
+      h += '</div></div></section>';
+    }
+
+    /* Extra sections (Biologics, Post-Procedure, Membership, etc.) */
+    if (extraHtml) {
+      h += '<section class="content-section"><div class="section-inner">';
+      h += '<div class="section-num">' + secNum() + '</div>';
+      h += '<h2 class="section-title">Add-Ons &amp; Recommendations</h2>';
+      h += extraHtml;
+      h += '</div></section>';
+    }
+
+    /* Physician Notes */
+    if (notes) {
+      h += '<section class="notes-section"><div class="section-inner">';
+      h += '<div class="section-tag">Physician Notes</div>';
+      h += '<div class="notes-body">' + e(notes).replace(/\n/g, '<br>') + '</div>';
+      h += '</div></section>';
+    }
+
+    /* CTA */
+    h += '<section class="cta-section"><div class="cta-inner">';
+    h += '<p class="cta-sub">Ready to begin your investment?</p>';
+    h += '<a href="mailto:aesthetics@treasuryhealth.ca" class="cta-btn">Book Your Next Session</a>';
+    h += '</div></section>';
+
+    /* Footer */
+    h += '<footer class="site-footer"><div class="footer-inner">';
+    h += '<div class="footer-clinic">Treasury Aesthetics</div>';
+    h += '<div class="footer-detail">Toronto, Ontario &nbsp;&middot;&nbsp; ';
+    h += '<a href="mailto:aesthetics@treasuryhealth.ca">aesthetics@treasuryhealth.ca</a>';
+    h += ' &nbsp;&middot;&nbsp; <a href="https://treasuryhealth.ca">treasuryhealth.ca</a></div>';
+    h += '<div class="footer-note">This plan was prepared exclusively for you by Treasury Aesthetics.</div>';
+    h += '</div></footer>';
+
+    h += '</div>\n';
+    h += '<script>' + gateScript + '<\/script>\n';
+    h += '</body>\n</html>';
+
+    return h;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MODAL
+  ═══════════════════════════════════════════════════════════════ */
+
+  let _currentPlan = null;
+
+  function openGenerateModal(plan) {
+    _currentPlan = plan;
+    document.getElementById('generate-modal')?.remove();
+
+    const cfg = JSON.parse(localStorage.getItem('ta-gh') || '{}');
+    const concern = escHtml(plan.title || '');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'generate-modal';
+    overlay.innerHTML = `
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-head-title">Generate Patient Page</span>
+          <button class="modal-close" id="mcls">&times;</button>
+        </div>
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-panel="mpanel-pt">Patient Details</button>
+          <button class="modal-tab" data-panel="mpanel-gh">GitHub Settings</button>
+        </div>
+        <div class="modal-body">
+          <div id="mpanel-pt">
+            <div class="mf-row">
+              <div class="modal-field">
+                <label class="modal-label">First Name</label>
+                <input id="m-fn" class="modal-input" type="text" placeholder="Sarah" autocomplete="off">
+              </div>
+              <div class="modal-field">
+                <label class="modal-label">Last Name</label>
+                <input id="m-ln" class="modal-input" type="text" placeholder="Chen" autocomplete="off">
+              </div>
+            </div>
+            <div class="mf-row">
+              <div class="modal-field">
+                <label class="modal-label">Date of Birth</label>
+                <input id="m-dob" class="modal-input" type="date">
+              </div>
+              <div class="modal-field">
+                <label class="modal-label">Plan Start Date</label>
+                <input id="m-sd" class="modal-input" type="date">
+              </div>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Concern / Plan Title</label>
+              <input id="m-concern" class="modal-input" type="text" value="${concern}" placeholder="e.g. Rosacea &amp; Skin Texture">
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Physician Notes (optional)</label>
+              <textarea id="m-notes" class="modal-textarea" placeholder="Notes for the patient…"></textarea>
+            </div>
+          </div>
+          <div id="mpanel-gh" style="display:none">
+            <div class="modal-field">
+              <label class="modal-label">GitHub Repository</label>
+              <input id="m-repo" class="modal-input" type="text"
+                value="${escHtml(cfg.ghRepo || 'treasury-patients')}"
+                placeholder="treasury-patients">
+              <span class="modal-hint">The repo where patient pages are published via GitHub Pages.</span>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Personal Access Token</label>
+              <input id="m-token" class="modal-input" type="password"
+                value="${escHtml(cfg.ghToken || '')}"
+                placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+              <span class="modal-hint">Classic PAT with <code>repo</code> scope. Stored in your browser only — never sent to Treasury's server.</span>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Custom Domain (optional)</label>
+              <input id="m-domain" class="modal-input" type="text"
+                value="${escHtml(cfg.ghDomain || '')}"
+                placeholder="plans.treasuryaesthetics.ca">
+              <span class="modal-hint">Leave blank to use the default github.io URL.</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-actions">
+            <button class="modal-btn modal-btn-secondary" id="m-dl">&#8595; Download</button>
+            <button class="modal-btn modal-btn-primary" id="m-pub">&#8599; Publish to GitHub</button>
+          </div>
+          <div class="modal-status" id="m-status"></div>
+        </div>
+      </div>`;
+
+    document.body.appendChild(overlay);
+
+    /* Tab switching */
+    overlay.querySelectorAll('.modal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        overlay.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const panel = tab.dataset.panel;
+        ['mpanel-pt','mpanel-gh'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = el.id === panel ? '' : 'none';
+        });
+      });
+    });
+
+    document.getElementById('mcls').addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.getElementById('m-dl').addEventListener('click', downloadPatientPage);
+    document.getElementById('m-pub').addEventListener('click', publishPatientPage);
+
+    setTimeout(() => document.getElementById('m-fn')?.focus(), 60);
+  }
+
+  function closeModal() {
+    document.getElementById('generate-modal')?.remove();
+    _currentPlan = null;
+  }
+
+  function _getModalPt() {
+    return {
+      firstName: (document.getElementById('m-fn')?.value || '').trim(),
+      lastName:  (document.getElementById('m-ln')?.value || '').trim(),
+      dob:       document.getElementById('m-dob')?.value || '',
+      startDate: document.getElementById('m-sd')?.value || '',
+      concern:   (document.getElementById('m-concern')?.value || '').trim(),
+      notes:     (document.getElementById('m-notes')?.value || '').trim(),
+    };
+  }
+
+  function _getModalGH() {
+    const repo   = (document.getElementById('m-repo')?.value   || '').trim();
+    const token  = (document.getElementById('m-token')?.value  || '').trim();
+    const domain = (document.getElementById('m-domain')?.value || '').trim();
+    localStorage.setItem('ta-gh', JSON.stringify({ ghRepo: repo, ghToken: token, ghDomain: domain }));
+    return { repo, token, domain };
+  }
+
+  function _setStatus(msg, type) {
+    const el = document.getElementById('m-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'modal-status ' + (type || '');
+  }
+
+  function downloadPatientPage() {
+    if (!_currentPlan) return;
+    const pt = _getModalPt();
+    if (!pt.firstName && !pt.lastName) { _setStatus('Enter a patient name first.', 'err'); return; }
+
+    const html = buildPatientHTML(_currentPlan, pt);
+    const s    = slugify(pt.firstName, pt.lastName) || 'patient';
+    const blob = new Blob([html], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = s + '.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    _setStatus('Downloaded — ' + s + '.html', 'ok');
+  }
+
+  async function publishPatientPage() {
+    if (!_currentPlan) return;
+    const pt  = _getModalPt();
+    const cfg = _getModalGH();
+
+    if (!pt.firstName && !pt.lastName) { _setStatus('Enter a patient name first.', 'err'); return; }
+    if (!cfg.token) { _setStatus('GitHub token required — see GitHub Settings tab.', 'err'); return; }
+    if (!cfg.repo)  { _setStatus('GitHub repository name required.', 'err'); return; }
+
+    const btn = document.getElementById('m-pub');
+    btn.disabled = true;
+    _setStatus('Publishing…', 'loading');
+
+    const html     = buildPatientHTML(_currentPlan, pt);
+    const filename = (slugify(pt.firstName, pt.lastName) || 'patient') + '.html';
+    const owner    = 'drlatsky-aesthetics';
+    const apiUrl   = 'https://api.github.com/repos/' + owner + '/' + cfg.repo + '/contents/' + filename;
+
+    try {
+      /* Check for existing file to get SHA */
+      let sha = null;
+      const getRes = await fetch(apiUrl, {
+        headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json' }
+      });
+      if (getRes.ok) sha = (await getRes.json()).sha;
+
+      /* Base64-encode via TextEncoder → Uint8Array → binary string */
+      const bytes  = new TextEncoder().encode(html);
+      let binary   = '';
+      bytes.forEach(b => { binary += String.fromCharCode(b); });
+      const b64    = btoa(binary);
+
+      const body = {
+        message: (sha ? 'Update' : 'Add') + ' patient page: ' + [pt.firstName, pt.lastName].filter(Boolean).join(' '),
+        content: b64,
+      };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + cfg.token,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!putRes.ok) {
+        const err = await putRes.json().catch(() => ({}));
+        throw new Error(err.message || 'GitHub API error ' + putRes.status);
+      }
+
+      const pageUrl = cfg.domain
+        ? 'https://' + cfg.domain + '/' + filename
+        : 'https://' + owner + '.github.io/' + cfg.repo + '/' + filename;
+
+      _setStatus('Published: ' + pageUrl, 'ok');
+
+      /* Swap Download button to Copy Link */
+      const dlBtn = document.getElementById('m-dl');
+      if (dlBtn) {
+        dlBtn.textContent = '⧉ Copy Link';
+        dlBtn.onclick = () => {
+          navigator.clipboard.writeText(pageUrl)
+            .then(() => _setStatus('Link copied!', 'ok'))
+            .catch(() => _setStatus(pageUrl, 'ok'));
+        };
+      }
+    } catch (err) {
+      _setStatus('Error: ' + err.message, 'err');
+    } finally {
+      btn.disabled = false;
+    }
+  }
 </script>
 </body>
 </html>

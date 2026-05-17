@@ -246,10 +246,25 @@
       font-size: 0.75rem; padding: 5px 8px; cursor: pointer;
     }
 
+    /* ── Quick buttons ── */
+    #quick-bar {
+      background: var(--charcoal-2); border-top: 1px solid var(--border);
+      padding: 10px 16px 0; display: flex; gap: 7px; flex-wrap: wrap; flex-shrink: 0;
+    }
+    .quick-btn {
+      font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--charcoal-3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 5px 11px; cursor: pointer; color: var(--text-muted);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .quick-btn:hover { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-bg); }
+
     /* ── Input area ── */
     #input-area {
       background: var(--charcoal-2); border-top: 1px solid var(--border);
-      padding: 14px 16px; display: flex; gap: 10px;
+      padding: 10px 16px 14px; display: flex; gap: 10px;
       align-items: flex-end; flex-shrink: 0;
     }
     #user-input {
@@ -405,11 +420,21 @@
       <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
     <div class="msg-content">
-      <div class="bubble">Welcome to Treasury Aesthetics. I'm your treatment advisor — here to help you build a personalized skincare and treatment plan with our team.
-
-To get started, tell me about your skin. What are your main concerns, and what results are you hoping to invest in?</div>
+      <div class="bubble">Ready to build a treatment plan. Select a concern below or type the patient's situation directly.</div>
     </div>
   </div>
+</div>
+
+<div id="quick-bar">
+  <button class="quick-btn" data-prompt="Patient concern: Active acne and breakouts. Build a full treatment plan.">Acne</button>
+  <button class="quick-btn" data-prompt="Patient concern: Anti-aging, fine lines, skin laxity. Build a full treatment plan.">Anti-Aging</button>
+  <button class="quick-btn" data-prompt="Patient concern: Rosacea and facial redness. Build a full treatment plan.">Rosacea</button>
+  <button class="quick-btn" data-prompt="Patient concern: Pigmentation and melasma. Build a full treatment plan.">Pigmentation</button>
+  <button class="quick-btn" data-prompt="Patient concern: Acne scarring (rolling and boxcar scars). Build a full treatment plan.">Acne Scarring</button>
+  <button class="quick-btn" data-prompt="Patient concern: Hair thinning and loss. Build a full treatment plan.">Hair Loss</button>
+  <button class="quick-btn" data-prompt="Patient concern: Skin texture, enlarged pores, dullness. Build a full treatment plan.">Texture / Pores</button>
+  <button class="quick-btn" data-prompt="Patient concern: Prejuvenation — prevention and maintenance, under 35. Build a full treatment plan.">Prejuvenation</button>
+  <button class="quick-btn" data-prompt="Patient concern: Skin tightening and laxity on face and neck. Build a full treatment plan.">Tightening</button>
 </div>
 
 <div id="input-area">
@@ -729,6 +754,13 @@ To get started, tell me about your skin. What are your main concerns, and what r
       inputEl.focus();
     }
   }
+
+  document.querySelectorAll('.quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      inputEl.value = btn.dataset.prompt;
+      send();
+    });
+  });
 
   inputEl.addEventListener('input', () => {
     inputEl.style.height = 'auto';
@@ -1139,7 +1171,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
     _currentPlan = plan;
     document.getElementById('generate-modal')?.remove();
 
-    const cfg = JSON.parse(localStorage.getItem('ta-gh') || '{}');
     const concern = escHtml(plan.title || '');
 
     const overlay = document.createElement('div');
@@ -1151,88 +1182,46 @@ To get started, tell me about your skin. What are your main concerns, and what r
           <span class="modal-head-title">Generate Patient Page</span>
           <button class="modal-close" id="mcls">&times;</button>
         </div>
-        <div class="modal-tabs">
-          <button class="modal-tab active" data-panel="mpanel-pt">Patient Details</button>
-          <button class="modal-tab" data-panel="mpanel-gh">GitHub Settings</button>
-        </div>
         <div class="modal-body">
-          <div id="mpanel-pt">
-            <div class="mf-row">
-              <div class="modal-field">
-                <label class="modal-label">First Name</label>
-                <input id="m-fn" class="modal-input" type="text" placeholder="Sarah" autocomplete="off">
-              </div>
-              <div class="modal-field">
-                <label class="modal-label">Last Name</label>
-                <input id="m-ln" class="modal-input" type="text" placeholder="Chen" autocomplete="off">
-              </div>
-            </div>
-            <div class="mf-row">
-              <div class="modal-field">
-                <label class="modal-label">Date of Birth</label>
-                <input id="m-dob" class="modal-input" type="date">
-              </div>
-              <div class="modal-field">
-                <label class="modal-label">Plan Start Date</label>
-                <input id="m-sd" class="modal-input" type="date">
-              </div>
+          <div class="mf-row">
+            <div class="modal-field">
+              <label class="modal-label">First Name</label>
+              <input id="m-fn" class="modal-input" type="text" placeholder="Sarah" autocomplete="off">
             </div>
             <div class="modal-field">
-              <label class="modal-label">Concern / Plan Title</label>
-              <input id="m-concern" class="modal-input" type="text" value="${concern}" placeholder="e.g. Rosacea &amp; Skin Texture">
-            </div>
-            <div class="modal-field">
-              <label class="modal-label">Physician Notes (optional)</label>
-              <textarea id="m-notes" class="modal-textarea" placeholder="Notes for the patient…"></textarea>
+              <label class="modal-label">Last Name</label>
+              <input id="m-ln" class="modal-input" type="text" placeholder="Chen" autocomplete="off">
             </div>
           </div>
-          <div id="mpanel-gh" style="display:none">
+          <div class="mf-row">
             <div class="modal-field">
-              <label class="modal-label">GitHub Repository</label>
-              <input id="m-repo" class="modal-input" type="text"
-                value="${escHtml(cfg.ghRepo || 'treasury-patients')}"
-                placeholder="treasury-patients">
-              <span class="modal-hint">The repo where patient pages are published via GitHub Pages.</span>
+              <label class="modal-label">Date of Birth</label>
+              <input id="m-dob" class="modal-input" type="date">
             </div>
             <div class="modal-field">
-              <label class="modal-label">Personal Access Token</label>
-              <input id="m-token" class="modal-input" type="password"
-                value="${escHtml(cfg.ghToken || '')}"
-                placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-              <span class="modal-hint">Classic PAT with <code>repo</code> scope. Stored in your browser only — never sent to Treasury's server.</span>
+              <label class="modal-label">Plan Start Date</label>
+              <input id="m-sd" class="modal-input" type="date">
             </div>
-            <div class="modal-field">
-              <label class="modal-label">Custom Domain (optional)</label>
-              <input id="m-domain" class="modal-input" type="text"
-                value="${escHtml(cfg.ghDomain || '')}"
-                placeholder="plans.treasuryaesthetics.ca">
-              <span class="modal-hint">Leave blank to use the default github.io URL.</span>
-            </div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Concern / Plan Title</label>
+            <input id="m-concern" class="modal-input" type="text" value="${concern}" placeholder="e.g. Rosacea &amp; Skin Texture">
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Physician Notes (optional)</label>
+            <textarea id="m-notes" class="modal-textarea" placeholder="Notes for the patient…"></textarea>
           </div>
         </div>
         <div class="modal-footer">
           <div class="modal-actions">
             <button class="modal-btn modal-btn-secondary" id="m-dl">&#8595; Download</button>
-            <button class="modal-btn modal-btn-primary" id="m-pub">&#8599; Publish to GitHub</button>
+            <button class="modal-btn modal-btn-primary" id="m-pub">&#8599; Publish Page</button>
           </div>
           <div class="modal-status" id="m-status"></div>
         </div>
       </div>`;
 
     document.body.appendChild(overlay);
-
-    /* Tab switching */
-    overlay.querySelectorAll('.modal-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        overlay.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const panel = tab.dataset.panel;
-        ['mpanel-pt','mpanel-gh'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.style.display = el.id === panel ? '' : 'none';
-        });
-      });
-    });
 
     document.getElementById('mcls').addEventListener('click', closeModal);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
@@ -1256,14 +1245,6 @@ To get started, tell me about your skin. What are your main concerns, and what r
       concern:   (document.getElementById('m-concern')?.value || '').trim(),
       notes:     (document.getElementById('m-notes')?.value || '').trim(),
     };
-  }
-
-  function _getModalGH() {
-    const repo   = (document.getElementById('m-repo')?.value   || '').trim();
-    const token  = (document.getElementById('m-token')?.value  || '').trim();
-    const domain = (document.getElementById('m-domain')?.value || '').trim();
-    localStorage.setItem('ta-gh', JSON.stringify({ ghRepo: repo, ghToken: token, ghDomain: domain }));
-    return { repo, token, domain };
   }
 
   function _setStatus(msg, type) {
@@ -1291,71 +1272,36 @@ To get started, tell me about your skin. What are your main concerns, and what r
 
   async function publishPatientPage() {
     if (!_currentPlan) return;
-    const pt  = _getModalPt();
-    const cfg = _getModalGH();
+    const pt = _getModalPt();
 
     if (!pt.firstName && !pt.lastName) { _setStatus('Enter a patient name first.', 'err'); return; }
-    if (!cfg.token) { _setStatus('GitHub token required — see GitHub Settings tab.', 'err'); return; }
-    if (!cfg.repo)  { _setStatus('GitHub repository name required.', 'err'); return; }
 
     const btn = document.getElementById('m-pub');
     btn.disabled = true;
     _setStatus('Publishing…', 'loading');
 
-    const html     = buildPatientHTML(_currentPlan, pt);
-    const filename = (slugify(pt.firstName, pt.lastName) || 'patient') + '.html';
-    const owner    = 'drlatsky-aesthetics';
-    const apiUrl   = 'https://api.github.com/repos/' + owner + '/' + cfg.repo + '/contents/' + filename;
+    const html         = buildPatientHTML(_currentPlan, pt);
+    const patientName  = [pt.firstName, pt.lastName].filter(Boolean).join(' ');
+    const filename     = (slugify(pt.firstName, pt.lastName) || 'patient') + '.html';
 
     try {
-      /* Check for existing file to get SHA */
-      let sha = null;
-      const getRes = await fetch(apiUrl, {
-        headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json' }
+      const res = await fetch('/publish-page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ html, filename, patientName }),
       });
-      if (getRes.ok) sha = (await getRes.json()).sha;
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Publish failed');
 
-      /* Base64-encode via TextEncoder → Uint8Array → binary string */
-      const bytes  = new TextEncoder().encode(html);
-      let binary   = '';
-      bytes.forEach(b => { binary += String.fromCharCode(b); });
-      const b64    = btoa(binary);
+      _setStatus('Published: ' + data.url, 'ok');
 
-      const body = {
-        message: (sha ? 'Update' : 'Add') + ' patient page: ' + [pt.firstName, pt.lastName].filter(Boolean).join(' '),
-        content: b64,
-      };
-      if (sha) body.sha = sha;
-
-      const putRes = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'Bearer ' + cfg.token,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!putRes.ok) {
-        const err = await putRes.json().catch(() => ({}));
-        throw new Error(err.message || 'GitHub API error ' + putRes.status);
-      }
-
-      const pageUrl = cfg.domain
-        ? 'https://' + cfg.domain + '/' + filename
-        : 'https://' + owner + '.github.io/' + cfg.repo + '/' + filename;
-
-      _setStatus('Published: ' + pageUrl, 'ok');
-
-      /* Swap Download button to Copy Link */
       const dlBtn = document.getElementById('m-dl');
       if (dlBtn) {
         dlBtn.textContent = '⧉ Copy Link';
         dlBtn.onclick = () => {
-          navigator.clipboard.writeText(pageUrl)
+          navigator.clipboard.writeText(data.url)
             .then(() => _setStatus('Link copied!', 'ok'))
-            .catch(() => _setStatus(pageUrl, 'ok'));
+            .catch(() => _setStatus(data.url, 'ok'));
         };
       }
     } catch (err) {

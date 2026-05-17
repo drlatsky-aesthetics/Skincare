@@ -1095,20 +1095,18 @@
     '.section-title{font-family:"Cormorant Garamond",serif;font-size:1.75rem;font-weight:400;color:var(--t);margin-bottom:32px;border-bottom:1px solid var(--b);padding-bottom:14px}',
 
     /* Treatment groups */
-    '.tx-group{margin-bottom:32px}',
+    '.tx-group{margin-bottom:14px}',
     '.tx-group:last-child{margin-bottom:0}',
-    '.tx-group-head{margin-bottom:12px}',
+    '.tx-card{background:var(--card2);border:1px solid var(--b);border-left:3px solid var(--g);border-radius:var(--rad);overflow:hidden}',
+    '.tx-card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;gap:12px}',
     '.tx-name{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:500;color:var(--t)}',
-    '.tx-meta{font-family:"DM Mono",monospace;font-size:.62rem;color:var(--m);letter-spacing:.05em;margin-top:2px}',
-    '.session-row{display:flex;gap:10px;flex-wrap:wrap}',
-    '.session-card{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--b);border-left:2px solid var(--g);border-radius:var(--rad);padding:13px 16px;min-width:170px;flex:1 1 170px;max-width:230px}',
-    '.session-card.sc-done{border-left-color:var(--m2);opacity:.65}',
-    '.sc-num{font-family:"DM Mono",monospace;font-size:1.3rem;color:var(--g);min-width:28px}',
-    '.session-card.sc-done .sc-num{color:var(--m2)}',
-    '.sc-date{font-size:.78rem;font-weight:400;color:var(--t);line-height:1.3}',
-    '.sc-badge{font-family:"DM Mono",monospace;font-size:.54rem;letter-spacing:.1em;margin-top:3px}',
-    '.sc-badge.sb-next{color:var(--g)}',
-    '.sc-badge.sb-done{color:var(--m2)}',
+    '.tx-sessions-badge{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g);background:rgba(196,149,74,.1);border:1px solid rgba(196,149,74,.2);border-radius:20px;padding:3px 10px;white-space:nowrap;flex-shrink:0}',
+    '.tx-card-body{padding:0 18px 14px;display:flex;flex-direction:column;gap:6px}',
+    '.tx-detail-row{display:flex;gap:10px;font-size:.78rem}',
+    '.tx-detail-label{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--m);min-width:80px;padding-top:1px;flex-shrink:0}',
+    '.tx-detail-val{color:var(--t);font-weight:300;line-height:1.5}',
+    '.tx-rationale .tx-detail-val{color:var(--m);font-size:.75rem}',
+    '@media(max-width:500px){.tx-card-head{flex-direction:column;align-items:flex-start;gap:8px}}',
 
     /* Home care */
     '.homecare-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}',
@@ -1162,7 +1160,35 @@
     '.footer-detail{font-size:.73rem;color:var(--m);font-weight:300;margin-bottom:6px}',
     '.footer-detail a:hover{color:var(--g)}',
     '.footer-note{font-size:.68rem;color:var(--m2);font-style:italic}',
-    '@media(max-width:480px){.hero{padding:36px 18px}.content-section{padding:36px 18px}.notes-section{padding:32px 18px}}',
+    /* Admin edit button */
+    '.admin-edit-btn{background:none;border:none;color:var(--m2);cursor:pointer;font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.08em;padding:4px 8px;border-radius:4px;transition:color .15s,background .15s;margin-top:14px;display:block;margin-left:auto;margin-right:auto}',
+    '.admin-edit-btn:hover{color:var(--m);background:var(--card2)}',
+
+    /* Admin gate overlay */
+    '.adm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:2000;padding:20px}',
+    '.adm-box{background:var(--card);border:1px solid var(--b2);border-radius:12px;padding:26px 24px 20px;width:100%;max-width:300px}',
+    '.adm-title{font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g);margin-bottom:14px}',
+    '.adm-input{width:100%;background:var(--card2);border:1px solid var(--b2);border-radius:6px;padding:9px 12px;font-family:"DM Mono",monospace;font-size:.9rem;color:var(--t);outline:none;margin-bottom:10px;transition:border-color .15s}',
+    '.adm-input:focus{border-color:var(--g)}',
+    '.adm-actions{display:flex;gap:8px}',
+    '.adm-cancel,.adm-confirm{flex:1;padding:8px;border:none;border-radius:6px;font-size:.8rem;cursor:pointer;font-family:"DM Sans",sans-serif}',
+    '.adm-cancel{background:var(--card2);color:var(--m)}',
+    '.adm-confirm{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-weight:500}',
+    '.adm-err{font-size:.7rem;color:#d06060;margin-top:6px;min-height:14px}',
+
+    /* Edit toolbar */
+    '.edit-bar{position:fixed;top:0;left:0;right:0;z-index:1500;background:#140f00;border-bottom:1px solid var(--g);display:flex;align-items:center;gap:12px;padding:9px 20px;box-shadow:0 4px 20px rgba(0,0,0,.6)}',
+    '.edit-bar-label{font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--g);flex:1}',
+    '.edit-bar-hint{font-size:.72rem;color:var(--m);font-weight:300}',
+    '.edit-bar-btn{padding:6px 14px;border:none;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:opacity .15s}',
+    '.edit-bar-btn:hover{opacity:.88}',
+    '.eb-dl{background:linear-gradient(135deg,var(--g),var(--g2));color:#000}',
+    '.eb-exit{background:var(--card2);color:var(--m);border:1px solid var(--b2)}',
+    'body.edit-mode{padding-top:46px}',
+    'body.edit-mode [contenteditable]{outline:1px dashed rgba(196,149,74,.35);border-radius:2px;cursor:text;transition:outline .15s,background .15s}',
+    'body.edit-mode [contenteditable]:hover{outline-color:var(--g);background:rgba(196,149,74,.06)}',
+    'body.edit-mode [contenteditable]:focus{outline:1px solid var(--g);background:rgba(196,149,74,.09)}',
+    '@media(max-width:600px){.edit-bar-hint{display:none}}',
   ].join('');
 
   /* ── Build the complete patient HTML page ── */
@@ -1191,36 +1217,28 @@
     const txItems  = (clinicSec ? clinicSec.items || [] : []).filter(i => i.checked !== false);
     let totalSess  = 0;
     const txGroups = txItems.map(item => {
-      const count = parseSessionCount(item.detail);
+      const count = item.qty || parseSessionCount(item.detail);
       const wk    = txInterval(item.name);
-      const sess  = [];
-      for (let i = 0; i < count; i++) {
-        const d = startDate ? addWeeks(startDate, wk * i) : null;
-        sess.push({ num: i + 1, date: d, past: d ? d <= today : false });
-      }
-      totalSess += count;
-      return { item, count, wk, sess };
+      totalSess  += count;
+      return { item, count, wk };
     });
 
     /* Build treatment journey HTML */
     let txHtml = '';
     txGroups.forEach(g => {
-      const wkLabel = g.wk === 0 ? 'One-time' : g.wk === 1 ? '1 week apart' : g.wk + ' weeks apart';
+      const wkLabel  = g.wk === 0 ? 'One-time treatment' : g.wk === 1 ? 'Weekly' : 'Every ' + g.wk + ' weeks';
+      const sessLabel = g.count + ' session' + (g.count > 1 ? 's' : '') + ' recommended';
+      const rationale = g.item.detail || '';
       txHtml += '<div class="tx-group">';
-      txHtml += '<div class="tx-group-head">';
+      txHtml += '<div class="tx-card">';
+      txHtml += '<div class="tx-card-head">';
       txHtml += '<div class="tx-name">' + e(g.item.name) + '</div>';
-      txHtml += '<div class="tx-meta">' + e(g.count + ' session' + (g.count > 1 ? 's' : '') + '  ·  ' + wkLabel) + '</div>';
-      txHtml += '</div><div class="session-row">';
-      g.sess.forEach(s => {
-        const cls   = 'session-card' + (s.past ? ' sc-done' : '');
-        const badge = s.past ? 'COMPLETED' : 'UPCOMING';
-        const bCls  = s.past ? 'sc-badge sb-done' : 'sc-badge sb-next';
-        txHtml += '<div class="' + cls + '">';
-        txHtml += '<div class="sc-num">' + pad2(s.num) + '</div>';
-        txHtml += '<div class="sc-body"><div class="sc-date">' + e(fmtDateLong(s.date)) + '</div>';
-        txHtml += '<div class="' + bCls + '">' + badge + '</div></div></div>';
-      });
-      txHtml += '</div></div>';
+      txHtml += '<div class="tx-sessions-badge">' + e(sessLabel) + '</div>';
+      txHtml += '</div>';
+      txHtml += '<div class="tx-card-body">';
+      txHtml += '<div class="tx-detail-row"><span class="tx-detail-label">Frequency</span><span class="tx-detail-val">' + e(wkLabel) + '</span></div>';
+      if (rationale) txHtml += '<div class="tx-detail-row tx-rationale"><span class="tx-detail-label">Rationale</span><span class="tx-detail-val">' + e(rationale) + '</span></div>';
+      txHtml += '</div></div></div>';
     });
 
     /* Build routine items HTML */
@@ -1422,10 +1440,72 @@
     h += '<a href="mailto:aesthetics@treasuryhealth.ca">aesthetics@treasuryhealth.ca</a>';
     h += ' &nbsp;&middot;&nbsp; <a href="https://treasuryhealth.ca">treasuryhealth.ca</a></div>';
     h += '<div class="footer-note">This plan was prepared exclusively for you by Treasury Aesthetics.</div>';
+    h += '<button class="admin-edit-btn" onclick="showAdmGate()">&#9998; Edit</button>';
     h += '</div></footer>';
 
     h += '</div>\n';
-    h += '<script>' + gateScript + '<\/script>\n';
+
+    const adminScript =
+      '(function(){' +
+      'var APW="2896Laser";' +
+      'var ESEL=[".hero-name",".hero-concern",".tx-name",".tx-meta",".sc-date",".product-name",".product-detail",".ei-name",".ei-detail",".notes-body",".inv-name",".inv-amount",".inv-total span",".inv-subtotal span",".inv-disc span"].join(",");' +
+
+      'window.showAdmGate=function(){' +
+      'if(document.getElementById("adm-overlay"))return;' +
+      'var o=document.createElement("div");o.className="adm-overlay";o.id="adm-overlay";' +
+      'o.innerHTML="<div class=\\"adm-box\\"><div class=\\"adm-title\\">Admin Access</div>' +
+      '<input id=\\"adm-pw\\" class=\\"adm-input\\" type=\\"password\\" placeholder=\\"Password\\">' +
+      '<div class=\\"adm-actions\\"><button class=\\"adm-cancel\\">Cancel<\\/button><button class=\\"adm-confirm\\">Enter<\\/button><\\/div>' +
+      '<p id=\\"adm-err\\" class=\\"adm-err\\"><\\/p><\\/div>";' +
+      'document.body.appendChild(o);' +
+      'var inp=document.getElementById("adm-pw");inp.focus();' +
+      'function chk(){if(inp.value===APW){o.remove();enableEdit();}else{document.getElementById("adm-err").textContent="Incorrect password.";}}' +
+      'inp.addEventListener("keydown",function(e){if(e.key==="Enter")chk();});' +
+      'o.querySelector(".adm-confirm").addEventListener("click",chk);' +
+      'o.querySelector(".adm-cancel").addEventListener("click",function(){o.remove();});' +
+      '};' +
+
+      'function enableEdit(){' +
+      'var bar=document.createElement("div");bar.className="edit-bar";bar.id="edit-bar";' +
+      'bar.innerHTML="<span class=\\"edit-bar-label\\">&#9998; Edit Mode<\\/span>' +
+      '<span class=\\"edit-bar-hint\\">Click any text to edit<\\/span>' +
+      '<button class=\\"edit-bar-btn eb-dl\\" onclick=\\"dlEdited()\\">&#8595; Download<\\/button>' +
+      '<button class=\\"edit-bar-btn eb-exit\\" onclick=\\"exitEdit()\\">Exit<\\/button>";' +
+      'document.body.insertBefore(bar,document.body.firstChild);' +
+      'document.body.classList.add("edit-mode");' +
+      'document.querySelectorAll(ESEL).forEach(function(el){el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");});' +
+      'document.querySelectorAll(".sc-badge").forEach(function(b){' +
+      'b.style.cursor="pointer";b.title="Click to toggle";' +
+      'b.addEventListener("click",function(){' +
+      'var card=b.closest(".session-card");' +
+      'if(b.textContent==="UPCOMING"){b.textContent="COMPLETED";b.className="sc-badge sb-done";card&&card.classList.add("sc-done");}' +
+      'else{b.textContent="UPCOMING";b.className="sc-badge sb-next";card&&card.classList.remove("sc-done");}' +
+      '});' +
+      '});' +
+      '}' +
+
+      'window.exitEdit=function(){' +
+      'document.querySelectorAll("[contenteditable]").forEach(function(el){el.removeAttribute("contenteditable");});' +
+      'document.body.classList.remove("edit-mode");' +
+      'var bar=document.getElementById("edit-bar");if(bar)bar.remove();' +
+      'document.querySelectorAll(".sc-badge").forEach(function(b){b.style.cursor="";b.title="";});' +
+      '};' +
+
+      'window.dlEdited=function(){' +
+      'var bar=document.getElementById("edit-bar");if(bar)bar.style.display="none";' +
+      'document.body.classList.remove("edit-mode");' +
+      'var html="<!DOCTYPE html>"+document.documentElement.outerHTML;' +
+      'if(bar)bar.style.display="";' +
+      'document.body.classList.add("edit-mode");' +
+      'var blob=new Blob([html],{type:"text/html"});' +
+      'var url=URL.createObjectURL(blob);' +
+      'var a=document.createElement("a");a.href=url;' +
+      'a.download=document.title.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".html";' +
+      'document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);' +
+      '};' +
+      '})();';
+
+    h += '<script>' + gateScript + adminScript + '<\/script>\n';
     h += '</body>\n</html>';
 
     return h;

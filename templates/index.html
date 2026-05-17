@@ -246,6 +246,85 @@
       font-size: 0.75rem; padding: 5px 8px; cursor: pointer;
     }
 
+    /* ── Item pricing controls ── */
+    .plan-item { align-items: center; }
+    .plan-item-controls {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto;
+    }
+    .price-wrap {
+      display: flex; align-items: center;
+      border-bottom: 1px solid var(--text-dim); padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+    .price-wrap:focus-within { border-bottom-color: var(--gold); }
+    .price-prefix {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--text-dim);
+    }
+    .price-input {
+      width: 48px; background: transparent; border: none;
+      color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 0.7rem; text-align: right; padding: 0 2px; outline: none;
+    }
+    .price-input::-webkit-inner-spin-button,
+    .price-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .qty-ctrl { display: flex; align-items: center; gap: 3px; }
+    .qty-btn {
+      width: 17px; height: 17px; border-radius: 3px;
+      background: var(--charcoal-4); border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer; font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1; padding: 0; transition: color 0.1s, background 0.1s;
+    }
+    .qty-btn:hover { color: var(--gold); background: var(--charcoal-5); }
+    .qty-val {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      color: var(--text); min-width: 16px; text-align: center;
+    }
+    .line-total {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      color: var(--text-muted); min-width: 52px; text-align: right;
+    }
+    .plan-item[data-checked="false"] .price-prefix,
+    .plan-item[data-checked="false"] .price-input,
+    .plan-item[data-checked="false"] .qty-val,
+    .plan-item[data-checked="false"] .line-total { color: var(--text-dim); }
+
+    /* ── Plan footer (totals + discount) ── */
+    .plan-footer {
+      border-top: 1px solid var(--border);
+      padding: 11px 16px; display: flex; flex-direction: column; gap: 6px;
+      background: var(--charcoal-3);
+    }
+    .plan-total-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .plan-total-label {
+      font-family: 'DM Mono', monospace; font-size: 0.62rem;
+      color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .plan-subtotal-val, .plan-disc-val, .plan-grand-val {
+      font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--text);
+    }
+    .plan-grand-val { color: var(--gold); font-size: 0.88rem; }
+    .plan-grand-row { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .plan-discount-row {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .disc-spacer { flex: 1; }
+    .disc-type-sel {
+      background: var(--charcoal-4); border: 1px solid var(--border); border-radius: 4px;
+      color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      padding: 2px 4px; cursor: pointer; outline: none;
+    }
+    .disc-amount-input {
+      width: 52px; background: var(--charcoal-4); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; padding: 2px 6px; outline: none; text-align: right;
+    }
+    .disc-amount-input:focus { border-color: var(--gold-dim); }
+    .disc-amount-input::-webkit-inner-spin-button,
+    .disc-amount-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
     /* ── Quick buttons ── */
     #quick-bar {
       background: var(--charcoal-2); border-top: 1px solid var(--border);
@@ -476,6 +555,93 @@
     }
   }
 
+  /* ── Price lookup by treatment/product name ── */
+  function lookupPrice(name) {
+    const n = name.toLowerCase();
+    if (/deeprf|body.*rf|rf.*body/i.test(n))               return 699;
+    if (/exactrf|periorbital/i.test(n))                    return 649;
+    if (/virturf|smartrf|rf microneedl/i.test(n))          return 799;
+    if (/ablative/i.test(n))                               return 1499;
+    if (/nouvaglo|nouvaderm|nouvaderm/i.test(n))           return 649;
+    if (/oxygeneo/i.test(n))                               return 299;
+    if (/dermatwist|collagen induction|\bcit\b/i.test(n))  return 449;
+    if (/pladuo.*acne|acne.*argon/i.test(n))               return 299;
+    if (/pladuo|plasma/i.test(n))                          return 449;
+    if (/\bled\b|triwave/i.test(n))                        return 99;
+    if (/quanta.*carbon|carbon.*facial/i.test(n))          return 349;
+    if (/quanta/i.test(n))                                 return 399;
+    if (/observ|consultation/i.test(n))                    return 0;
+    if (/purasomes/i.test(n))                              return 299;
+    if (/exo.e|exo\|e/i.test(n))                          return 149;
+    if (/vamp/i.test(n))                                   return 249;
+    if (/kerafactor/i.test(n))                             return 149;
+    if (/de.rive|de\|rive/i.test(n))                       return 149;
+    if (/core rose/i.test(n))                              return 199;
+    if (/epicutis/i.test(n))                               return 95;
+    if (/pavise/i.test(n))                                 return 75;
+    if (/noon/i.test(n))                                   return 85;
+    return 0;
+  }
+
+  function fmtCAD(n) {
+    return '$' + Math.max(0, n).toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  /* ── Recalculate plan totals ── */
+  function recalcPlan(widget) {
+    let subtotal = 0;
+    widget.querySelectorAll('.plan-item').forEach(row => {
+      if (row.querySelector('.plan-item-check')?.checked) {
+        const price = parseFloat(row.querySelector('.price-input')?.value || 0) || 0;
+        const qty   = parseInt(row.querySelector('.qty-val')?.textContent || 1) || 1;
+        const line  = price * qty;
+        subtotal   += line;
+        const lt = row.querySelector('.line-total');
+        if (lt) lt.textContent = line > 0 ? fmtCAD(line) : '—';
+      } else {
+        const lt = row.querySelector('.line-total');
+        if (lt) lt.textContent = '—';
+      }
+    });
+
+    const subtotalEl = widget.querySelector('.plan-subtotal-val');
+    if (subtotalEl) subtotalEl.textContent = fmtCAD(subtotal);
+
+    const discType = widget.querySelector('.disc-type-sel')?.value || 'pct';
+    const discAmt  = parseFloat(widget.querySelector('.disc-amount-input')?.value || 0) || 0;
+    const discOff  = discType === 'pct' ? subtotal * (discAmt / 100) : discAmt;
+    const grand    = Math.max(0, subtotal - discOff);
+
+    const discEl = widget.querySelector('.plan-disc-val');
+    if (discEl) discEl.textContent = discOff > 0 ? '−' + fmtCAD(discOff) : '—';
+
+    const grandEl = widget.querySelector('.plan-grand-val');
+    if (grandEl) grandEl.textContent = fmtCAD(grand);
+  }
+
+  /* ── Extract live plan state from widget ── */
+  function extractLivePlan(widget) {
+    const title    = widget.querySelector('.plan-title')?.textContent || 'Treatment Plan';
+    const sections = [];
+    widget.querySelectorAll('.plan-section').forEach(sec => {
+      const name  = sec.querySelector('.plan-section-name')?.textContent || '';
+      const items = [];
+      sec.querySelectorAll('.plan-item').forEach(row => {
+        items.push({
+          name:    row.querySelector('.plan-item-name')?.textContent  || '',
+          detail:  row.querySelector('.plan-item-detail')?.textContent || '',
+          checked: row.querySelector('.plan-item-check')?.checked ?? true,
+          price:   parseFloat(row.querySelector('.price-input')?.value || 0) || 0,
+          qty:     parseInt(row.querySelector('.qty-val')?.textContent  || 1) || 1,
+        });
+      });
+      if (items.length) sections.push({ name, items });
+    });
+    const discType = widget.querySelector('.disc-type-sel')?.value || 'pct';
+    const discAmt  = parseFloat(widget.querySelector('.disc-amount-input')?.value || 0) || 0;
+    return { title, sections, discount: { type: discType, value: discAmt } };
+  }
+
   /* ── Build plan widget DOM ── */
   function buildPlanWidget(plan) {
     const widget = document.createElement('div');
@@ -492,21 +658,48 @@
     widget.appendChild(header);
 
     header.querySelector('.plan-copy-btn').addEventListener('click', () => copyPlan(widget, plan));
-    header.querySelector('.plan-export-btn').addEventListener('click', () => exportPlan(widget, plan));
-    header.querySelector('.plan-page-btn').addEventListener('click', () => openGenerateModal(plan));
+    header.querySelector('.plan-export-btn').addEventListener('click', () => exportPlan(widget, extractLivePlan(widget)));
+    header.querySelector('.plan-page-btn').addEventListener('click', () => openGenerateModal(extractLivePlan(widget)));
 
     const sectionsEl = document.createElement('div');
     sectionsEl.className = 'plan-sections';
-
     (plan.sections || []).forEach(section => {
-      sectionsEl.appendChild(buildSection(section));
+      sectionsEl.appendChild(buildSection(section, widget));
     });
-
     widget.appendChild(sectionsEl);
+
+    /* Footer: totals + discount */
+    const footer = document.createElement('div');
+    footer.className = 'plan-footer';
+    footer.innerHTML = `
+      <div class="plan-total-row">
+        <span class="plan-total-label">Subtotal</span>
+        <span class="plan-subtotal-val">$0</span>
+      </div>
+      <div class="plan-discount-row">
+        <span class="plan-total-label">Discount</span>
+        <span class="disc-spacer"></span>
+        <select class="disc-type-sel">
+          <option value="pct">%</option>
+          <option value="flat">$ off</option>
+        </select>
+        <input type="number" class="disc-amount-input" value="0" min="0" max="100" step="1" placeholder="0">
+        <span class="plan-disc-val">—</span>
+      </div>
+      <div class="plan-total-row plan-grand-row">
+        <span class="plan-total-label">Total</span>
+        <span class="plan-grand-val">$0</span>
+      </div>`;
+    widget.appendChild(footer);
+
+    footer.querySelector('.disc-type-sel').addEventListener('change', () => recalcPlan(widget));
+    footer.querySelector('.disc-amount-input').addEventListener('input', () => recalcPlan(widget));
+
+    recalcPlan(widget);
     return widget;
   }
 
-  function buildSection(section) {
+  function buildSection(section, widget) {
     const el = document.createElement('div');
     el.className = 'plan-section';
 
@@ -519,21 +712,24 @@
 
     const itemsEl = document.createElement('div');
     itemsEl.className = 'plan-items';
-    (section.items || []).forEach(item => itemsEl.appendChild(buildItem(item)));
+    (section.items || []).forEach(item => itemsEl.appendChild(buildItem(item, widget)));
     el.appendChild(itemsEl);
 
     headerEl.querySelector('.add-item-btn').addEventListener('click', () => {
-      showAddItemRow(itemsEl);
+      showAddItemRow(itemsEl, widget);
     });
 
     return el;
   }
 
-  function buildItem(item) {
-    const row = document.createElement('div');
-    row.className = 'plan-item';
+  function buildItem(item, widget) {
+    const row       = document.createElement('div');
+    row.className   = 'plan-item';
     const isChecked = item.checked !== false;
     row.dataset.checked = isChecked;
+
+    const price = item.price !== undefined ? item.price : lookupPrice(item.name || '');
+    const qty   = item.qty   !== undefined ? item.qty   : parseSessionCount(item.detail);
 
     row.innerHTML = `
       <input type="checkbox" class="plan-item-check" ${isChecked ? 'checked' : ''}>
@@ -541,19 +737,45 @@
         <span class="plan-item-name">${escHtml(item.name || '')}</span>
         ${item.detail ? `<span class="plan-item-detail">${escHtml(item.detail)}</span>` : ''}
       </div>
+      <div class="plan-item-controls">
+        <div class="price-wrap">
+          <span class="price-prefix">$</span>
+          <input type="number" class="price-input" value="${price}" min="0" step="5" title="Price per session">
+        </div>
+        <div class="qty-ctrl">
+          <button class="qty-btn qty-minus" title="Decrease">−</button>
+          <span class="qty-val">${qty}</span>
+          <button class="qty-btn qty-plus" title="Increase">+</button>
+        </div>
+        <span class="line-total">—</span>
+      </div>
       <button class="delete-item-btn" title="Remove">×</button>`;
 
     row.querySelector('.plan-item-check').addEventListener('change', e => {
       row.dataset.checked = e.target.checked;
+      if (widget) recalcPlan(widget);
+    });
+    row.querySelector('.price-input').addEventListener('input', () => { if (widget) recalcPlan(widget); });
+    row.querySelector('.qty-minus').addEventListener('click', () => {
+      const qv = row.querySelector('.qty-val');
+      const n  = Math.max(1, parseInt(qv.textContent) - 1);
+      qv.textContent = n;
+      if (widget) recalcPlan(widget);
+    });
+    row.querySelector('.qty-plus').addEventListener('click', () => {
+      const qv = row.querySelector('.qty-val');
+      qv.textContent = parseInt(qv.textContent) + 1;
+      if (widget) recalcPlan(widget);
     });
     row.querySelector('.delete-item-btn').addEventListener('click', () => {
       row.remove();
+      if (widget) recalcPlan(widget);
     });
 
     return row;
   }
 
-  function showAddItemRow(itemsEl) {
+  function showAddItemRow(itemsEl, widget) {
     if (itemsEl.querySelector('.add-item-row')) return;
 
     const row = document.createElement('div');
@@ -567,7 +789,8 @@
     row.querySelector('.add-item-confirm').addEventListener('click', () => {
       const val = input.value.trim();
       if (val) {
-        itemsEl.insertBefore(buildItem({ name: val, checked: true }), row);
+        itemsEl.insertBefore(buildItem({ name: val, checked: true }, widget), row);
+        if (widget) recalcPlan(widget);
       }
       row.remove();
     });
@@ -911,6 +1134,15 @@
     '.ei-checked .ei-name{color:var(--t)}',
     '.ei-detail{font-size:.71rem;font-weight:300;color:var(--m);margin-top:2px;line-height:1.4}',
 
+    /* Investment summary */
+    '.inv-table{display:flex;flex-direction:column;gap:0;max-width:520px;border:1px solid var(--b);border-radius:var(--rad);overflow:hidden}',
+    '.inv-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--card2);border-bottom:1px solid var(--b)}',
+    '.inv-name{font-size:.82rem;font-weight:300;color:var(--t)}',
+    '.inv-amount{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--t)}',
+    '.inv-subtotal,.inv-disc{display:flex;justify-content:space-between;padding:10px 16px;background:var(--bg);border-top:1px solid var(--b);font-size:.78rem;color:var(--m);font-family:"DM Mono",monospace}',
+    '.inv-disc{color:#c0a060}',
+    '.inv-total{display:flex;justify-content:space-between;padding:14px 16px;background:var(--bg);border-top:1px solid var(--b2);font-family:"DM Mono",monospace;font-size:.88rem;color:var(--g);font-weight:500}',
+
     /* Notes */
     '.notes-section{background:#0a0806;border-top:1px solid var(--b);border-bottom:1px solid var(--b);padding:40px 28px}',
     '.section-tag{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--g);margin-bottom:14px}',
@@ -1128,6 +1360,44 @@
       h += '<div class="section-num">' + secNum() + '</div>';
       h += '<h2 class="section-title">Add-Ons &amp; Recommendations</h2>';
       h += extraHtml;
+      h += '</div></section>';
+    }
+
+    /* Investment Summary */
+    const allPricedSecs = sections.filter(s => !['Post-Procedure Recovery'].includes(s.name));
+    let hasPrice = false;
+    let summaryHtml = '';
+    let summarySubtotal = 0;
+    allPricedSecs.forEach(sec => {
+      (sec.items || []).filter(i => i.checked !== false && (i.price || 0) > 0).forEach(item => {
+        const lineTotal = (item.price || 0) * (item.qty || 1);
+        summarySubtotal += lineTotal;
+        hasPrice = true;
+        summaryHtml += '<div class="inv-row">';
+        summaryHtml += '<span class="inv-name">' + e(item.name) + (item.qty > 1 ? ' &times; ' + item.qty : '') + '</span>';
+        summaryHtml += '<span class="inv-amount">' + fmtCAD(lineTotal) + '</span>';
+        summaryHtml += '</div>';
+      });
+    });
+
+    if (hasPrice) {
+      const disc = plan.discount || {};
+      const discOff = disc.type === 'pct'
+        ? summarySubtotal * ((disc.value || 0) / 100)
+        : (disc.value || 0);
+      const grand = Math.max(0, summarySubtotal - discOff);
+
+      summaryHtml += '<div class="inv-subtotal"><span>Subtotal</span><span>' + fmtCAD(summarySubtotal) + '</span></div>';
+      if (discOff > 0) {
+        const discLabel = disc.type === 'pct' ? (disc.value + '% discount') : 'Discount';
+        summaryHtml += '<div class="inv-disc"><span>' + e(discLabel) + '</span><span>−' + fmtCAD(discOff) + '</span></div>';
+      }
+      summaryHtml += '<div class="inv-total"><span>Investment Total</span><span>' + fmtCAD(grand) + '</span></div>';
+
+      h += '<section class="content-section alt-bg"><div class="section-inner">';
+      h += '<div class="section-num">' + secNum() + '</div>';
+      h += '<h2 class="section-title">Investment Summary</h2>';
+      h += '<div class="inv-table">' + summaryHtml + '</div>';
       h += '</div></section>';
     }
 

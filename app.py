@@ -1,8 +1,9 @@
 import base64
 import io
 import os
+import re
 import requests as http_requests
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, Response
 from dotenv import load_dotenv
 from agent import SkincareAgent
 from export_docx import generate_plan_docx
@@ -118,12 +119,36 @@ def publish_page():
         msg = r.json().get("message", f"GitHub API error {r.status_code}")
         return jsonify({"error": msg}), 500
 
-    if gh_domain:
-        url = f"https://{gh_domain}/{filename}"
+    # Build the public URL — prefer the app's own domain so the page
+    # is served through Flask's proxy route rather than raw GitHub Pages.
+    app_domain = os.environ.get("APP_DOMAIN") or gh_domain
+    if app_domain:
+        url = f"https://{app_domain}/{filename}"
     else:
         url = f"https://{gh_owner}.github.io/{gh_repo}/{filename}"
 
     return jsonify({"url": url})
+
+
+@app.route("/<filename>")
+def serve_patient_page(filename):
+    """Proxy patient HTML pages stored in the treasury-patients GitHub repo."""
+    if not re.match(r'^[a-z0-9][a-z0-9_-]*\.html$', filename):
+        return "Not found", 404
+
+    gh_owner = os.environ.get("GH_OWNER", "drlatsky-aesthetics")
+    gh_repo  = os.environ.get("GH_REPO",  "treasury-patients")
+    raw_url  = f"https://raw.githubusercontent.com/{gh_owner}/{gh_repo}/main/{filename}"
+
+    try:
+        r = http_requests.get(raw_url, timeout=10)
+        if r.status_code == 404:
+            return "Page not found", 404
+        r.raise_for_status()
+        return Response(r.content, status=200, content_type="text/html; charset=utf-8")
+    except Exception as e:
+        print(f"[serve_patient_page] error fetching {filename}: {e}")
+        return "Error loading page", 502
 
 
 if __name__ == "__main__":

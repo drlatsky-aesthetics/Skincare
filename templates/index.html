@@ -1189,78 +1189,191 @@
     'body.edit-mode [contenteditable]:hover{outline-color:var(--g);background:rgba(196,149,74,.06)}',
     'body.edit-mode [contenteditable]:focus{outline:1px solid var(--g);background:rgba(196,149,74,.09)}',
     '@media(max-width:600px){.edit-bar-hint{display:none}}',
+
+    /* ── Tx card interactive ── */
+    '.tx-card-head{gap:10px}',
+    '.tx-cb-wrap{display:flex;align-items:center;cursor:pointer;flex-shrink:0}',
+    '.tx-cb{display:none}',
+    '.tx-cb-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--m2);background:transparent;flex-shrink:0;position:relative;transition:background .15s,border-color .15s}',
+    '.tx-cb:checked + .tx-cb-box{background:var(--g);border-color:var(--g)}',
+    '.tx-cb:checked + .tx-cb-box::after{content:"✓";position:absolute;top:-2px;left:2px;font-size:12px;color:#000;font-weight:700}',
+    '.tx-info{flex:1;min-width:0}',
+    '.tx-line-price{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--g);flex-shrink:0;white-space:nowrap}',
+    '.tx-unchecked{opacity:.55}',
+    '.tx-unchecked .tx-line-price,.tx-unchecked .tx-name{color:var(--m)!important}',
+    '.tx-unchecked .tx-sessions-badge{opacity:.5}',
+    '.rm-tx-btn,.rm-prod-btn{display:none;width:22px;height:22px;border-radius:4px;background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25);color:#c0392b;cursor:pointer;font-size:15px;align-items:center;justify-content:center;flex-shrink:0;line-height:1;padding:0;transition:background .15s}',
+    '.rm-tx-btn:hover,.rm-prod-btn:hover{background:rgba(192,57,43,.3)}',
+    '.tx-price-row{display:none!important;align-items:center;gap:10px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--b2)}',
+    '.tx-price-edit{display:flex;align-items:center;gap:2px;font-family:"DM Mono",monospace;font-size:.78rem;color:var(--t)}',
+    '.price-inp{width:60px;background:transparent;border:none;border-bottom:1px solid var(--m2);color:var(--t);font-family:"DM Mono",monospace;font-size:.78rem;padding:1px 2px;outline:none;text-align:right}',
+    '.price-inp:focus{border-bottom-color:var(--g)}',
+    '.price-inp::-webkit-inner-spin-button,.price-inp::-webkit-outer-spin-button{-webkit-appearance:none}',
+    '.sess-inp{width:34px;background:transparent;border:none;border-bottom:1px solid var(--m2);color:var(--t);font-family:"DM Mono",monospace;font-size:.6rem;padding:1px 2px;outline:none;text-align:center;display:none}',
+    '.sess-inp::-webkit-inner-spin-button,.sess-inp::-webkit-outer-spin-button{-webkit-appearance:none}',
+
+    /* edit-mode reveals admin elements */
+    'body.edit-mode .rm-tx-btn,body.edit-mode .rm-prod-btn{display:flex}',
+    'body.edit-mode .tx-price-row{display:flex!important}',
+    'body.edit-mode .sess-inp{display:inline!important}',
+    'body.edit-mode .sess-disp,.body.edit-mode .sess-unit{display:none}',
+
+    /* ── Product interactive ── */
+    '.product-card{display:flex;align-items:flex-start;gap:10px;cursor:default}',
+    '.prod-cb-wrap{display:flex;align-items:center;cursor:pointer;flex-shrink:0;margin-top:2px}',
+    '.prod-cb{display:none}',
+    '.prod-cb-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--m2);background:transparent;flex-shrink:0;position:relative;transition:background .15s,border-color .15s}',
+    '.prod-cb:checked + .prod-cb-box{background:var(--g);border-color:var(--g)}',
+    '.prod-cb:checked + .prod-cb-box::after{content:"✓";position:absolute;top:-2px;left:1px;font-size:10px;color:#000;font-weight:700}',
+    '.prod-body{flex:1;min-width:0}',
+    '.prod-unchecked .product-name{color:var(--m)}',
+    '.prod-unchecked .product-detail{color:var(--m2)}',
+    '.own-tag{font-family:"DM Mono",monospace;font-size:.58rem;letter-spacing:.05em;color:var(--m2);margin-top:4px;font-style:italic;display:block}',
+
+    /* ── Product category headers ── */
+    '.prod-cat-header{font-family:"DM Mono",monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--m2);margin:16px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--b)}',
+    '.prod-cat-header:first-child{margin-top:0}',
+
+    /* ── Sticky price bar ── */
+    '.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(8,8,8,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--b2);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}',
+    '.sb-left{display:flex;flex-direction:column;gap:1px}',
+    '.sb-label{font-family:"DM Mono",monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}',
+    '.sb-note{font-size:.65rem;color:var(--m2);font-weight:300}',
+    '.sb-total{font-family:"DM Mono",monospace;font-size:1.15rem;color:var(--g);font-weight:500}',
+    'body{padding-bottom:58px}',
+
+    /* ── Add-treatment overlay ── */
+    '.add-tx-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px}',
+    '.add-tx-box{background:var(--card);border:1px solid var(--b2);border-radius:14px;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7)}',
+    '.add-tx-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--b);flex-shrink:0}',
+    '.add-tx-head span{font-family:"DM Mono",monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--g)}',
+    '.add-tx-head button{background:none;border:none;color:var(--m);cursor:pointer;font-size:20px;line-height:1;padding:0 4px;transition:color .15s}',
+    '.add-tx-head button:hover{color:var(--t)}',
+    '.add-tx-list{overflow-y:auto;padding:8px}',
+    '.add-tx-item{padding:10px 12px;border-radius:8px;cursor:pointer;transition:background .15s;margin-bottom:3px;border:1px solid transparent}',
+    '.add-tx-item:hover{background:var(--card2);border-color:var(--b)}',
+    '.add-tx-name{font-size:.85rem;font-weight:400;color:var(--t);margin-bottom:2px}',
+    '.add-tx-detail{font-size:.72rem;color:var(--m);font-weight:300}',
+
+    /* edit bar extra buttons */
+    '.eb-revert{background:var(--card2);color:var(--m);border:1px solid var(--b2)}',
+    '.eb-add{background:rgba(196,149,74,.15);color:var(--g);border:1px solid rgba(196,149,74,.3)}',
+    '.eb-add:hover{background:rgba(196,149,74,.28)!important;opacity:1!important}',
+    '.eb-revert:hover{color:var(--t)!important;opacity:1!important}',
   ].join('');
 
   /* ── Build the complete patient HTML page ── */
   function buildPatientHTML(plan, pt) {
     const e = str => escHtml(str);
-    const firstName  = (pt.firstName || '').trim();
-    const lastName   = (pt.lastName  || '').trim();
-    const fullName   = [firstName, lastName].filter(Boolean).join(' ');
+    const firstName   = (pt.firstName || '').trim();
+    const lastName    = (pt.lastName  || '').trim();
+    const fullName    = [firstName, lastName].filter(Boolean).join(' ');
     const displayName = firstName || fullName || 'Your';
-    const password   = pwFromDob(pt.dob);
-    const concern    = (pt.concern || plan.title || '').trim();
-    const startDate  = pt.startDate || '';
-    const notes      = (pt.notes || '').trim();
-    const today      = new Date();
+    const password    = pwFromDob(pt.dob);
+    const concern     = (pt.concern || plan.title || '').trim();
+    const startDate   = pt.startDate || '';
+    const notes       = (pt.notes || '').trim();
 
-    const sections   = plan.sections || [];
-    const clinicSec  = sections.find(s => s.name === 'In-Clinic Treatments');
-    const amSec      = sections.find(s => s.name === 'Morning Routine');
-    const pmSec      = sections.find(s => s.name === 'Evening Routine');
-    const postSec    = sections.find(s => s.name === 'Post-Procedure Recovery');
-    const extraSecs  = sections.filter(s =>
+    const sections  = plan.sections || [];
+    const clinicSec = sections.find(s => s.name === 'In-Clinic Treatments');
+    const amSec     = sections.find(s => s.name === 'Morning Routine');
+    const pmSec     = sections.find(s => s.name === 'Evening Routine');
+    const postSec   = sections.find(s => s.name === 'Post-Procedure Recovery');
+    const extraSecs = sections.filter(s =>
       !['In-Clinic Treatments','Morning Routine','Evening Routine','Post-Procedure Recovery'].includes(s.name)
     );
 
-    /* Treatment groups */
-    const txItems  = (clinicSec ? clinicSec.items || [] : []).filter(i => i.checked !== false);
-    let totalSess  = 0;
-    const txGroups = txItems.map(item => {
-      const count = item.qty || parseSessionCount(item.detail);
-      const wk    = txInterval(item.name);
-      totalSess  += count;
-      return { item, count, wk };
-    });
+    /* Product category detection */
+    function categorizeProd(name) {
+      const n = (name || '').toLowerCase();
+      if (/cleanser|wash|foam|micellar/i.test(n))           return 'CLEANSER';
+      if (/\bspf\b|sunscreen|sun.protect|\buv\b/i.test(n)) return 'SPF';
+      if (/mist|spray|\btoner\b|essence/i.test(n))          return 'TONER / MIST';
+      if (/retinol|\bacid\b|peel|exfol|\baha\b|\bbha\b/i.test(n)) return 'ACTIVE';
+      if (/serum|complex|hydro|calming|vit.*c|brightening|hyaluron/i.test(n)) return 'SERUM';
+      if (/moisturi|cream|lotion|barrier/i.test(n))         return 'MOISTURIZER';
+      if (/recovery|repair|post.proc|sooth|balm|epicutis/i.test(n)) return 'RECOVERY';
+      if (/mask|masque/i.test(n))                           return 'MASK';
+      return 'SKINCARE';
+    }
+    const PROD_ORDER = ['CLEANSER','TONER / MIST','SERUM','ACTIVE','MOISTURIZER','RECOVERY','SPF','MASK','SKINCARE'];
 
-    /* Build treatment journey HTML */
-    let txHtml = '';
-    txGroups.forEach(g => {
-      const wkLabel  = g.wk === 0 ? 'One-time treatment' : g.wk === 1 ? 'Weekly' : 'Every ' + g.wk + ' weeks';
-      const sessLabel = g.count + ' session' + (g.count > 1 ? 's' : '') + ' recommended';
-      const rationale = g.item.detail || '';
-      txHtml += '<div class="tx-group">';
-      txHtml += '<div class="tx-card">';
-      txHtml += '<div class="tx-card-head">';
-      txHtml += '<div class="tx-name">' + e(g.item.name) + '</div>';
-      txHtml += '<div class="tx-sessions-badge">' + e(sessLabel) + '</div>';
-      txHtml += '</div>';
-      txHtml += '<div class="tx-card-body">';
-      txHtml += '<div class="tx-detail-row"><span class="tx-detail-label">Frequency</span><span class="tx-detail-val">' + e(wkLabel) + '</span></div>';
-      if (rationale) txHtml += '<div class="tx-detail-row tx-rationale"><span class="tx-detail-label">Rationale</span><span class="tx-detail-val">' + e(rationale) + '</span></div>';
-      txHtml += '</div></div></div>';
-    });
-
-    /* Build routine items HTML */
-    function routineItems(sec) {
+    /* Build routine section HTML with category headers */
+    function buildRoutineHTML(sec) {
       if (!sec) return '';
+      const items = (sec.items || []).filter(i => i.checked !== false);
+      if (!items.length) return '';
+      const groups = {};
+      items.forEach(item => {
+        const cat = categorizeProd(item.name);
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(item);
+      });
       let h = '<div class="product-list">';
-      (sec.items || []).filter(i => i.checked !== false).forEach(item => {
-        h += '<div class="product-card"><div class="product-name">' + e(item.name) + '</div>';
-        if (item.detail) h += '<div class="product-detail">' + e(item.detail) + '</div>';
-        h += '</div>';
+      PROD_ORDER.forEach(cat => {
+        const catItems = groups[cat];
+        if (!catItems || !catItems.length) return;
+        h += '<div class="prod-cat-header">' + cat + '</div>';
+        catItems.forEach(item => {
+          const price = item.price !== undefined ? item.price : lookupPrice(item.name || '');
+          h += '<div class="product-card prod-item" data-price="' + price + '">';
+          h += '<span class="prod-cb-wrap"><input type="checkbox" class="prod-cb" checked onchange="calc()"><span class="prod-cb-box"></span></span>';
+          h += '<div class="prod-body"><div class="product-name">' + e(item.name) + '</div>';
+          if (item.detail) h += '<div class="product-detail">' + e(item.detail) + '</div>';
+          h += '<span class="own-tag" hidden>Using my own product</span>';
+          h += '</div>';
+          h += '<button class="rm-prod-btn" onclick="rmProd(this)" title="Remove">\xd7</button>';
+          h += '</div>';
+        });
       });
       return h + '</div>';
     }
 
-    /* Build extra sections HTML */
+    /* Treatment groups */
+    const txItems = (clinicSec ? clinicSec.items || [] : []).filter(i => i.checked !== false);
+    let totalSess = 0;
+    const txGroups = txItems.map(item => {
+      const count = item.qty || parseSessionCount(item.detail);
+      const wk    = txInterval(item.name);
+      const price = item.price !== undefined ? item.price : lookupPrice(item.name || '');
+      totalSess += count;
+      return { item, count, wk, price };
+    });
+
+    /* Build treatment cards HTML */
+    let txHtml = '<div class="tx-list-container">';
+    txGroups.forEach(g => {
+      const wkLabel   = g.wk === 0 ? 'One-time treatment' : g.wk === 1 ? 'Weekly' : 'Every ' + g.wk + ' weeks';
+      const lineTotal = g.price * g.count;
+      const lineTotStr = lineTotal > 0 ? fmtCAD(lineTotal) : 'Complimentary';
+      txHtml += '<div class="tx-group" data-price="' + g.price + '">';
+      txHtml += '<div class="tx-card"><div class="tx-card-head">';
+      txHtml += '<label class="tx-cb-wrap"><input type="checkbox" class="tx-cb" checked onchange="calc()"><span class="tx-cb-box"></span></label>';
+      txHtml += '<div class="tx-info">';
+      txHtml += '<div class="tx-name">' + e(g.item.name) + '</div>';
+      txHtml += '<div class="tx-sessions-badge">';
+      txHtml += '<span class="sess-disp">' + g.count + '</span><span class="sess-unit"> sessions recommended</span>';
+      txHtml += '<input class="sess-inp" type="number" value="' + g.count + '" min="1" max="20" onchange="updateSess(this)">';
+      txHtml += '</div></div>';
+      txHtml += '<div class="tx-line-price">' + lineTotStr + '</div>';
+      txHtml += '<button class="rm-tx-btn" onclick="rmTx(this)" title="Remove">\xd7</button>';
+      txHtml += '</div>'; // tx-card-head
+      txHtml += '<div class="tx-card-body">';
+      txHtml += '<div class="tx-detail-row"><span class="tx-detail-label">Frequency</span><span class="tx-detail-val">' + e(wkLabel) + '</span></div>';
+      if (g.item.detail) txHtml += '<div class="tx-detail-row tx-rationale"><span class="tx-detail-label">Rationale</span><span class="tx-detail-val">' + e(g.item.detail) + '</span></div>';
+      txHtml += '<div class="tx-price-row"><span class="tx-detail-label">Price / session</span>';
+      txHtml += '<div class="tx-price-edit">$<input class="price-inp" type="number" value="' + g.price + '" min="0" onchange="updatePrice(this)"></div></div>';
+      txHtml += '</div></div></div>'; // tx-card-body, tx-card, tx-group
+    });
+    txHtml += '</div>'; // tx-list-container
+
+    /* Extra sections (Biologics, Post-Procedure, Membership) */
     const allExtra = postSec ? [postSec, ...extraSecs] : extraSecs;
     let extraHtml = '';
     allExtra.forEach(sec => {
-      const items = (sec.items || []);
+      const items = sec.items || [];
       if (!items.length) return;
-      extraHtml += '<div class="extra-sec">';
-      extraHtml += '<div class="extra-sec-name">' + e(sec.name) + '</div>';
+      extraHtml += '<div class="extra-sec"><div class="extra-sec-name">' + e(sec.name) + '</div>';
       extraHtml += '<div class="extra-items">';
       items.forEach(item => {
         const ck = item.checked !== false;
@@ -1279,27 +1392,35 @@
 
     /* Start date display */
     const startDisp = startDate
-      ? new Date(startDate + 'T00:00:00').toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' })
+      ? new Date(startDate + 'T00:00:00').toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })
       : 'To Be Confirmed';
 
-    /* Inline gate script — no template literals, safe concatenation */
-    const gateScript =
-      '(function(){' +
-      'var PW="' + password + '";' +
-      'function chk(){' +
-      'var v=document.getElementById("gi").value.trim();' +
-      'if(v===PW){sessionStorage.setItem("ta-u","1");' +
-      'document.getElementById("gate").style.display="none";' +
-      'document.getElementById("main").removeAttribute("hidden");}' +
-      'else{document.getElementById("ge").textContent="Incorrect — please try again.";}' +
-      '}' +
-      'document.getElementById("gi").addEventListener("keydown",function(ev){if(ev.key==="Enter")chk();});' +
-      'document.getElementById("gb").addEventListener("click",chk);' +
-      'if(sessionStorage.getItem("ta-u")==="1"){' +
-      'document.getElementById("gate").style.display="none";' +
-      'document.getElementById("main").removeAttribute("hidden");}' +
-      '})();';
+    /* Compact TX catalog for add-treatment overlay (serialised into the page) */
+    const TX_CAT_DATA = [
+      { name: 'VirtueRF SmartRF',              price: 799,  sess: 4, wk: 5,  detail: 'RF microneedling — face and neck tightening, collagen remodeling' },
+      { name: 'VirtueRF DeepRF',               price: 699,  sess: 4, wk: 5,  detail: 'Deep RF — body laxity and contouring' },
+      { name: 'VirtueRF ExactRF',              price: 649,  sess: 3, wk: 5,  detail: 'Periorbital and jawline precision RF' },
+      { name: 'PlaDuo Pro',                    price: 449,  sess: 4, wk: 4,  detail: 'Plasma-based regeneration — rosacea, vascular, skin quality' },
+      { name: 'PlaDuo Pro Argon',              price: 299,  sess: 4, wk: 1,  detail: 'Argon plasma — active acne and seborrhea primary anchor' },
+      { name: 'LED TriWave',                   price: 99,   sess: 6, wk: 1,  detail: 'Photobiomodulation — anti-inflammatory, post-procedure recovery' },
+      { name: 'OxyGeneo Facial',               price: 299,  sess: 4, wk: 3,  detail: 'OxyGeneo — oxygenation, glow, no downtime' },
+      { name: 'DermaTwist CIT',                price: 449,  sess: 3, wk: 4,  detail: 'Collagen induction — scars, texture, stretch marks, hair' },
+      { name: 'NouvaDerm NouvaGlo',            price: 649,  sess: 3, wk: 4,  detail: 'Non-ablative laser — pigment, texture, skin quality' },
+      { name: 'NouvaDerm Ablative',            price: 1499, sess: 2, wk: 10, detail: 'Ablative laser resurfacing — deep resurfacing' },
+      { name: 'EXO|E Skin Revitalizing Complex', price: 149, sess: 1, wk: 0, detail: 'Exosome biologic — post-device recovery and regeneration' },
+      { name: 'Avari Purasomes',               price: 299,  sess: 1, wk: 0,  detail: 'Premium exosome upgrade — enhanced cellular regeneration' },
+      { name: 'VAMP Advanced PDRN',            price: 249,  sess: 1, wk: 0,  detail: 'PDRN biostimulation — DNA repair and regeneration' },
+      { name: 'DE|RIVE Scalp',                 price: 149,  sess: 1, wk: 0,  detail: 'Scalp exosome treatment — hair restoration support' },
+      { name: 'KeraFactor',                    price: 149,  sess: 1, wk: 0,  detail: 'Growth factor serum — scalp and hair restoration' },
+      { name: 'OBSERV 360 Consultation',       price: 0,    sess: 1, wk: 0,  detail: 'Complimentary skin analysis with OBSERV 360 imaging' },
+    ];
 
+    /* Discount params */
+    const disc     = plan.discount || {};
+    const discType = disc.type  || 'pct';
+    const discVal  = disc.value || 0;
+
+    /* ── Build HTML ── */
     let h = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
     h += '<meta charset="UTF-8">\n';
     h += '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n';
@@ -1310,7 +1431,7 @@
     h += '<style>' + PATIENT_CSS + '</style>\n';
     h += '</head>\n<body>\n';
 
-    /* Gate overlay */
+    /* Gate */
     h += '<div id="gate" class="gate-overlay">';
     h += '<div class="gate-box">';
     h += '<div class="gate-logo">Treasury Aesthetics</div>';
@@ -1325,7 +1446,7 @@
     /* Main content */
     h += '<div id="main" hidden>';
 
-    /* Site header */
+    /* Header */
     h += '<header class="site-header"><div class="site-header-inner">';
     h += '<div class="site-name">Treasury Aesthetics</div>';
     h += '<div class="site-sub">Toronto, Ontario</div>';
@@ -1353,26 +1474,24 @@
       h += '</div></section>';
     }
 
-    /* Home Care Protocol */
+    /* Home Care */
     if (amSec || pmSec) {
       h += '<section class="content-section alt-bg"><div class="section-inner">';
       h += '<div class="section-num">' + secNum() + '</div>';
       h += '<h2 class="section-title">Home Care Protocol</h2>';
       h += '<div class="homecare-grid">';
       if (amSec) {
-        h += '<div class="routine-col"><div class="routine-header">';
-        h += '<span class="rh-dot am-dot"></span>Morning Routine</div>';
-        h += routineItems(amSec) + '</div>';
+        h += '<div class="routine-col"><div class="routine-header"><span class="rh-dot am-dot"></span>Morning Routine</div>';
+        h += buildRoutineHTML(amSec) + '</div>';
       }
       if (pmSec) {
-        h += '<div class="routine-col"><div class="routine-header">';
-        h += '<span class="rh-dot pm-dot"></span>Evening Routine</div>';
-        h += routineItems(pmSec) + '</div>';
+        h += '<div class="routine-col"><div class="routine-header"><span class="rh-dot pm-dot"></span>Evening Routine</div>';
+        h += buildRoutineHTML(pmSec) + '</div>';
       }
       h += '</div></div></section>';
     }
 
-    /* Extra sections (Biologics, Post-Procedure, Membership, etc.) */
+    /* Extra sections */
     if (extraHtml) {
       h += '<section class="content-section"><div class="section-inner">';
       h += '<div class="section-num">' + secNum() + '</div>';
@@ -1381,45 +1500,14 @@
       h += '</div></section>';
     }
 
-    /* Investment Summary */
-    const allPricedSecs = sections.filter(s => !['Post-Procedure Recovery'].includes(s.name));
-    let hasPrice = false;
-    let summaryHtml = '';
-    let summarySubtotal = 0;
-    allPricedSecs.forEach(sec => {
-      (sec.items || []).filter(i => i.checked !== false && (i.price || 0) > 0).forEach(item => {
-        const lineTotal = (item.price || 0) * (item.qty || 1);
-        summarySubtotal += lineTotal;
-        hasPrice = true;
-        summaryHtml += '<div class="inv-row">';
-        summaryHtml += '<span class="inv-name">' + e(item.name) + (item.qty > 1 ? ' &times; ' + item.qty : '') + '</span>';
-        summaryHtml += '<span class="inv-amount">' + fmtCAD(lineTotal) + '</span>';
-        summaryHtml += '</div>';
-      });
-    });
+    /* Live investment summary — populated by calc() in JS */
+    h += '<section class="content-section alt-bg"><div class="section-inner">';
+    h += '<div class="section-num">' + secNum() + '</div>';
+    h += '<h2 class="section-title">Investment Summary</h2>';
+    h += '<div class="inv-table" id="inv-live"></div>';
+    h += '</div></section>';
 
-    if (hasPrice) {
-      const disc = plan.discount || {};
-      const discOff = disc.type === 'pct'
-        ? summarySubtotal * ((disc.value || 0) / 100)
-        : (disc.value || 0);
-      const grand = Math.max(0, summarySubtotal - discOff);
-
-      summaryHtml += '<div class="inv-subtotal"><span>Subtotal</span><span>' + fmtCAD(summarySubtotal) + '</span></div>';
-      if (discOff > 0) {
-        const discLabel = disc.type === 'pct' ? (disc.value + '% discount') : 'Discount';
-        summaryHtml += '<div class="inv-disc"><span>' + e(discLabel) + '</span><span>−' + fmtCAD(discOff) + '</span></div>';
-      }
-      summaryHtml += '<div class="inv-total"><span>Investment Total</span><span>' + fmtCAD(grand) + '</span></div>';
-
-      h += '<section class="content-section alt-bg"><div class="section-inner">';
-      h += '<div class="section-num">' + secNum() + '</div>';
-      h += '<h2 class="section-title">Investment Summary</h2>';
-      h += '<div class="inv-table">' + summaryHtml + '</div>';
-      h += '</div></section>';
-    }
-
-    /* Physician Notes */
+    /* Notes */
     if (notes) {
       h += '<section class="notes-section"><div class="section-inner">';
       h += '<div class="section-tag">Physician Notes</div>';
@@ -1443,71 +1531,220 @@
     h += '<button class="admin-edit-btn" onclick="showAdmGate()">&#9998; Edit</button>';
     h += '</div></footer>';
 
-    h += '</div>\n';
+    /* Sticky price bar */
+    h += '<div class="sticky-bar">';
+    h += '<div class="sb-left"><div class="sb-label">Your Investment</div><div class="sb-note">Uncheck items to customize</div></div>';
+    h += '<div class="sb-total" id="sb-total">…</div>';
+    h += '</div>';
 
-    const adminScript =
+    h += '</div>\n'; // end #main
+
+    /* ── Gate script ── */
+    const gateScript =
       '(function(){' +
-      'var APW="2896Laser";' +
-      'var ESEL=[".hero-name",".hero-concern",".tx-name",".tx-meta",".sc-date",".product-name",".product-detail",".ei-name",".ei-detail",".notes-body",".inv-name",".inv-amount",".inv-total span",".inv-subtotal span",".inv-disc span"].join(",");' +
+      'var PW="' + password + '";' +
+      'function chk(){' +
+      'var v=document.getElementById("gi").value.trim();' +
+      'if(v===PW){sessionStorage.setItem("ta-u","1");' +
+      'document.getElementById("gate").style.display="none";' +
+      'document.getElementById("main").removeAttribute("hidden");}' +
+      'else{document.getElementById("ge").textContent="Incorrect — please try again.";}' +
+      '}' +
+      'document.getElementById("gi").addEventListener("keydown",function(ev){if(ev.key==="Enter")chk();});' +
+      'document.getElementById("gb").addEventListener("click",chk);' +
+      'if(sessionStorage.getItem("ta-u")==="1"){' +
+      'document.getElementById("gate").style.display="none";' +
+      'document.getElementById("main").removeAttribute("hidden");}' +
+      '})();';
 
+    /* ── Interaction + admin script ── */
+    const planJson = JSON.stringify(plan).replace(/<\/script>/gi, '<\\/script>');
+    const catJson  = JSON.stringify(TX_CAT_DATA).replace(/<\/script>/gi, '<\\/script>');
+
+    const interactScript =
+      '(function(){' +
+      'var ORIG=' + planJson + ';' +
+      'var TX_CAT=' + catJson + ';' +
+      'var DISC={type:"' + discType + '",value:' + discVal + '};' +
+      'var APW="2896Laser";' +
+
+      /* fmtCAD */
+      'function fmtC(n){return "$"+Math.max(0,n).toLocaleString("en-CA",{minimumFractionDigits:0,maximumFractionDigits:0});}' +
+
+      /* calc — patient-facing live pricing */
+      'window.calc=function(){' +
+      '  var txS=0,scS=0;' +
+      '  document.querySelectorAll(".tx-group").forEach(function(g){' +
+      '    var cb=g.querySelector(".tx-cb");' +
+      '    var on=cb&&cb.checked;' +
+      '    var p=parseFloat(g.dataset.price)||0;' +
+      '    var sd=g.querySelector(".sess-disp");' +
+      '    var q=sd?parseInt(sd.textContent)||1:1;' +
+      '    var line=on?p*q:0;txS+=line;' +
+      '    var lp=g.querySelector(".tx-line-price");' +
+      '    if(lp)lp.textContent=on?(p===0?"Complimentary":fmtC(line)):"—";' +
+      '    g.classList.toggle("tx-unchecked",!on);' +
+      '  });' +
+      '  document.querySelectorAll(".prod-item").forEach(function(p){' +
+      '    var cb=p.querySelector(".prod-cb");' +
+      '    var on=cb&&cb.checked;' +
+      '    var pr=parseFloat(p.dataset.price)||0;' +
+      '    if(on)scS+=pr;' +
+      '    p.classList.toggle("prod-unchecked",!on);' +
+      '    var ot=p.querySelector(".own-tag");if(ot)ot.hidden=!!on;' +
+      '  });' +
+      '  var doff=DISC.type==="pct"?(txS+scS)*DISC.value/100:DISC.value;' +
+      '  var grand=Math.max(0,txS+scS-doff);' +
+      '  var sb=document.getElementById("sb-total");if(sb)sb.textContent=fmtC(grand);' +
+      '  rebInv(txS,scS,doff,grand);' +
+      '};' +
+
+      /* rebuildInv */
+      'function rebInv(txS,scS,doff,grand){' +
+      '  var el=document.getElementById("inv-live");if(!el)return;' +
+      '  var h="";' +
+      '  document.querySelectorAll(".tx-group").forEach(function(g){' +
+      '    var cb=g.querySelector(".tx-cb");if(!cb||!cb.checked)return;' +
+      '    var p=parseFloat(g.dataset.price)||0;if(p===0)return;' +
+      '    var nm=g.querySelector(".tx-name");' +
+      '    var sd=g.querySelector(".sess-disp");var q=sd?parseInt(sd.textContent)||1:1;' +
+      '    h+=\'<div class="inv-row"><span class="inv-name">\'+(nm?nm.textContent:"")+(q>1?\' \xd7 \'+q+\' sessions\':\'\')+"<\\/span>"' +
+      '      +\'<span class="inv-amount">\'+fmtC(p*q)+"<\\/span><\\/div>";' +
+      '  });' +
+      '  if(txS>0)h+=\'<div class="inv-subtotal"><span>Treatments Subtotal<\\/span><span>\'+fmtC(txS)+\'<\\/span><\\/div>\';' +
+      '  document.querySelectorAll(".prod-item").forEach(function(p){' +
+      '    var cb=p.querySelector(".prod-cb");if(!cb||!cb.checked)return;' +
+      '    var pr=parseFloat(p.dataset.price)||0;if(pr===0)return;' +
+      '    var nm=p.querySelector(".product-name");' +
+      '    h+=\'<div class="inv-row"><span class="inv-name">\'+(nm?nm.textContent:"")+"<\\/span>"' +
+      '      +\'<span class="inv-amount">\'+fmtC(pr)+"<\\/span><\\/div>";' +
+      '  });' +
+      '  if(scS>0)h+=\'<div class="inv-subtotal"><span>Home Care Subtotal<\\/span><span>\'+fmtC(scS)+\'<\\/span><\\/div>\';' +
+      '  if(doff>0)h+=\'<div class="inv-disc"><span>Discount<\\/span><span>&minus;\'+fmtC(doff)+\'<\\/span><\\/div>\';' +
+      '  h+=\'<div class="inv-total"><span>Investment Total<\\/span><span>\'+fmtC(grand)+\'<\\/span><\\/div>\';' +
+      '  el.innerHTML=h;' +
+      '}' +
+
+      /* Patient-facing remove/update (only active in admin mode) */
+      'window.updateSess=function(inp){' +
+      '  var g=inp.closest(".tx-group");' +
+      '  var sd=g&&g.querySelector(".sess-disp");if(sd)sd.textContent=inp.value;' +
+      '  calc();' +
+      '};' +
+      'window.updatePrice=function(inp){' +
+      '  var g=inp.closest(".tx-group");if(g)g.dataset.price=inp.value;calc();' +
+      '};' +
+      'window.rmTx=function(btn){btn.closest(".tx-group").remove();calc();};' +
+      'window.rmProd=function(btn){btn.closest(".prod-item").remove();calc();};' +
+
+      /* Revert — reload page (ORIG is in page source so reload restores it) */
+      'window.revertAll=function(){' +
+      '  if(confirm("Revert to the original recommended plan?"))location.reload();' +
+      '};' +
+
+      /* Add-treatment overlay */
+      'window.showAddTx=function(){' +
+      '  if(document.getElementById("add-tx-ov"))return;' +
+      '  var h=\'<div id="add-tx-ov" class="add-tx-overlay" onclick="if(event.target===this)closeAddTx()">\'' +
+      '    +\'<div class="add-tx-box"><div class="add-tx-head"><span>Add Treatment<\\/span>\'' +
+      '    +\'<button onclick="closeAddTx()">&#215;<\\/button><\\/div><div class="add-tx-list">\';' +
+      '  TX_CAT.forEach(function(t,i){' +
+      '    h+=\'<div class="add-tx-item" onclick="doAddTx(\'+i+\')">\'' +
+      '      +\'<div class="add-tx-name">\'+t.name+\'<\\/div>\'' +
+      '      +\'<div class="add-tx-detail">\'+t.detail+(t.price>0?\' \xb7 $\'+t.price+"/session":"")+\'<\\/div><\\/div>\';' +
+      '  });' +
+      '  h+=\'<\\/div><\\/div><\\/div>\';' +
+      '  document.body.insertAdjacentHTML("beforeend",h);' +
+      '};' +
+      'window.closeAddTx=function(){var o=document.getElementById("add-tx-ov");if(o)o.remove();};' +
+      'window.doAddTx=function(idx){' +
+      '  var t=TX_CAT[idx];if(!t)return;closeAddTx();' +
+      '  var wk=t.wk===0?"One-time treatment":t.wk===1?"Weekly":"Every "+t.wk+" weeks";' +
+      '  var lt=t.price>0?fmtC(t.price*t.sess):"Complimentary";' +
+      '  var g=document.createElement("div");g.className="tx-group";g.dataset.price=t.price;' +
+      '  g.innerHTML=' +
+      '    \'<div class="tx-card"><div class="tx-card-head">\'' +
+      '    +\'<label class="tx-cb-wrap"><input type="checkbox" class="tx-cb" checked onchange="calc()"><span class="tx-cb-box"><\\/span><\\/label>\'' +
+      '    +\'<div class="tx-info"><div class="tx-name">\'+t.name+\'<\\/div>\'' +
+      '    +\'<div class="tx-sessions-badge"><span class="sess-disp">\'+t.sess+\'<\\/span><span class="sess-unit"> sessions recommended<\\/span>\'' +
+      '    +\'<input class="sess-inp" type="number" value="\'+t.sess+\'" min="1" max="20" onchange="updateSess(this)"><\\/div><\\/div>\'' +
+      '    +\'<div class="tx-line-price">\'+lt+\'<\\/div>\'' +
+      '    +\'<button class="rm-tx-btn" onclick="rmTx(this)" title="Remove">&#215;<\\/button><\\/div>\'' +
+      '    +\'<div class="tx-card-body">\'' +
+      '    +\'<div class="tx-detail-row"><span class="tx-detail-label">Frequency<\\/span><span class="tx-detail-val">\'+wk+\'<\\/span><\\/div>\'' +
+      '    +\'<div class="tx-detail-row tx-rationale"><span class="tx-detail-label">Rationale<\\/span><span class="tx-detail-val">\'+t.detail+\'<\\/span><\\/div>\'' +
+      '    +\'<div class="tx-price-row"><span class="tx-detail-label">Price \/ session<\\/span>\'' +
+      '    +\'<div class="tx-price-edit">$<input class="price-inp" type="number" value="\'+t.price+\'" min="0" onchange="updatePrice(this)"><\\/div><\\/div>\'' +
+      '    +\'<\\/div><\\/div>\';' +
+      '  var con=document.querySelector(".tx-list-container");if(con)con.appendChild(g);' +
+      '  if(document.body.classList.contains("edit-mode")){' +
+      '    var rmb=g.querySelector(".rm-tx-btn");if(rmb)rmb.style.display="flex";' +
+      '    var si=g.querySelector(".sess-inp"),sd=g.querySelector(".sess-disp"),su=g.querySelector(".sess-unit");' +
+      '    if(si)si.style.display="inline";if(sd)sd.style.display="none";if(su)su.style.display="none";' +
+      '    var pr=g.querySelector(".tx-price-row");if(pr)pr.style.removeProperty("display");' +
+      '  }' +
+      '  calc();' +
+      '};' +
+
+      /* Admin gate */
       'window.showAdmGate=function(){' +
-      'if(document.getElementById("adm-overlay"))return;' +
-      'var o=document.createElement("div");o.className="adm-overlay";o.id="adm-overlay";' +
-      'o.innerHTML="<div class=\\"adm-box\\"><div class=\\"adm-title\\">Admin Access</div>' +
+      '  if(document.getElementById("adm-overlay"))return;' +
+      '  var o=document.createElement("div");o.className="adm-overlay";o.id="adm-overlay";' +
+      '  o.innerHTML="<div class=\\"adm-box\\"><div class=\\"adm-title\\">Admin Access<\\/div>' +
       '<input id=\\"adm-pw\\" class=\\"adm-input\\" type=\\"password\\" placeholder=\\"Password\\">' +
       '<div class=\\"adm-actions\\"><button class=\\"adm-cancel\\">Cancel<\\/button><button class=\\"adm-confirm\\">Enter<\\/button><\\/div>' +
       '<p id=\\"adm-err\\" class=\\"adm-err\\"><\\/p><\\/div>";' +
-      'document.body.appendChild(o);' +
-      'var inp=document.getElementById("adm-pw");inp.focus();' +
-      'function chk(){if(inp.value===APW){o.remove();enableEdit();}else{document.getElementById("adm-err").textContent="Incorrect password.";}}' +
-      'inp.addEventListener("keydown",function(e){if(e.key==="Enter")chk();});' +
-      'o.querySelector(".adm-confirm").addEventListener("click",chk);' +
-      'o.querySelector(".adm-cancel").addEventListener("click",function(){o.remove();});' +
+      '  document.body.appendChild(o);' +
+      '  var inp=document.getElementById("adm-pw");inp.focus();' +
+      '  function chk(){if(inp.value===APW){o.remove();enableEdit();}else{document.getElementById("adm-err").textContent="Incorrect password.";}}' +
+      '  inp.addEventListener("keydown",function(ev){if(ev.key==="Enter")chk();});' +
+      '  o.querySelector(".adm-confirm").addEventListener("click",chk);' +
+      '  o.querySelector(".adm-cancel").addEventListener("click",function(){o.remove();});' +
       '};' +
 
+      /* enableEdit */
       'function enableEdit(){' +
-      'var bar=document.createElement("div");bar.className="edit-bar";bar.id="edit-bar";' +
-      'bar.innerHTML="<span class=\\"edit-bar-label\\">&#9998; Edit Mode<\\/span>' +
-      '<span class=\\"edit-bar-hint\\">Click any text to edit<\\/span>' +
-      '<button class=\\"edit-bar-btn eb-dl\\" onclick=\\"dlEdited()\\">&#8595; Download<\\/button>' +
-      '<button class=\\"edit-bar-btn eb-exit\\" onclick=\\"exitEdit()\\">Exit<\\/button>";' +
-      'document.body.insertBefore(bar,document.body.firstChild);' +
-      'document.body.classList.add("edit-mode");' +
-      'document.querySelectorAll(ESEL).forEach(function(el){el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");});' +
-      'document.querySelectorAll(".sc-badge").forEach(function(b){' +
-      'b.style.cursor="pointer";b.title="Click to toggle";' +
-      'b.addEventListener("click",function(){' +
-      'var card=b.closest(".session-card");' +
-      'if(b.textContent==="UPCOMING"){b.textContent="COMPLETED";b.className="sc-badge sb-done";card&&card.classList.add("sc-done");}' +
-      'else{b.textContent="UPCOMING";b.className="sc-badge sb-next";card&&card.classList.remove("sc-done");}' +
-      '});' +
-      '});' +
-      '}' +
+      '  var bar=document.createElement("div");bar.className="edit-bar";bar.id="edit-bar";' +
+      '  bar.innerHTML=' +
+      '    \'<span class="edit-bar-label">&#9998; Edit Mode<\\/span>\'' +
+      '    +\'<button class="edit-bar-btn eb-revert" onclick="revertAll()">&#8635; Revert<\\/button>\'' +
+      '    +\'<button class="edit-bar-btn eb-add" onclick="showAddTx()">&#43; Add Treatment<\\/button>\'' +
+      '    +\'<span class="edit-bar-hint">Click text to edit &nbsp;&middot;&nbsp; Toggle sessions &amp; prices below<\\/span>\'' +
+      '    +\'<button class="edit-bar-btn eb-dl" onclick="dlEdited()">&#8595; Download<\\/button>\'' +
+      '    +\'<button class="edit-bar-btn eb-exit" onclick="exitEdit()">Exit<\\/button>\';' +
+      '  document.body.insertBefore(bar,document.body.firstChild);' +
+      '  document.body.classList.add("edit-mode");' +
+      '  var ESEL=[".hero-name",".hero-concern",".tx-name",".tx-detail-val",".product-name",".product-detail",".ei-name",".ei-detail",".notes-body"].join(",");' +
+      '  document.querySelectorAll(ESEL).forEach(function(el){el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");});' +
+      '};' +
 
+      /* exitEdit */
       'window.exitEdit=function(){' +
-      'document.querySelectorAll("[contenteditable]").forEach(function(el){el.removeAttribute("contenteditable");});' +
-      'document.body.classList.remove("edit-mode");' +
-      'var bar=document.getElementById("edit-bar");if(bar)bar.remove();' +
-      'document.querySelectorAll(".sc-badge").forEach(function(b){b.style.cursor="";b.title="";});' +
+      '  document.querySelectorAll("[contenteditable]").forEach(function(el){el.removeAttribute("contenteditable");});' +
+      '  document.body.classList.remove("edit-mode");' +
+      '  var bar=document.getElementById("edit-bar");if(bar)bar.remove();' +
       '};' +
 
+      /* dlEdited */
       'window.dlEdited=function(){' +
-      'var bar=document.getElementById("edit-bar");if(bar)bar.style.display="none";' +
-      'document.body.classList.remove("edit-mode");' +
-      'var html="<!DOCTYPE html>"+document.documentElement.outerHTML;' +
-      'if(bar)bar.style.display="";' +
-      'document.body.classList.add("edit-mode");' +
-      'var blob=new Blob([html],{type:"text/html"});' +
-      'var url=URL.createObjectURL(blob);' +
-      'var a=document.createElement("a");a.href=url;' +
-      'a.download=document.title.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".html";' +
-      'document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);' +
+      '  var bar=document.getElementById("edit-bar");if(bar)bar.style.display="none";' +
+      '  document.body.classList.remove("edit-mode");' +
+      '  var html="<!DOCTYPE html>"+document.documentElement.outerHTML;' +
+      '  if(bar)bar.style.display="";' +
+      '  document.body.classList.add("edit-mode");' +
+      '  var blob=new Blob([html],{type:"text/html"});' +
+      '  var url=URL.createObjectURL(blob);' +
+      '  var a=document.createElement("a");a.href=url;' +
+      '  a.download=document.title.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".html";' +
+      '  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);' +
       '};' +
+
+      /* Run calc on load */
+      'calc();' +
       '})();';
 
-    h += '<script>' + gateScript + adminScript + '<\/script>\n';
+    h += '<script>' + gateScript + interactScript + '<\/script>\n';
     h += '</body>\n</html>';
-
     return h;
   }
 

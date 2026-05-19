@@ -1258,8 +1258,10 @@
     /* edit bar extra buttons */
     '.eb-revert{background:var(--card2);color:var(--m);border:1px solid var(--b2)}',
     '.eb-add{background:rgba(196,149,74,.15);color:var(--g);border:1px solid rgba(196,149,74,.3)}',
+    '.eb-save{background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;border:none}',
     '.eb-add:hover{background:rgba(196,149,74,.28)!important;opacity:1!important}',
     '.eb-revert:hover{color:var(--t)!important;opacity:1!important}',
+    '.eb-save:hover{opacity:.88!important}',
   ].join('');
 
   /* ── Build the complete patient HTML page ── */
@@ -1420,6 +1422,10 @@
     const discType = disc.type  || 'pct';
     const discVal  = disc.value || 0;
 
+    /* Filename + patient name embedded in page for save-back */
+    const pageFilename   = (slugify(firstName, lastName) || 'patient') + '.html';
+    const pagePatientName = fullName || 'Patient';
+
     /* ── Build HTML ── */
     let h = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
     h += '<meta charset="UTF-8">\n';
@@ -1567,6 +1573,8 @@
       'var TX_CAT=' + catJson + ';' +
       'var DISC={type:"' + discType + '",value:' + discVal + '};' +
       'var APW="2896Laser";' +
+      'var FNAME="' + pageFilename.replace(/"/g, '') + '";' +
+      'var PNAME="' + pagePatientName.replace(/"/g, '') + '";' +
 
       /* fmtCAD */
       'function fmtC(n){return "$"+Math.max(0,n).toLocaleString("en-CA",{minimumFractionDigits:0,maximumFractionDigits:0});}' +
@@ -1702,6 +1710,29 @@
       '  o.querySelector(".adm-cancel").addEventListener("click",function(){o.remove();});' +
       '};' +
 
+      /* saveEdited — push current DOM back to GitHub via Flask */
+      'window.saveEdited=function(){' +
+      '  var btn=document.getElementById("eb-save");' +
+      '  if(btn){btn.textContent="Saving…";btn.disabled=true;}' +
+      '  var bar=document.getElementById("edit-bar");if(bar)bar.style.display="none";' +
+      '  document.body.classList.remove("edit-mode");' +
+      '  var html="<!DOCTYPE html>"+document.documentElement.outerHTML;' +
+      '  if(bar)bar.style.display="";' +
+      '  document.body.classList.add("edit-mode");' +
+      '  fetch("/publish-page",{' +
+      '    method:"POST",' +
+      '    headers:{"Content-Type":"application/json"},' +
+      '    body:JSON.stringify({html:html,filename:FNAME,patientName:PNAME})' +
+      '  }).then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})' +
+      '  .then(function(res){' +
+      '    if(!res.ok)throw new Error(res.d.error||"Save failed");' +
+      '    if(btn){btn.textContent="✓ Saved";setTimeout(function(){btn.textContent="↑ Save";btn.disabled=false;},2200);}' +
+      '  }).catch(function(err){' +
+      '    alert("Save failed: "+err.message);' +
+      '    if(btn){btn.textContent="↑ Save";btn.disabled=false;}' +
+      '  });' +
+      '};' +
+
       /* enableEdit */
       'function enableEdit(){' +
       '  var bar=document.createElement("div");bar.className="edit-bar";bar.id="edit-bar";' +
@@ -1710,6 +1741,7 @@
       '    +\'<button class="edit-bar-btn eb-revert" onclick="revertAll()">&#8635; Revert<\\/button>\'' +
       '    +\'<button class="edit-bar-btn eb-add" onclick="showAddTx()">&#43; Add Treatment<\\/button>\'' +
       '    +\'<span class="edit-bar-hint">Click text to edit &nbsp;&middot;&nbsp; Toggle sessions &amp; prices below<\\/span>\'' +
+      '    +\'<button id="eb-save" class="edit-bar-btn eb-save" onclick="saveEdited()">&#8593; Save<\\/button>\'' +
       '    +\'<button class="edit-bar-btn eb-dl" onclick="dlEdited()">&#8595; Download<\\/button>\'' +
       '    +\'<button class="edit-bar-btn eb-exit" onclick="exitEdit()">Exit<\\/button>\';' +
       '  document.body.insertBefore(bar,document.body.firstChild);' +

@@ -71,12 +71,17 @@ TREATMENT PLAN FORMAT:
 After every recommendation, output a structured plan using this exact format:
 
 <plan>
-{"title":"Plan title","sections":[{"name":"Section name","items":[{"name":"Exact product or treatment name","detail":"Frequency, rationale, or timing","checked":true}]}]}
+{"title":"Plan title","patient":{"firstName":"","lastName":"","dob":""},"sections":[{"name":"Section name","items":[{"name":"Exact product or treatment name","detail":"Frequency, rationale, or timing","checked":true}]}]}
 </plan>
 
 Use these section names: "In-Clinic Treatments", "Biologics & Add-Ons", "Morning Routine", "Evening Routine", "Post-Procedure Recovery", "Membership".
 Set checked:true for core items, checked:false for optional add-ons.
-The plan tag must contain only valid JSON — no markdown inside it."""
+The plan tag must contain only valid JSON — no markdown inside it.
+
+PATIENT DETAILS IN PLAN:
+- If the staff mentions the patient's first name, last name, or date of birth at any point in the conversation, include them in the plan JSON under the "patient" object.
+- Date of birth format: YYYY-MM-DD. If only partial info is given (e.g. first name only), include what you have and leave the rest as empty strings.
+- If no patient details are mentioned, leave all patient fields as empty strings."""
 
 
 def _build_system_blocks(knowledge: str) -> list[dict]:

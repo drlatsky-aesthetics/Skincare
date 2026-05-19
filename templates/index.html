@@ -1842,12 +1842,20 @@
 
     document.body.appendChild(overlay);
 
+    /* Pre-fill patient details if the agent captured them */
+    const pt = plan.patient || {};
+    if (pt.firstName) document.getElementById('m-fn').value = pt.firstName;
+    if (pt.lastName)  document.getElementById('m-ln').value = pt.lastName;
+    if (pt.dob)       document.getElementById('m-dob').value = pt.dob;
+
     document.getElementById('mcls').addEventListener('click', closeModal);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
     document.getElementById('m-dl').addEventListener('click', downloadPatientPage);
     document.getElementById('m-pub').addEventListener('click', publishPatientPage);
 
-    setTimeout(() => document.getElementById('m-fn')?.focus(), 60);
+    /* Focus first empty name field */
+    const focusTarget = !pt.firstName ? 'm-fn' : !pt.lastName ? 'm-ln' : !pt.dob ? 'm-dob' : 'm-sd';
+    setTimeout(() => document.getElementById(focusTarget)?.focus(), 60);
   }
 
   function closeModal() {

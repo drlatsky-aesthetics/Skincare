@@ -214,13 +214,16 @@ def nouvaderm(styles, cw):
     ))
 
     s += section("Skincare Preparation", [
-        "Begin the <b>Noon Pre-Procedure Program (Gear Up Kit)</b>"
+        "The <b>Noon Pre-Procedure Program (Gear Up Kit)</b>"
         + alt("or your own gentle, fragrance-free prep routine")
-        + " 10–14 days prior to your appointment.",
+        + " is <i>recommended</i> 10–14 days prior — not required, but optimises results.",
+        "The <b>AMP D|TOX Pre-Treatment Skincare Serum</b>"
+        + alt("or your own gentle pre-treatment prep serum")
+        + " may also be recommended by your provider in the days leading up to treatment — optional.",
         "Discontinue <b>retinoids</b> (tretinoin, retinol) and <b>AHA/BHA exfoliants</b> 7 days before treatment.",
         "Discontinue <b>vitamin C serums</b> 3–5 days before treatment.",
         "Do not use any <b>self-tanner or sunless bronzer</b> for 2 weeks prior.",
-        "Arrive with <b>clean, makeup-free skin</b> — no creams, serums, or SPF.",
+        "<b>Arrive with clean, makeup-free skin</b> — no creams, serums, SPF, or any product on the face.",
     ], styles)
 
     s += section("Sun & Lifestyle", [
@@ -385,12 +388,12 @@ def pladuo(styles, cw):
     ))
 
     s += section("Skincare Preparation", [
-        "Your provider will apply <b>AMP D|TOX Pre-Treatment Skincare Serum</b>"
+        "The <b>AMP D|TOX Pre-Treatment Skincare Serum</b>"
         + alt("or a gentle fragrance-free pre-treatment prep serum")
-        + " at the start of your appointment — no action required from you.",
+        + " <i>may be recommended</i> by your provider before your appointment — not required but beneficial.",
         "Discontinue <b>retinoids and AHA/BHA exfoliants</b> 3–5 days before your appointment.",
-        "Arrive with <b>clean, makeup-free skin</b> — no serums, oils, or moisturisers on the treatment area.",
-        "Avoid using any harsh or active skincare the day before treatment.",
+        "<b>Arrive with clean, makeup-free skin</b> — no serums, oils, moisturisers, or SPF on the face.",
+        "Avoid any harsh or active skincare the day before treatment.",
     ], styles)
 
     s += section("Sun & Lifestyle", [
@@ -398,6 +401,14 @@ def pladuo(styles, cw):
         "Do not use <b>self-tanner</b> for 2 weeks prior.",
         "If you have a history of <b>cold sores (HSV)</b>, inform your provider — antiviral prophylaxis may be prescribed.",
         "Avoid <b>isotretinoin (Accutane)</b> within 6 months of treatment.",
+    ], styles)
+
+    s += section("Important — Hair on the Treatment Area", [
+        "<b>Vellus hair (peach fuzz) must be removed</b> from the treatment area before plasma is applied. "
+        "Plasma energy can singe fine facial hair, which may cause uneven treatment and unwanted odour.",
+        "Your provider will assess and address this at your appointment. If you have significant vellus hair, "
+        "a gentle dermaplaning or shave prep will be performed in-clinic prior to treatment.",
+        "Do <b>not</b> wax, thread, or use depilatory creams on the treatment area within 5 days before your session.",
     ], styles)
 
     s += section("Acne & Rosacea Patients — Additional Notes", [
@@ -409,7 +420,7 @@ def pladuo(styles, cw):
     ], styles)
 
     s += section("Day of Treatment", [
-        "Arrive with completely clean skin — no SPF, makeup, or skincare products.",
+        "<b>Arrive with clean, makeup-free skin</b> — no SPF, serums, oils, or any product on the face.",
         "Topical anaesthetic is not routinely required; inform your provider if you have low pain tolerance.",
         "Treatment sessions are typically 30–45 minutes.",
     ], styles)

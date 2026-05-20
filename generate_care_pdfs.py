@@ -404,10 +404,11 @@ def pladuo(styles, cw):
     ], styles)
 
     s += section("Important — Hair on the Treatment Area", [
-        "<b>Vellus hair (peach fuzz) must be removed</b> from the treatment area before plasma is applied. "
-        "Plasma energy can singe fine facial hair, which may cause uneven treatment and unwanted odour.",
-        "Your provider will assess and address this at your appointment. If you have significant vellus hair, "
-        "a gentle dermaplaning or shave prep will be performed in-clinic prior to treatment.",
+        "It is <i>recommended</i> that <b>vellus hair (peach fuzz) be removed</b> from the treatment area "
+        "before plasma is applied. Plasma energy can singe fine facial hair, which may cause uneven "
+        "treatment and unwanted odour.",
+        "Your provider will assess this at your appointment and can arrange gentle dermaplaning or shave "
+        "prep in-clinic if needed.",
         "Do <b>not</b> wax, thread, or use depilatory creams on the treatment area within 5 days before your session.",
     ], styles)
 

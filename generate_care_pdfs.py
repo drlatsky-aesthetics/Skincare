@@ -29,24 +29,24 @@ def make_styles():
     return {
         "body": ParagraphStyle(
             "body", fontName="Helvetica", fontSize=9,
-            textColor=CHARCOAL, leading=15, spaceAfter=6,
+            textColor=CHARCOAL, leading=11, spaceAfter=2,
         ),
         "bullet": ParagraphStyle(
             "bullet", fontName="Helvetica", fontSize=9,
-            textColor=CHARCOAL, leading=15, spaceAfter=5,
+            textColor=CHARCOAL, leading=11, spaceAfter=2,
             leftIndent=14, firstLineIndent=-14,
         ),
         "section_label": ParagraphStyle(
             "section_label", fontName="Helvetica-Bold", fontSize=7,
-            textColor=GOLD, letterSpacing=2, spaceBefore=16, spaceAfter=8,
+            textColor=GOLD, letterSpacing=2, spaceBefore=8, spaceAfter=4,
         ),
         "day_label": ParagraphStyle(
             "day_label", fontName="Helvetica-Bold", fontSize=9,
-            textColor=CHARCOAL, leading=14, spaceAfter=4, spaceBefore=10,
+            textColor=CHARCOAL, leading=11, spaceAfter=2, spaceBefore=6,
         ),
         "note": ParagraphStyle(
             "note", fontName="Helvetica-Oblique", fontSize=8,
-            textColor=TEXT_MUTED, leading=13, spaceAfter=4,
+            textColor=TEXT_MUTED, leading=10, spaceAfter=2,
         ),
     }
 
@@ -172,7 +172,7 @@ def virtuerf(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "VirtueRF delivers radiofrequency energy through microneedles to remodel collagen and tighten "
         "skin on the face, neck, and body. Proper preparation protects the skin barrier and maximises results.",
@@ -210,12 +210,12 @@ def virtuerf(styles, cw):
         "Recent laser or RF treatment — minimum 6-week gap required.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Your skin has been micro-channelled and needs barrier-first recovery. "
         "No actives until the skin is fully healed.",
@@ -280,9 +280,9 @@ def virtuerf(styles, cw):
         "Call us immediately if you develop blistering, significant swelling, or signs of infection.",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "VirtueRF sessions are spaced <b>4–6 weeks</b> apart. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -298,7 +298,7 @@ def nouvaderm(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Please follow these instructions carefully before your NouvaDerm treatment to ensure "
         "the best possible results and minimise any risk of adverse reactions.",
@@ -341,12 +341,12 @@ def nouvaderm(styles, cw):
         "Pacemaker or implanted electronic devices.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Your skin is in an active healing phase. Following these instructions precisely protects "
         "your investment and significantly improves your final result.",
@@ -394,9 +394,9 @@ def nouvaderm(styles, cw):
         ]),
     ])
 
-    s.append(Spacer(1, 6))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw, thickness=0.8))
-    s.append(Spacer(1, 10))
+    s.append(Spacer(1, 5))
 
     s.append(Paragraph("Ablative Mode", styles["section_label"]))
     s += section("", [], styles, day_groups=[
@@ -438,9 +438,9 @@ def nouvaderm(styles, cw):
         "Call us immediately if you develop blistering, significant swelling, or signs of infection.",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "NOUVAGlo sessions: <b>4 weeks apart</b>. Ablative timing as directed by your physician. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -456,7 +456,7 @@ def pladuo(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "PlaDuo Pro uses patented SpinShot Technology to deliver both nitrogen plasma and argon plasma. "
         "These simple steps maximise efficacy and keep your skin safe.",
@@ -502,12 +502,12 @@ def pladuo(styles, cw):
         "Treatment sessions are typically 30–45 minutes.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "PlaDuo Pro treatments are low-downtime, but your skin benefits from careful post-care "
         "to maximise results and protect the treated barrier.",
@@ -572,9 +572,9 @@ def pladuo(styles, cw):
         + " applied at each session for enhanced regeneration.",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Your next session will be scheduled per your treatment protocol. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -590,7 +590,7 @@ def quanta(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Quanta UltraLight combines KTP, Nd:YAG, IPL, Plasma Frax, and Carbon Facial (NATURA PEEL) "
         "modalities. Instructions apply to all modes unless otherwise noted.",
@@ -627,12 +627,12 @@ def quanta(styles, cw):
         "Protective goggles are worn by both patient and provider throughout the session.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
 
     s.append(Paragraph("KTP / IPL / Nd:YAG Modes", styles["section_label"]))
     s += section("", [], styles, day_groups=[
@@ -662,9 +662,9 @@ def quanta(styles, cw):
         ]),
     ])
 
-    s.append(Spacer(1, 6))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw, thickness=0.8))
-    s.append(Spacer(1, 10))
+    s.append(Spacer(1, 5))
 
     s.append(Paragraph("Plasma Frax / Eyelid Mode", styles["section_label"]))
     s += section("", [], styles, day_groups=[
@@ -699,9 +699,9 @@ def quanta(styles, cw):
         "Call us immediately if you develop blistering, significant swelling, or signs of infection.",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Session spacing varies by mode — your provider will advise. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -717,7 +717,7 @@ def oxygeneo(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "OxyGeneo is a no-downtime 3-in-1 super facial combining OxyPod effervescence, "
         "ultrasound infusion, and optional TriPollar RF. Suitable for all skin types with minimal preparation.",
@@ -743,12 +743,12 @@ def oxygeneo(styles, cw):
         "All Fitzpatrick types including IV–VI.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "OxyGeneo requires minimal aftercare. Your skin may appear slightly flushed for 1–2 hours — "
         "this is normal and resolves quickly.",
@@ -781,9 +781,9 @@ def oxygeneo(styles, cw):
         ]),
     ])
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "OxyGeneo sessions are spaced <b>3–4 weeks apart</b> and can be combined with most other treatments. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -799,7 +799,7 @@ def led_triwave(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "LED TriWave phototherapy is a gentle, no-downtime treatment using red, near-infrared, "
         "and blue wavelengths to stimulate collagen, reduce inflammation, and target acne. "
@@ -830,12 +830,12 @@ def led_triwave(styles, cw):
         + " is an alternative pre-LED primer for hydration amplification.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "LED TriWave has no downtime. Your skin is primed for maximum product absorption immediately after treatment.",
         styles["body"]
@@ -866,9 +866,9 @@ def led_triwave(styles, cw):
         "($550/month for up to 4 sessions/month).",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "LED TriWave is safe, gentle, and compatible with all skin types and Fitzpatrick tones. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",
@@ -884,7 +884,7 @@ def dermatwist(styles, cw):
     s = []
 
     s.append(PhaseDivider(cw, "Pre-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "DermaTwist delivers Collagen Induction Therapy (CIT) through mechanical microneedling. "
         "It is used for acne scarring, fine lines, texture, stretch marks, and scalp/hair restoration.",
@@ -920,12 +920,12 @@ def dermatwist(styles, cw):
         "Blood clotting disorders or anticoagulant medications.",
     ], styles)
 
-    s.append(Spacer(1, 14))
+    s.append(Spacer(1, 7))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 18))
+    s.append(Spacer(1, 9))
 
     s.append(PhaseDivider(cw, "Post-Treatment Instructions"))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "Micro-channels remain open for several hours post-treatment — skin is highly receptive to "
         "applied biologics and serums during this window.",
@@ -997,9 +997,9 @@ def dermatwist(styles, cw):
         "Call us immediately if you develop significant swelling, unusual crusting, or signs of infection.",
     ], styles)
 
-    s.append(Spacer(1, 12))
+    s.append(Spacer(1, 3))
     s.append(GoldBar(cw))
-    s.append(Spacer(1, 8))
+    s.append(Spacer(1, 4))
     s.append(Paragraph(
         "DermaTwist sessions are spaced <b>4 weeks apart</b>. "
         "Contact us anytime at <b>aesthetics@treasuryhealth.ca</b>",

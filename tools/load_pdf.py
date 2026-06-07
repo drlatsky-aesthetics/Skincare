@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-KNOWLEDGE_DIR = Path(__file__).parent / "knowledge"
+KNOWLEDGE_DIR = Path(__file__).parent.parent / "knowledge"
 
 
 def extract_pdf(pdf_path: str) -> tuple[str, str]:

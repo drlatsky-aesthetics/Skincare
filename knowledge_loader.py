@@ -128,13 +128,15 @@ def _fetch_local_knowledge() -> str:
     if not LOCAL_DIR.exists():
         return ""
     chunks = []
-    for ext in ("*.md", "*.txt"):
-        for f in sorted(LOCAL_DIR.glob(ext)):
-            text = f.read_text(encoding="utf-8").strip()
-            if text:
-                stem = f.stem.replace("_", " ").title()
-                chunks.append(f"=== {stem} ===\n{text}")
-                print(f"  [knowledge] loaded locally: {f.name}")
+    # Recursively find all .md and .txt files so subdirectories work too
+    for f in sorted(LOCAL_DIR.rglob("*.md")) + sorted(LOCAL_DIR.rglob("*.txt")):
+        if f.name.startswith('.'):
+            continue
+        text = f.read_text(encoding="utf-8").strip()
+        if text:
+            stem = f.stem.replace("_", " ").title()
+            chunks.append(f"=== {stem} ===\n{text}")
+            print(f"  [knowledge] loaded locally: {f.relative_to(LOCAL_DIR)}")
     return "\n\n".join(chunks)
 
 

@@ -64,11 +64,18 @@ TREATMENT PLAN FORMAT:
 After every recommendation, output a structured plan using this exact format:
 
 <plan>
-{"title":"Plan title","sections":[{"name":"Section name","items":[{"name":"Exact product or treatment name","detail":"Frequency, rationale, or timing","checked":true}]}]}
+{"title":"Plan title","sections":[{"name":"Section name","items":[{"name":"Exact product or treatment name","detail":"Frequency, rationale, or timing","checked":true,"price":199}]}]}
 </plan>
 
 Use these section names: "In-Clinic Treatments", "Biologics & Add-Ons", "Morning Routine", "Evening Routine", "Post-Procedure Recovery", "Membership".
 Set checked:true for core items, checked:false for optional add-ons.
+
+PRICING:
+- For every item in "In-Clinic Treatments", "Biologics & Add-Ons", "Morning Routine", "Evening Routine", and "Membership", include a numeric "price" field in CAD using the exact figures from the knowledge base's treatments_pricing / brands / memberships data — per-session price for treatments, per-unit retail price for products, monthly fee for memberships.
+- If pricing for an item is a range (e.g. "$450-$650"), use the lower bound as the numeric price and put the full range in "detail".
+- If no price exists in the knowledge base for an item, omit the "price" field entirely — never invent a number.
+- Items in "Post-Procedure Recovery" do not need a price field unless that item is itself a purchasable add-on.
+
 The plan tag must contain only valid JSON — no markdown inside it."""
 
 

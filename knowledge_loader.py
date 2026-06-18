@@ -1,9 +1,12 @@
 """
-Loads knowledge files at startup from one of three sources (in priority order):
+Loads knowledge files at startup from one of four sources (in priority order):
 
-  1. Google Drive folder  — set GOOGLE_DRIVE_FOLDER_ID + GOOGLE_API_KEY
-  2. GitHub repo folder   — set GITHUB_KNOWLEDGE_REPO (+ optional GITHUB_KNOWLEDGE_PATH, GITHUB_TOKEN)
-  3. Local knowledge/     — always available as fallback
+  1. Knowledge Hub        — set KNOWLEDGE_HUB_URL + KNOWLEDGE_HUB_PASSWORD
+                             (same shared hub used by the treasury-agent chatbot —
+                             this is the live source of truth, pricing included)
+  2. Google Drive folder  — set GOOGLE_DRIVE_FOLDER_ID + GOOGLE_API_KEY
+  3. GitHub repo folder   — set GITHUB_KNOWLEDGE_REPO (+ optional GITHUB_KNOWLEDGE_PATH, GITHUB_TOKEN)
+  4. Local knowledge/     — always available as fallback
 
 Google Drive setup (one-time, ~2 min):
   a. Go to https://console.cloud.google.com/ → New project
@@ -26,6 +29,40 @@ from pathlib import Path
 GITHUB_API  = "https://api.github.com"
 GDRIVE_API  = "https://www.googleapis.com/drive/v3"
 LOCAL_DIR   = Path(__file__).parent / "knowledge"
+
+
+# ── Knowledge Hub (shared with treasury-agent) ─────────────────────────────────
+
+def _fetch_knowledge_hub(hub_url: str, hub_password: str) -> str:
+    """
+    Pull the live, decrypted knowledge base from the same Knowledge Hub API
+    that the treasury-agent chatbot and the Lumis staff CMS use
+    (agent_knowledge repo, /api/knowledge-hub). Returns it as a JSON string
+    for direct inclusion in the system prompt.
+    """
+    import json
+
+    auth = requests.post(
+        hub_url,
+        json={"action": "auth", "password": hub_password},
+        timeout=10,
+    )
+    auth.raise_for_status()
+    token = auth.json().get("token")
+    if not token:
+        raise RuntimeError("Knowledge hub auth did not return a token")
+
+    kb_resp = requests.post(
+        hub_url,
+        json={"action": "get", "token": token, "agent_id": "treasury-skincare-agent"},
+        timeout=15,
+    )
+    kb_resp.raise_for_status()
+    kb = kb_resp.json().get("kb")
+    if not kb or not isinstance(kb, dict):
+        raise RuntimeError("Knowledge hub returned no knowledge base")
+
+    return "=== Treasury Knowledge Hub (Live) ===\n" + json.dumps(kb, indent=2)
 
 
 # ── Google Drive ──────────────────────────────────────────────────────────────
@@ -145,9 +182,22 @@ def _fetch_local_knowledge() -> str:
 def load_knowledge() -> str:
     """
     Load all knowledge at startup.
-    Priority: Google Drive → GitHub → local knowledge/ directory.
+    Priority: Knowledge Hub → Google Drive → GitHub → local knowledge/ directory.
     """
-    # 1. Google Drive
+    # 1. Knowledge Hub — shared source of truth across all Treasury agents
+    hub_url      = os.environ.get("KNOWLEDGE_HUB_URL", "").strip()
+    hub_password = os.environ.get("KNOWLEDGE_HUB_PASSWORD", "").strip()
+    if hub_url and hub_password:
+        print(f"[knowledge] fetching from Knowledge Hub: {hub_url}")
+        try:
+            result = _fetch_knowledge_hub(hub_url, hub_password)
+            if result:
+                return result
+            print("[knowledge] Knowledge Hub returned nothing — trying next source.")
+        except Exception as exc:
+            print(f"[knowledge] Knowledge Hub fetch failed ({exc}) — trying next source.")
+
+    # 2. Google Drive
     folder_id = os.environ.get("GOOGLE_DRIVE_FOLDER_ID", "").strip()
     api_key   = os.environ.get("GOOGLE_API_KEY", "").strip()
     if folder_id and api_key:

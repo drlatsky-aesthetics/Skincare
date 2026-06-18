@@ -143,16 +143,16 @@
       font-size: 0.9rem; color: var(--gold); flex: 1;
       letter-spacing: 0.04em;
     }
-    .plan-copy-btn, .plan-export-btn {
+    .plan-copy-btn, .plan-export-btn, .plan-page-btn {
       font-family: 'DM Mono', monospace; font-size: 0.62rem;
       background: none; border: 1px solid var(--text-dim); border-radius: 4px;
       padding: 3px 9px; cursor: pointer; letter-spacing: 0.06em;
       text-transform: uppercase; transition: color 0.15s, border-color 0.15s;
     }
     .plan-copy-btn   { color: var(--text-muted); }
-    .plan-export-btn { color: var(--gold); border-color: var(--gold-dim); }
+    .plan-export-btn, .plan-page-btn { color: var(--gold); border-color: var(--gold-dim); }
     .plan-copy-btn:hover   { color: var(--gold);  border-color: var(--gold-dim); }
-    .plan-export-btn:hover { color: #fff; border-color: var(--gold); background: var(--gold-dim); }
+    .plan-export-btn:hover, .plan-page-btn:hover { color: #fff; border-color: var(--gold); background: var(--gold-dim); }
 
     .plan-sections { padding: 4px 0; }
 
@@ -361,12 +361,14 @@ To get started, tell me about your skin. What are your main concerns, and what r
     header.innerHTML = `
       <span class="plan-header-icon">◆</span>
       <span class="plan-title">${escHtml(plan.title || 'Treatment Plan')}</span>
+      <button class="plan-page-btn">→ Page</button>
       <button class="plan-export-btn">↓ Word</button>
       <button class="plan-copy-btn">Copy</button>`;
     widget.appendChild(header);
 
     header.querySelector('.plan-copy-btn').addEventListener('click', () => copyPlan(widget, plan));
     header.querySelector('.plan-export-btn').addEventListener('click', () => exportPlan(widget, plan));
+    header.querySelector('.plan-page-btn').addEventListener('click', () => sendToPageBuilder(widget, plan));
 
     // Sections
     const sectionsEl = document.createElement('div');
@@ -475,6 +477,64 @@ To get started, tell me about your skin. What are your main concerns, and what r
       btn.textContent = 'Copied!';
       setTimeout(() => btn.textContent = 'Copy', 2000);
     });
+  }
+
+  /* ── Send plan to the patient-page builder (plans.treasuryaesthetics.ca) ── */
+  const PAGE_BUILDER_URL = 'https://plans.treasuryaesthetics.ca';
+
+  // Section name → where it lands in the page builder's import payload.
+  // 'treatment' sections become priced in-clinic sessions; 'product' sections
+  // become home-care items, bucketed by routine.
+  const SECTION_MAP = {
+    'In-Clinic Treatments':   { kind: 'treatment' },
+    'Biologics & Add-Ons':    { kind: 'treatment' },
+    'Morning Routine':        { kind: 'product', routine: 'AM' },
+    'Evening Routine':        { kind: 'product', routine: 'PM' },
+    'Post-Procedure Recovery':{ kind: 'product', routine: 'OTHER' },
+    'Membership':             { kind: 'product', routine: 'OTHER' },
+  };
+
+  function sendToPageBuilder(widget, originalPlan) {
+    // Read current widget state (user may have checked/unchecked or added items)
+    const livePlan = { title: originalPlan.title, sections: [] };
+    widget.querySelectorAll('.plan-section').forEach(sec => {
+      const name  = sec.querySelector('.plan-section-name')?.textContent || '';
+      const items = [];
+      sec.querySelectorAll('.plan-item').forEach(item => {
+        if (!item.querySelector('.plan-item-check')?.checked) return; // only confirmed items
+        items.push({
+          name:   item.querySelector('.plan-item-name')?.textContent   || '',
+          detail: item.querySelector('.plan-item-detail')?.textContent || '',
+        });
+      });
+      if (items.length) livePlan.sections.push({ name, items });
+    });
+
+    // originalPlan still carries the prices the model assigned (the DOM
+    // widget doesn't render price, so look item prices up from there)
+    const priceFor = (sectionName, itemName) => {
+      const sec = (originalPlan.sections || []).find(s => s.name === sectionName);
+      const it  = sec?.items?.find(i => i.name === itemName);
+      return typeof it?.price === 'number' ? it.price : 0;
+    };
+
+    const treatments = [];
+    const products = [];
+    livePlan.sections.forEach(sec => {
+      const map = SECTION_MAP[sec.name] || { kind: 'product', routine: 'OTHER' };
+      sec.items.forEach(item => {
+        const price = priceFor(sec.name, item.name);
+        if (map.kind === 'treatment') {
+          treatments.push({ name: item.name, price, detail: item.detail });
+        } else {
+          products.push({ name: item.name, price, detail: item.detail, routine: map.routine });
+        }
+      });
+    });
+
+    const payload = { title: livePlan.title, treatments, products };
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    window.open(`${PAGE_BUILDER_URL}/?import=${encoded}`, '_blank');
   }
 
   /* ── Export plan as Word doc ── */

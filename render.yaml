@@ -11,16 +11,16 @@ services:
       - key: SECRET_KEY
         sync: false
       - key: KNOWLEDGE_HUB_URL
-        sync: false
+        value: https://agent-knowledge-rho.vercel.app/api/knowledge-hub
       - key: KNOWLEDGE_HUB_PASSWORD
         sync: false
       - key: GOOGLE_DRIVE_FOLDER_ID
-        sync: false
+        value: 1MmTsBm_Y9AgIbfr1u6ds7KayUo7Vf44k
       - key: GOOGLE_API_KEY
         sync: false
       - key: GITHUB_KNOWLEDGE_REPO
-        sync: false
+        value: drlatsky-aesthetics/Skincare
       - key: GITHUB_KNOWLEDGE_PATH
-        sync: false
+        value: knowledge
       - key: GITHUB_TOKEN
         sync: false

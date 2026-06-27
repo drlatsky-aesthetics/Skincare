@@ -20,6 +20,10 @@ but part of the same overall clinic system — see that repo's
 - **Deploy:** `railway up` from this directory deploys the current local
   tree directly (used this session); unclear whether GitHub push also
   triggers an auto-deploy — check Railway dashboard's service settings.
+- **Git:** the default/HEAD branch on `origin` is **`claude/skincare-agent-builder-DAd8Q`**,
+  not `main` — there is no `main` branch on this repo. Push there. (Also has
+  two other `claude/*` branches from prior sessions — `claude/ai-treatment-page-integration-4U0hp`
+  and `claude/determined-knuth-ScgSI` — not investigated this session.)
 
 ## Railway access
 

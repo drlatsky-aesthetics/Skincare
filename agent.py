@@ -105,3 +105,33 @@ class SkincareAgent:
             messages=messages,
         )
         return response.content[0].text
+
+    def process_consult(self, transcript: str) -> str:
+        """
+        Takes a raw consult transcript (e.g. from live speech-to-text) and
+        returns session notes followed by a treatment plan, using the same
+        <plan>{json}</plan> tag format the chat UI already knows how to
+        render — so the frontend can reuse addMessage()/buildPlanWidget()
+        unchanged.
+        """
+        instruction = (
+            "Below is a transcript of an in-person patient consult (captured via "
+            "live speech-to-text — expect imperfect punctuation/recognition errors "
+            "and crosstalk between the patient and staff). Do two things:\n\n"
+            "1. Write concise session notes: presenting concern(s), relevant history "
+            "mentioned, any exam observations or measurements discussed, and any "
+            "decisions or commitments made during the consult. Plain text, no markdown.\n\n"
+            "2. Then build the treatment plan based on what was discussed, following "
+            "all the same clinical rules and the exact <plan>{json}</plan> format you "
+            "always use. If the transcript doesn't give you enough to build a complete "
+            "plan, build what you can and note in the session notes what's still needed "
+            "— do not skip the plan tag entirely.\n\n"
+            f"TRANSCRIPT:\n{transcript}"
+        )
+        response = self.client.messages.create(
+            model=MODEL,
+            max_tokens=4096,
+            system=self.system,
+            messages=[{"role": "user", "content": instruction}],
+        )
+        return response.content[0].text

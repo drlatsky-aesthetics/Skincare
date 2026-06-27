@@ -65,6 +65,26 @@ def chat():
         return jsonify({"error": f"Something went wrong: {e}"}), 500
 
 
+@app.route("/api/process-consult", methods=["POST"])
+def process_consult():
+    if agent is None:
+        return jsonify({"error": "Agent failed to initialise — check server logs."}), 503
+
+    data = request.get_json(silent=True) or {}
+    transcript = (data.get("transcript") or "").strip()
+    if not transcript:
+        return jsonify({"error": "No transcript provided"}), 400
+    if len(transcript) < 20:
+        return jsonify({"error": "Transcript too short to process — keep listening a bit longer."}), 400
+
+    try:
+        reply = agent.process_consult(transcript)
+        return jsonify({"reply": reply})
+    except Exception as e:
+        print(f"[process_consult] error: {e}")
+        return jsonify({"error": f"Something went wrong: {e}"}), 500
+
+
 @app.route("/export", methods=["POST"])
 def export():
     data = request.get_json(silent=True) or {}

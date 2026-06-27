@@ -274,6 +274,38 @@
     #send-btn svg { width: 16px; height: 16px; fill: var(--charcoal); }
     #send-btn:disabled svg { fill: var(--text-dim); }
 
+    #consult-btn {
+      width: 40px; height: 40px; border-radius: 9px;
+      background: var(--charcoal-3); border: 1px solid var(--border);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.15s, border-color 0.15s;
+    }
+    #consult-btn:hover { border-color: var(--gold-dim); }
+    #consult-btn svg { width: 17px; height: 17px; fill: var(--text-muted); transition: fill 0.15s; }
+    #consult-btn.recording {
+      background: #3a1414; border-color: #a33;
+    }
+    #consult-btn.recording svg { fill: #e85d5d; }
+
+    #consult-banner {
+      background: var(--gold-bg); border-top: 1px solid var(--gold-dim);
+      padding: 8px 16px; display: flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0;
+    }
+    .consult-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #e85d5d;
+      animation: consult-pulse 1.4s ease-in-out infinite; flex-shrink: 0;
+    }
+    @keyframes consult-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    #consult-status-text { color: var(--gold-light); font-weight: 500; flex-shrink: 0; }
+    #consult-live-text {
+      color: var(--text-dim); overflow: hidden; text-overflow: ellipsis;
+      white-space: nowrap; flex: 1;
+    }
+
     footer {
       text-align: center; font-size: 0.65rem; font-weight: 300;
       color: var(--text-dim); padding: 6px 20px 10px;
@@ -315,7 +347,16 @@ To get started, tell me about your skin. What are your main concerns, and what r
   </div>
 </div>
 
+<div id="consult-banner" style="display:none">
+  <span class="consult-dot"></span>
+  <span id="consult-status-text">Listening…</span>
+  <span id="consult-live-text"></span>
+</div>
+
 <div id="input-area">
+  <button id="consult-btn" aria-label="Start consult listening" title="Listen to consult (speech-to-text)">
+    <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
+  </button>
   <textarea id="user-input" rows="1" placeholder="Describe your skin concerns or ask anything…" aria-label="Your message"></textarea>
   <button id="send-btn" aria-label="Send">
     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
@@ -636,6 +677,113 @@ To get started, tell me about your skin. What are your main concerns, and what r
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
+
+  /* ── Consult listener (live speech-to-text via the Web Speech API) ──
+   * Runs entirely in-browser — no audio leaves the device until the consult
+   * is stopped, at which point the accumulated transcript text (not audio)
+   * is sent to /api/process-consult. Chrome/Edge only; other browsers don't
+   * implement SpeechRecognition, so the button is disabled there. */
+  const consultBtn        = document.getElementById('consult-btn');
+  const consultBanner     = document.getElementById('consult-banner');
+  const consultStatusText = document.getElementById('consult-status-text');
+  const consultLiveText   = document.getElementById('consult-live-text');
+
+  const SpeechRecognitionImpl = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognizer = null;
+  let consultTranscript = '';
+  let consultActive = false;
+
+  if (!SpeechRecognitionImpl) {
+    consultBtn.disabled = true;
+    consultBtn.title = 'Speech recognition isn\'t supported in this browser — try Chrome or Edge.';
+    consultBtn.style.opacity = '0.4';
+    consultBtn.style.cursor = 'not-allowed';
+  } else {
+    recognizer = new SpeechRecognitionImpl();
+    recognizer.continuous = true;
+    recognizer.interimResults = true;
+    recognizer.lang = 'en-US';
+
+    recognizer.onresult = (event) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const piece = event.results[i][0].transcript;
+        if (event.results[i].isFinal) consultTranscript += piece + ' ';
+        else interim += piece;
+      }
+      consultLiveText.textContent = (interim || consultTranscript.slice(-120)).trim();
+    };
+
+    recognizer.onerror = (event) => {
+      console.error('[consult] recognition error:', event.error);
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        consultStatusText.textContent = 'Microphone access denied';
+        stopConsult(false);
+      }
+      // 'no-speech' fires constantly during natural pauses — ignore, recognizer auto-restarts below
+    };
+
+    // Some browsers end the recognition session after a period of silence even
+    // with continuous:true — auto-restart it while the consult is still active.
+    recognizer.onend = () => {
+      if (consultActive) {
+        try { recognizer.start(); } catch (e) { /* already starting */ }
+      }
+    };
+  }
+
+  function startConsult() {
+    if (!recognizer || consultActive) return;
+    consultTranscript = '';
+    consultActive = true;
+    consultBtn.classList.add('recording');
+    consultBanner.style.display = 'flex';
+    consultStatusText.textContent = 'Listening…';
+    consultLiveText.textContent = '';
+    try { recognizer.start(); } catch (e) { console.error('[consult] start failed:', e); }
+  }
+
+  async function stopConsult(shouldProcess) {
+    if (!recognizer) return;
+    consultActive = false;
+    consultBtn.classList.remove('recording');
+    try { recognizer.stop(); } catch (e) { /* already stopped */ }
+
+    if (!shouldProcess) {
+      consultBanner.style.display = 'none';
+      return;
+    }
+
+    const transcript = consultTranscript.trim();
+    if (!transcript) {
+      consultBanner.style.display = 'none';
+      return;
+    }
+
+    consultStatusText.textContent = 'Processing consult…';
+    consultLiveText.textContent = '';
+    try {
+      const res = await fetch('/api/process-consult', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript }),
+      });
+      const data = await res.json();
+      const reply = data.reply || data.error || 'Something went wrong processing the consult.';
+      addMessage('assistant', reply);
+      history.push({ role: 'assistant', content: reply });
+      if (history.length > 40) history = history.slice(-40);
+    } catch (e) {
+      addMessage('assistant', 'Connection error while processing the consult — please try again.');
+    } finally {
+      consultBanner.style.display = 'none';
+    }
+  }
+
+  consultBtn.addEventListener('click', () => {
+    if (consultActive) stopConsult(true);
+    else startConsult();
+  });
 
   inputEl.addEventListener('input', () => {
     inputEl.style.height = 'auto';

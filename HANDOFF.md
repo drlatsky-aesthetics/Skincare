@@ -90,14 +90,27 @@ propagated yet) vs `requiredValue`.
   "published" before today via the old GitHub Pages flow live in the
   `treasury-patients` repo, not here.
 
-## Pending feature request (not yet built)
+## Live consult listener (speech-to-text → notes + plan)
 
-Live speech-to-text during in-person consults — listen in on the
-conversation, transcribe it, and feed the resulting transcript to this
-agent so it can process the session automatically (build a plan, generate
-notes, etc.) without a staff member typing anything. Needs scoping:
-audio capture method (browser mic? dedicated recording device?), where
-transcription happens (client-side Web Speech API vs. a server-side STT
-service), how/when the agent gets triggered (real-time streaming vs.
-post-call batch), and what "processed" should produce (a docx, a published
-patient page, structured notes, all three?).
+Built and verified live this session. A mic button in the chat UI
+(`templates/index.html`) starts the browser's native `SpeechRecognition`
+API (continuous + interim results) — audio never leaves the device; only
+the resulting transcript *text* is sent to the server, and only once the
+consult is stopped. Auto-restarts recognition through natural pauses while
+the consult is active (some browsers silently end a recognition session
+after a few seconds of silence even with `continuous: true`).
+
+- **Browser support:** Chrome/Edge only (`webkitSpeechRecognition`). The
+  mic button disables itself with an explanatory tooltip on unsupported
+  browsers (Safari, Firefox) rather than failing silently.
+- **`POST /api/process-consult`** — `{transcript}` → `SkincareAgent.process_consult()`,
+  which reuses the exact same system prompt (clinical rules + knowledge
+  base) as normal chat, with an added instruction to extract session notes
+  then build a plan from the transcript using the same `<plan>{json}</plan>`
+  tag format the chat UI already renders. No new frontend rendering code —
+  the reply is passed straight to the existing `addMessage()`/`buildPlanWidget()`.
+- Rejects transcripts under 20 characters (not enough to process).
+- **Not yet tested:** real in-clinic conditions — multiple speakers,
+  background noise, clinical terminology recognition accuracy. The text
+  test above used a clean, single-narrator transcript; live mic accuracy
+  in a real consult room is unverified.

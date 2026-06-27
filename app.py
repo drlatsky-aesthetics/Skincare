@@ -1,6 +1,7 @@
 import io
 import os
-from flask import Flask, render_template, request, jsonify, send_file
+import re
+from flask import Flask, render_template, request, jsonify, send_file, abort, Response
 from dotenv import load_dotenv
 from agent import SkincareAgent
 from export_docx import generate_plan_docx
@@ -9,6 +10,16 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
+
+# Persistent patient-page storage. Backed by a Railway Volume mounted at
+# RAILWAY_VOLUME_MOUNT_PATH (falls back to a local ./data dir outside Railway,
+# e.g. for local dev) so published pages survive redeploys.
+PAGES_DIR = os.path.join(os.environ.get("RAILWAY_VOLUME_MOUNT_PATH", "./data"), "pages")
+os.makedirs(PAGES_DIR, exist_ok=True)
+
+# Slugs become filenames on disk and segments of a public URL — restrict to a
+# safe charset so a crafted slug can't escape PAGES_DIR (e.g. "../../etc").
+SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,79}$")
 
 try:
     agent = SkincareAgent()
@@ -72,6 +83,45 @@ def export():
     except Exception as e:
         print(f"[export] error: {e}")
         return jsonify({"error": f"Export failed: {e}"}), 500
+
+
+@app.route("/api/publish-page", methods=["POST"])
+def publish_page():
+    auth = request.headers.get("Authorization", "")
+    expected = os.environ.get("PUBLISH_TOKEN", "")
+    if not expected or auth != f"Bearer {expected}":
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+    slug = (data.get("slug") or "").strip().lower()
+    html = data.get("html")
+
+    if not SLUG_RE.match(slug):
+        return jsonify({"error": "Invalid slug — use lowercase letters, numbers, and hyphens only."}), 400
+    if not html or not isinstance(html, str):
+        return jsonify({"error": "No html provided"}), 400
+
+    path = os.path.join(PAGES_DIR, f"{slug}.html")
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(html)
+    except OSError as e:
+        return jsonify({"error": f"Could not write page: {e}"}), 500
+
+    domain = os.environ.get("APP_DOMAIN", request.host)
+    return jsonify({"ok": True, "url": f"https://{domain}/{slug}.html"})
+
+
+@app.route("/<slug>.html")
+def serve_page(slug):
+    slug = slug.lower()
+    if not SLUG_RE.match(slug):
+        abort(404)
+    path = os.path.join(PAGES_DIR, f"{slug}.html")
+    if not os.path.isfile(path):
+        abort(404)
+    with open(path, "r", encoding="utf-8") as f:
+        return Response(f.read(), mimetype="text/html")
 
 
 if __name__ == "__main__":

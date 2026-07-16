@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Plans — Staff — Treasury Aesthetics</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --charcoal:   #0C0C0C;
+      --charcoal-2: #1A1A1A;
+      --charcoal-3: #222222;
+      --charcoal-4: #2C2C2C;
+      --gold:       #C4954A;
+      --gold-light: #D4AF37;
+      --gold-dim:   #7a5c2a;
+      --gold-bg:    #1e1608;
+      --text:       #E8E2D9;
+      --text-muted: #7A7060;
+      --text-dim:   #4A4540;
+      --border:     #2A2520;
+      --danger:     #c0392b;
+      --radius:     12px;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      background: var(--charcoal); color: var(--text);
+      min-height: 100dvh;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 26px 20px 80px; }
+
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; }
+    .logo-mark {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .logo-mark svg { width: 20px; height: 20px; fill: var(--charcoal); }
+    header h1 {
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    header p { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
+    .header-actions { margin-left: auto; display: flex; gap: 8px; }
+
+    .btn {
+      font-family: 'DM Mono', monospace; font-size: 0.64rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: none; border: 1px solid var(--text-dim); border-radius: 5px;
+      color: var(--text-muted); padding: 6px 12px; cursor: pointer;
+      transition: all 0.15s; text-decoration: none; display: inline-block;
+    }
+    .btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--charcoal); border: none; font-weight: 500;
+    }
+    .btn.primary:hover { opacity: 0.88; color: var(--charcoal); }
+    .btn.danger:hover { color: var(--danger); border-color: var(--danger); }
+    .btn:disabled { opacity: 0.5; cursor: wait; }
+
+    /* login */
+    #login { max-width: 380px; margin: 12vh auto 0; text-align: center; }
+    #login h2 { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 1.3rem; margin-bottom: 8px; }
+    #login p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+    input, textarea, select {
+      width: 100%; background: var(--charcoal-3); color: var(--text);
+      border: 1px solid var(--border); border-radius: 7px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 300;
+      padding: 9px 12px; outline: none; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus { border-color: var(--gold-dim); }
+    #login input { text-align: center; font-family: 'DM Mono', monospace; margin-bottom: 12px; }
+    #login-error { color: #e07b6d; font-size: 0.78rem; margin-top: 12px; display: none; }
+
+    /* list */
+    .plan-row {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--charcoal-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 15px 18px; margin-bottom: 10px;
+    }
+    .plan-row-info { flex: 1; min-width: 0; }
+    .plan-row-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; }
+    .plan-row-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 3px; }
+    .plan-row-meta .mono { font-family: 'DM Mono', monospace; color: var(--gold-dim); }
+    #empty-note { color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 40px 0; }
+
+    /* editor */
+    .panel {
+      background: var(--charcoal-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+    }
+    .panel h3 {
+      font-family: 'DM Mono', monospace; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 14px; display: flex; align-items: center;
+    }
+    .panel h3 .spacer { flex: 1; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 560px) { .grid-2 { grid-template-columns: 1fr; } }
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block; font-size: 0.66rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;
+      font-family: 'DM Mono', monospace;
+    }
+    textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+
+    .item-row {
+      display: grid; gap: 8px; align-items: start;
+      background: var(--charcoal-3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px; margin-bottom: 10px;
+    }
+    .item-row input, .item-row textarea { background: var(--charcoal-4); }
+    .item-row .row-line { display: flex; gap: 8px; align-items: center; }
+    .item-row .row-line input[type="text"] { flex: 1; }
+    .check-line { display: flex; align-items: center; gap: 14px; font-size: 0.72rem; color: var(--text-muted); }
+    .check-line label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .check-line input[type="checkbox"] { width: auto; accent-color: var(--gold); }
+    .remove-btn {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 16px; cursor: pointer; padding: 0 6px; flex-shrink: 0;
+    }
+    .remove-btn:hover { color: var(--danger); }
+
+    #save-bar {
+      position: sticky; bottom: 0; display: flex; gap: 10px; align-items: center;
+      background: var(--charcoal-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 16px; margin-top: 18px;
+    }
+    #save-status { font-size: 0.74rem; color: var(--text-muted); flex: 1; }
+    #save-status.ok { color: var(--gold-light); }
+    #save-status.err { color: #e07b6d; }
+
+    .view { display: none; }
+    .view.active { display: block; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <h1>Patient Plans</h1>
+      <p>Staff editor · Treasury Aesthetics</p>
+    </div>
+    <div class="header-actions" id="header-actions" style="display:none">
+      <a class="btn" href="/">← Advisor</a>
+      <button class="btn" id="new-plan-btn">＋ New Plan</button>
+      <button class="btn" id="logout-btn">Log out</button>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <div id="login" class="view active">
+    <h2>Staff access</h2>
+    <p>Enter the staff access token to manage patient plans.</p>
+    <input type="password" id="token-input" placeholder="Access token" autocomplete="current-password" />
+    <button class="btn primary" id="login-btn" style="width:100%;padding:10px">Sign In</button>
+    <div id="login-error"></div>
+  </div>
+
+  <!-- LIST -->
+  <div id="list-view" class="view">
+    <div id="plan-list"></div>
+    <div id="empty-note" style="display:none">No patient plans yet. Publish one from the Advisor chat, or click ＋ New Plan.</div>
+  </div>
+
+  <!-- EDITOR -->
+  <div id="editor-view" class="view">
+    <div style="margin-bottom:16px"><button class="btn" id="back-btn">← All plans</button></div>
+
+    <div class="panel">
+      <h3>Patient &amp; Access</h3>
+      <div class="grid-2">
+        <div class="field"><label>Patient name</label><input id="f-name" /></div>
+        <div class="field"><label>Date of birth (unlocks the page)</label><input id="f-dob" type="date" /></div>
+        <div class="field"><label>Page address (slug)</label><input id="f-slug" placeholder="jane-doe" /></div>
+        <div class="field"><label>Primary concern</label><input id="f-concern" placeholder="e.g. Rosacea and redness" /></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Plan</h3>
+      <div class="field"><label>Title</label><input id="f-title" /></div>
+      <div class="field"><label>Overview (2–3 sentences shown to the patient)</label><textarea id="f-overview"></textarea></div>
+    </div>
+
+    <div class="panel">
+      <h3>Technologies &amp; Timeline <span class="spacer"></span><button class="btn" id="add-tech-btn">＋ Add</button></h3>
+      <div id="tech-rows"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Pre &amp; Post Care</h3>
+      <div class="grid-2">
+        <div class="field"><label>Pre-care (one point per line)</label><textarea id="f-pre" rows="6"></textarea></div>
+        <div class="field"><label>Post-care (one point per line)</label><textarea id="f-post" rows="6"></textarea></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Home-Care Products <span class="spacer"></span><button class="btn" id="add-product-btn">＋ Add</button></h3>
+      <div id="product-rows"></div>
+    </div>
+
+    <div id="save-bar">
+      <span id="save-status"></span>
+      <a class="btn" id="view-link" target="_blank" style="display:none">Open patient page ↗</a>
+      <button class="btn danger" id="delete-btn" style="display:none">Delete</button>
+      <button class="btn primary" id="save-btn">Save Plan</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  let token = localStorage.getItem('staff_token') || '';
+  let editingIsNew = false;
+
+  /* ── auth / view switching ── */
+  function show(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    $(view).classList.add('active');
+    $('header-actions').style.display = view === 'login' ? 'none' : 'flex';
+  }
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts.headers || {}) },
+    });
+    if (res.status === 401) { logout(); throw new Error('Session expired — please sign in again.'); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  }
+
+  function logout() {
+    token = '';
+    localStorage.removeItem('staff_token');
+    show('login');
+  }
+
+  $('login-btn').addEventListener('click', async () => {
+    token = $('token-input').value.trim();
+    if (!token) return;
+    $('login-btn').disabled = true;
+    try {
+      await api('/api/staff/plans');
+      localStorage.setItem('staff_token', token);
+      $('token-input').value = '';
+      enter();
+    } catch (e) {
+      $('login-error').textContent = 'That token isn’t valid.';
+      $('login-error').style.display = 'block';
+    } finally {
+      $('login-btn').disabled = false;
+    }
+  });
+  $('token-input').addEventListener('keydown', e => { if (e.key === 'Enter') $('login-btn').click(); });
+  $('logout-btn').addEventListener('click', logout);
+  $('back-btn').addEventListener('click', () => { location.hash = ''; loadList(); });
+  $('new-plan-btn').addEventListener('click', () => openEditor(null));
+
+  /* ── list ── */
+  async function loadList() {
+    const data = await api('/api/staff/plans');
+    const list = $('plan-list');
+    list.innerHTML = '';
+    $('empty-note').style.display = data.plans.length ? 'none' : 'block';
+    data.plans.forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'plan-row';
+      row.innerHTML = `
+        <div class="plan-row-info">
+          <div class="plan-row-name">${esc(p.patient_name || p.slug)}</div>
+          <div class="plan-row-meta"><span class="mono">/p/${esc(p.slug)}</span>${p.concern ? ' · ' + esc(p.concern) : ''}${p.updated ? ' · updated ' + esc(p.updated.slice(0,10)) : ''}</div>
+        </div>
+        <a class="btn" href="/p/${esc(p.slug)}" target="_blank">View</a>
+        <button class="btn">Edit</button>`;
+      row.querySelector('button').addEventListener('click', () => { location.hash = 'edit=' + p.slug; openEditor(p.slug); });
+      list.appendChild(row);
+    });
+    show('list-view');
+  }
+
+  /* ── editor ── */
+  async function openEditor(slug) {
+    editingIsNew = !slug;
+    let plan = { patient: {}, technologies: [], pre_care: [], post_care: [], products: [] };
+    if (slug) {
+      try { plan = (await api('/api/staff/plans/' + slug)).plan; }
+      catch (e) { alert(e.message); return; }
+    }
+    $('f-name').value = plan.patient.name || '';
+    $('f-dob').value = plan.patient.dob || '';
+    $('f-slug').value = plan.slug || '';
+    $('f-slug').disabled = !editingIsNew;
+    $('f-concern').value = plan.concern || '';
+    $('f-title').value = plan.title || '';
+    $('f-overview').value = plan.overview || '';
+    $('f-pre').value = (plan.pre_care || []).join('\n');
+    $('f-post').value = (plan.post_care || []).join('\n');
+
+    $('tech-rows').innerHTML = '';
+    (plan.technologies || []).forEach(addTechRow);
+    $('product-rows').innerHTML = '';
+    (plan.products || []).forEach(addProductRow);
+
+    $('delete-btn').style.display = editingIsNew ? 'none' : 'inline-block';
+    $('view-link').style.display = editingIsNew ? 'none' : 'inline-block';
+    if (!editingIsNew) $('view-link').href = '/p/' + plan.slug;
+    setStatus('');
+    show('editor-view');
+    window.scrollTo({ top: 0 });
+  }
+
+  function addTechRow(t = {}) {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <div class="row-line">
+        <input type="text" class="t-name" placeholder="Technology / treatment name" value="${escAttr(t.name)}" />
+        <button class="remove-btn" title="Remove">×</button>
+      </div>
+      <input type="text" class="t-why" placeholder="Why it helps their concern (plain language)" value="${escAttr(t.why)}" />
+      <input type="text" class="t-timeline" placeholder="Timeline — e.g. 4 sessions, 4–6 weeks apart" value="${escAttr(t.timeline)}" />
+      <div class="check-line"><label><input type="checkbox" class="t-optional" ${t.optional ? 'checked' : ''}/> Optional upgrade</label></div>`;
+    row.querySelector('.remove-btn').addEventListener('click', () => row.remove());
+    $('tech-rows').appendChild(row);
+  }
+
+  function addProductRow(p = {}) {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <div class="row-line">
+        <input type="text" class="p-brand" placeholder="Brand product — e.g. Epicutis Lipid Serum" value="${escAttr(p.brand_name)}" />
+        <button class="remove-btn" title="Remove">×</button>
+      </div>
+      <input type="text" class="p-generic" placeholder="Generic equivalent — e.g. Hydrating HA serum" value="${escAttr(p.generic_name)}" />
+      <input type="text" class="p-detail" placeholder="How / when to use it" value="${escAttr(p.detail)}" />
+      <div class="check-line">
+        <label><input type="checkbox" class="p-optional" ${p.optional ? 'checked' : ''}/> Optional</label>
+        <label><input type="checkbox" class="p-generic-on" ${p.use_generic ? 'checked' : ''}/> Show generic name (patient opted out of brand)</label>
+      </div>`;
+    row.querySelector('.remove-btn').addEventListener('click', () => row.remove());
+    $('product-rows').appendChild(row);
+  }
+
+  $('add-tech-btn').addEventListener('click', () => addTechRow());
+  $('add-product-btn').addEventListener('click', () => addProductRow());
+  $('f-name').addEventListener('input', () => {
+    if (editingIsNew && !$('f-slug').dataset.touched) {
+      $('f-slug').value = $('f-name').value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+    }
+  });
+  $('f-slug').addEventListener('input', () => { $('f-slug').dataset.touched = '1'; });
+
+  function collectPlan() {
+    return {
+      slug: $('f-slug').value.trim().toLowerCase(),
+      patient: { name: $('f-name').value.trim(), dob: $('f-dob').value },
+      concern: $('f-concern').value.trim(),
+      title: $('f-title').value.trim(),
+      overview: $('f-overview').value.trim(),
+      pre_care: $('f-pre').value.split('\n').map(s => s.trim()).filter(Boolean),
+      post_care: $('f-post').value.split('\n').map(s => s.trim()).filter(Boolean),
+      technologies: [...document.querySelectorAll('#tech-rows .item-row')].map(r => ({
+        name: r.querySelector('.t-name').value.trim(),
+        why: r.querySelector('.t-why').value.trim(),
+        timeline: r.querySelector('.t-timeline').value.trim(),
+        optional: r.querySelector('.t-optional').checked,
+      })).filter(t => t.name),
+      products: [...document.querySelectorAll('#product-rows .item-row')].map(r => ({
+        brand_name: r.querySelector('.p-brand').value.trim(),
+        generic_name: r.querySelector('.p-generic').value.trim(),
+        detail: r.querySelector('.p-detail').value.trim(),
+        optional: r.querySelector('.p-optional').checked,
+        use_generic: r.querySelector('.p-generic-on').checked,
+      })).filter(p => p.brand_name),
+    };
+  }
+
+  $('save-btn').addEventListener('click', async () => {
+    const plan = collectPlan();
+    if (!plan.slug) { setStatus('A page address (slug) is required.', 'err'); return; }
+    $('save-btn').disabled = true;
+    setStatus('Saving…');
+    try {
+      const data = await api('/api/staff/plans/' + plan.slug, { method: 'PUT', body: JSON.stringify(plan) });
+      setStatus('Saved. Patient page: ' + data.url, 'ok');
+      editingIsNew = false;
+      $('f-slug').disabled = true;
+      $('delete-btn').style.display = 'inline-block';
+      $('view-link').style.display = 'inline-block';
+      $('view-link').href = '/p/' + plan.slug;
+      location.hash = 'edit=' + plan.slug;
+    } catch (e) {
+      setStatus(e.message, 'err');
+    } finally {
+      $('save-btn').disabled = false;
+    }
+  });
+
+  $('delete-btn').addEventListener('click', async () => {
+    const slug = $('f-slug').value.trim();
+    if (!confirm('Delete this patient plan? The patient link will stop working.')) return;
+    try {
+      await api('/api/staff/plans/' + slug, { method: 'DELETE' });
+      location.hash = '';
+      loadList();
+    } catch (e) { setStatus(e.message, 'err'); }
+  });
+
+  function setStatus(msg, cls) {
+    const el = $('save-status');
+    el.textContent = msg;
+    el.className = cls || '';
+  }
+
+  function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function escAttr(s) { return esc(s); }
+
+  /* ── boot ── */
+  function enter() {
+    const m = location.hash.match(/edit=([a-z0-9-]+)/);
+    if (m) openEditor(m[1]);
+    else loadList();
+  }
+  if (token) {
+    api('/api/staff/plans').then(enter).catch(() => show('login'));
+  } else {
+    show('login');
+  }
+</script>
+</body>
+</html>

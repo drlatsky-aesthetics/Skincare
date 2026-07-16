@@ -1,4 +1,6 @@
+import json
 import os
+import re
 import anthropic
 from dotenv import load_dotenv
 from knowledge_loader import load_knowledge
@@ -135,3 +137,51 @@ class SkincareAgent:
             messages=[{"role": "user", "content": instruction}],
         )
         return response.content[0].text
+
+    def structure_patient_plan(self, chat_plan: dict, patient_name: str, concern: str) -> dict:
+        """
+        Convert a chat <plan> (sections/items) into the patient-facing plan
+        page structure: overview, technologies with timelines, pre/post care
+        summaries, and products with a generic (brand-free) descriptor each.
+        Raises on API/parse failure — the caller falls back to a deterministic
+        mapping so publishing still works if this call fails.
+        """
+        instruction = (
+            "Convert the treatment plan below into a patient-facing plan page as a "
+            "single JSON object with EXACTLY these keys:\n\n"
+            '{"title": "...", "overview": "...", '
+            '"technologies": [{"name": "...", "why": "...", "timeline": "...", "optional": false}], '
+            '"pre_care": ["..."], "post_care": ["..."], '
+            '"products": [{"brand_name": "...", "generic_name": "...", "detail": "...", "optional": false}]}\n\n'
+            "Rules:\n"
+            f"- The patient is {patient_name}. Their primary concern: {concern or 'see plan'}.\n"
+            "- overview: 2-3 warm, plain-language sentences summarizing the approach for their concern. "
+            "Address the patient directly. No prices.\n"
+            "- technologies: every in-clinic device/treatment and biologic add-on from the plan. "
+            "why = 1 sentence in plain language on what it does for THEIR concern. "
+            "timeline = sessions and spacing (e.g. '4 sessions, 4-6 weeks apart, results build over 3-6 months'), "
+            "consistent with the knowledge base spacing rules. optional=true for items that were unchecked add-ons.\n"
+            "- pre_care: 3-6 short bullets summarizing how to prepare before their in-clinic treatments "
+            "(per the knowledge base for the specific devices in this plan).\n"
+            "- post_care: 3-6 short bullets summarizing aftercare/recovery for these specific treatments.\n"
+            "- products: every home-care product (morning/evening routine + post-procedure). "
+            "brand_name = the exact product name from the plan. "
+            "generic_name = a brand-free functional description a patient could match with their own product "
+            "(e.g. 'Epicutis Lipid Serum' -> 'Hydrating lipid recovery serum', "
+            "'Noon HydroCalming' -> 'Calming hydrating treatment cream'). "
+            "detail = when/how to use it. optional=true if it was an unchecked add-on.\n"
+            "- Output ONLY the JSON object. No markdown fences, no commentary.\n\n"
+            f"TREATMENT PLAN JSON:\n{json.dumps(chat_plan, ensure_ascii=False)}"
+        )
+        response = self.client.messages.create(
+            model=MODEL,
+            max_tokens=4096,
+            system=self.system,
+            messages=[{"role": "user", "content": instruction}],
+        )
+        text = response.content[0].text.strip()
+        # Tolerate accidental code fences or leading prose around the JSON.
+        match = re.search(r"\{[\s\S]*\}", text)
+        if not match:
+            raise ValueError("No JSON object found in model response")
+        return json.loads(match.group(0))

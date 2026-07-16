@@ -1,6 +1,44 @@
 # Skincare Backend Agent — Handoff
 
-> Last updated: 2026-06-23
+> Last updated: 2026-07-15
+
+## Patient Plan System (new — 2026-07-15)
+
+Structured, editable, DOB-protected patient plan pages. Replaces the opaque-HTML
+publish flow for new plans (legacy `/api/publish-page` + `/<slug>.html` still work).
+
+**Data:** one JSON file per patient at `{volume}/plans/<slug>.json` — patient
+(name + DOB), concern, title, overview, technologies (name/why/timeline/optional),
+pre_care, post_care, products (brand_name/generic_name/detail/use_generic/optional).
+Module: `patient_plans.py` (storage, validation, DOB verification, signed unlock
+tokens via itsdangerous, per-slug brute-force throttle: 15 fails/hour).
+
+**Routes:**
+- `GET /p/<slug>` — patient page (`templates/plan_view.html`). DOB gate; correct
+  DOB → signed 12h token + plan JSON (DOB never echoed back). Each home-care
+  product has an "I'll use my own" button that swaps the brand name for its
+  generic descriptor (e.g. Epicutis Lipid Serum → "Hydrating lipid recovery
+  serum") and persists via `POST /api/plans/<slug>/preferences` (unlock token
+  required).
+- `GET /staff` — staff editor (`templates/staff.html`), sign in with
+  `PUBLISH_TOKEN`. List / edit / delete every field of every plan, including
+  reverting a patient's generic-product choice.
+- `POST /api/staff/plans/publish` — Bearer `PUBLISH_TOKEN`. Takes a chat
+  `<plan>` JSON + patient name/DOB/concern; Claude restructures it into the
+  patient-page format (overview, timelines, pre/post care, generic product
+  names); deterministic fallback mapping if the AI call fails.
+- `GET/PUT/DELETE /api/staff/plans[/<slug>]` — CRUD, Bearer `PUBLISH_TOKEN`.
+
+**Chat UI:** every plan widget now has a gold **Publish** button → modal
+(patient name, DOB, concern, slug auto-filled; staff token asked once, then
+kept in localStorage) → posts to the publish route and drops the patient +
+edit links into the chat.
+
+**Env:** no new vars required. Unlock-token signing uses `SECRET_KEY` if set,
+else `PUBLISH_TOKEN`. `data/` is gitignored (patient data never committed);
+in production plans live on the Railway volume.
+
+
 
 ## What this is
 

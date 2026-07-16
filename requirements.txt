@@ -1,5 +1,6 @@
 anthropic>=0.40.0
 flask>=3.0.0
+itsdangerous>=2.1.0
 python-dotenv>=1.0.0
 requests>=2.31.0
 pypdf>=4.0.0

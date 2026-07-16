@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Treatment Plan — Treasury Aesthetics</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --paper:      #F7F2E9;
+      --paper-2:    #FDFAF4;
+      --ink:        #211D18;
+      --ink-soft:   #57503F;
+      --ink-faint:  #948A74;
+      --gold:       #A87E2F;
+      --gold-deep:  #8A6624;
+      --gold-pale:  #E9DBBB;
+      --gold-wash:  #F3EAD5;
+      --line:       #E2D8C2;
+      --charcoal:   #14120E;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      background-image:
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(168,126,47,0.10), transparent 60%),
+        repeating-linear-gradient(-45deg, rgba(168,126,47,0.018) 0 1px, transparent 1px 9px);
+      color: var(--ink);
+      min-height: 100dvh;
+      line-height: 1.65;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 780px; margin: 0 auto; padding: 0 22px 90px; }
+
+    /* ── Masthead ── */
+    .masthead {
+      text-align: center;
+      padding: 54px 0 34px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 44px;
+      position: relative;
+    }
+    .seal {
+      width: 58px; height: 58px; margin: 0 auto 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, #D8B665, var(--gold) 58%, var(--gold-deep));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 22px rgba(138,102,36,0.32), inset 0 1px 2px rgba(255,255,255,0.45);
+    }
+    .seal svg { width: 26px; height: 26px; fill: var(--paper-2); }
+    .masthead h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.28rem; font-weight: 500;
+      letter-spacing: 0.34em; text-transform: uppercase;
+      text-indent: 0.34em;
+    }
+    .masthead .sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem; color: var(--gold-deep);
+      letter-spacing: 0.28em; text-transform: uppercase;
+      margin-top: 8px; text-indent: 0.28em;
+    }
+    .masthead::after {
+      content: '◆'; color: var(--gold);
+      position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%);
+      background: var(--paper); padding: 0 14px; font-size: 10px;
+    }
+
+    /* ── DOB gate ── */
+    #gate {
+      max-width: 430px; margin: 8vh auto 0; text-align: center;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 46px 38px 42px;
+      box-shadow: 0 24px 60px -30px rgba(33,29,24,0.35);
+      position: relative;
+    }
+    #gate::before {
+      content: ''; position: absolute; inset: 8px;
+      border: 1px solid var(--gold-pale); border-radius: 2px; pointer-events: none;
+    }
+    #gate h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem; font-weight: 500; font-style: italic;
+      margin-bottom: 10px;
+    }
+    #gate p { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 26px; }
+    #gate label {
+      display: block; font-family: 'DM Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold-deep); margin-bottom: 9px;
+    }
+    #dob-input {
+      width: 100%; max-width: 240px;
+      font-family: 'DM Mono', monospace; font-size: 1rem;
+      text-align: center; color: var(--ink);
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 3px; padding: 11px 12px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #dob-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(168,126,47,0.14); }
+    #unlock-btn {
+      display: block; width: 100%; max-width: 240px; margin: 18px auto 0;
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.24em; text-transform: uppercase; text-indent: 0.24em;
+      color: var(--paper-2); background: var(--charcoal);
+      border: none; border-radius: 3px; padding: 13px;
+      cursor: pointer; transition: background 0.2s, transform 0.1s;
+    }
+    #unlock-btn:hover { background: var(--gold-deep); }
+    #unlock-btn:active { transform: scale(0.98); }
+    #unlock-btn:disabled { opacity: 0.55; cursor: wait; }
+    #gate-error {
+      display: none; margin-top: 16px; font-size: 0.78rem;
+      color: #9C3A2E; letter-spacing: 0.02em;
+    }
+
+    /* ── Revealed plan ── */
+    #plan { display: none; }
+    .reveal { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .reveal:nth-child(2) { animation-delay: 0.08s; }
+    .reveal:nth-child(3) { animation-delay: 0.16s; }
+    .reveal:nth-child(4) { animation-delay: 0.24s; }
+    .reveal:nth-child(5) { animation-delay: 0.32s; }
+    .reveal:nth-child(6) { animation-delay: 0.40s; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .salute {
+      font-family: 'DM Mono', monospace; font-size: 0.66rem;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--gold-deep); margin-bottom: 12px;
+    }
+    .plan-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 500;
+      line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 18px;
+    }
+    .concern-chip {
+      display: inline-block; font-size: 0.74rem; color: var(--gold-deep);
+      background: var(--gold-wash); border: 1px solid var(--gold-pale);
+      border-radius: 999px; padding: 4px 15px; margin-bottom: 22px;
+      letter-spacing: 0.04em;
+    }
+    .overview {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 1.08rem; line-height: 1.75; color: var(--ink-soft);
+      border-left: 2px solid var(--gold); padding-left: 20px;
+      max-width: 620px;
+    }
+
+    section { margin-top: 58px; }
+    .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+    .sec-num {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 1.5rem; color: var(--gold);
+    }
+    .sec-title {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink);
+    }
+    .sec-head::after { content: ''; flex: 1; height: 1px; background: var(--line); align-self: center; }
+
+    /* Technology cards */
+    .tech-card {
+      background: var(--paper-2); border: 1px solid var(--line);
+      border-radius: 4px; padding: 20px 22px; margin-bottom: 12px;
+      display: grid; grid-template-columns: 1fr auto; gap: 4px 18px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tech-card:hover { border-color: var(--gold-pale); box-shadow: 0 10px 28px -18px rgba(33,29,24,0.3); }
+    .tech-name {
+      font-family: 'Playfair Display', serif; font-size: 1.06rem; font-weight: 500;
+    }
+    .tech-opt {
+      grid-column: 2; grid-row: 1; align-self: start;
+      font-family: 'DM Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-faint); border: 1px solid var(--line);
+      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+    }
+    .tech-why { grid-column: 1 / -1; font-size: 0.85rem; color: var(--ink-soft); }
+    .tech-timeline {
+      grid-column: 1 / -1; margin-top: 8px;
+      font-family: 'DM Mono', monospace; font-size: 0.68rem;
+      color: var(--gold-deep); letter-spacing: 0.06em;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .tech-timeline::before { content: '◷'; font-size: 0.85rem; }
+
+    /* Care columns */
+    .care-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 620px) { .care-grid { grid-template-columns: 1fr; } }
+    .care-col {
+      background: var(--paper-2); border: 1px solid var(--line);
+      border-radius: 4px; padding: 22px;
+    }
+    .care-col h3 {
+      font-family: 'DM Mono', monospace; font-size: 0.64rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold-deep); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .care-col ul { list-style: none; }
+    .care-col li {
+      font-size: 0.84rem; color: var(--ink-soft);
+      padding: 7px 0 7px 20px; position: relative;
+      border-bottom: 1px dashed var(--line);
+    }
+    .care-col li:last-child { border-bottom: none; }
+    .care-col li::before {
+      content: '◆'; position: absolute; left: 0; top: 9px;
+      font-size: 7px; color: var(--gold);
+    }
+
+    /* Product cards */
+    .product-card {
+      background: var(--paper-2); border: 1px solid var(--line);
+      border-radius: 4px; padding: 18px 20px; margin-bottom: 12px;
+      display: flex; align-items: flex-start; gap: 16px;
+      transition: border-color 0.2s, background 0.3s;
+    }
+    .product-card.generic { background: var(--gold-wash); border-color: var(--gold-pale); }
+    .product-body { flex: 1; min-width: 0; }
+    .product-name {
+      font-family: 'Playfair Display', serif; font-size: 1.02rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .product-card.generic .product-name { font-style: italic; }
+    .product-sub {
+      font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-faint); margin-top: 3px;
+    }
+    .product-card.generic .product-sub { color: var(--gold-deep); }
+    .product-detail { font-size: 0.82rem; color: var(--ink-soft); margin-top: 8px; }
+    .swap-btn {
+      flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft); background: none;
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 7px 14px; cursor: pointer; white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .swap-btn:hover { border-color: var(--gold); color: var(--gold-deep); }
+    .product-card.generic .swap-btn { background: var(--paper-2); }
+    .swap-note {
+      font-size: 0.72rem; font-style: italic; color: var(--gold-deep); margin-top: 6px;
+      display: none;
+    }
+    .product-card.generic .swap-note { display: block; }
+
+    /* Footer */
+    .colophon {
+      margin-top: 74px; padding-top: 28px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+    .colophon p { font-size: 0.76rem; color: var(--ink-faint); }
+    .colophon a { color: var(--gold-deep); text-decoration: none; border-bottom: 1px solid var(--gold-pale); }
+    .colophon .fine {
+      font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase; margin-top: 14px;
+    }
+
+    @media print {
+      body { background: #fff; }
+      #gate { display: none !important; }
+      .swap-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="seal">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <h1>Treasury Aesthetics</h1>
+    <div class="sub">Private Treatment Plan</div>
+  </div>
+
+  <div id="gate">
+    <h2>Prepared exclusively for you</h2>
+    <p>To protect your privacy, please confirm your date of birth to open your personalized treatment plan.</p>
+    <label for="dob-input">Date of Birth</label>
+    <input type="date" id="dob-input" autocomplete="bday" />
+    <button id="unlock-btn">Open My Plan</button>
+    <div id="gate-error"></div>
+  </div>
+
+  <div id="plan">
+    <div class="reveal">
+      <div class="salute" id="salute"></div>
+      <div class="plan-title" id="plan-title"></div>
+      <div class="concern-chip" id="concern-chip" style="display:none"></div>
+      <p class="overview" id="overview" style="display:none"></p>
+    </div>
+
+    <section class="reveal" id="sec-tech" style="display:none">
+      <div class="sec-head"><span class="sec-num">i.</span><span class="sec-title">Your Technologies &amp; Timeline</span></div>
+      <div id="tech-list"></div>
+    </section>
+
+    <section class="reveal" id="sec-care" style="display:none">
+      <div class="sec-head"><span class="sec-num">ii.</span><span class="sec-title">Preparing &amp; Recovering</span></div>
+      <div class="care-grid">
+        <div class="care-col" id="pre-care-col" style="display:none">
+          <h3>Before Your Treatments</h3>
+          <ul id="pre-care-list"></ul>
+        </div>
+        <div class="care-col" id="post-care-col" style="display:none">
+          <h3>After Your Treatments</h3>
+          <ul id="post-care-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal" id="sec-products" style="display:none">
+      <div class="sec-head"><span class="sec-num">iii.</span><span class="sec-title">Your Home Care</span></div>
+      <p style="font-size:0.8rem;color:var(--ink-faint);margin:-8px 0 18px">
+        Prefer to use something you already own? Tap “I’ll use my own” and we’ll show what to look for instead.
+      </p>
+      <div id="product-list"></div>
+    </section>
+
+    <div class="colophon reveal">
+      <p>Questions about your plan? We’re happy to walk you through it.<br>
+        <a href="mailto:aesthetics@treasuryhealth.ca">aesthetics@treasuryhealth.ca</a></p>
+      <p class="fine">Treasury Aesthetics · Physician-Led · Toronto</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const SLUG = {{ slug | tojson }};
+  let unlockToken = null;
+  let planData = null;
+
+  const gate     = document.getElementById('gate');
+  const gateErr  = document.getElementById('gate-error');
+  const dobInput = document.getElementById('dob-input');
+  const unlockBtn = document.getElementById('unlock-btn');
+
+  unlockBtn.addEventListener('click', unlock);
+  dobInput.addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+
+  async function unlock() {
+    const dob = dobInput.value;
+    if (!dob) { showGateError('Please enter your date of birth.'); return; }
+    unlockBtn.disabled = true;
+    unlockBtn.textContent = 'Opening…';
+    try {
+      const res = await fetch(`/api/plans/${SLUG}/unlock`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dob }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      unlockToken = data.token;
+      planData = data.plan;
+      gate.style.display = 'none';
+      renderPlan(planData);
+    } catch (err) {
+      showGateError(err.message);
+    } finally {
+      unlockBtn.disabled = false;
+      unlockBtn.textContent = 'Open My Plan';
+    }
+  }
+
+  function showGateError(msg) {
+    gateErr.textContent = msg;
+    gateErr.style.display = 'block';
+  }
+
+  function renderPlan(plan) {
+    const firstName = (plan.patient?.name || '').split(' ')[0];
+    document.getElementById('salute').textContent = firstName ? `Prepared for ${plan.patient.name}` : 'Your personalized plan';
+    document.getElementById('plan-title').textContent = plan.title || 'Your Treatment Plan';
+
+    if (plan.concern) {
+      const chip = document.getElementById('concern-chip');
+      chip.textContent = 'Focus: ' + plan.concern;
+      chip.style.display = 'inline-block';
+    }
+    if (plan.overview) {
+      const ov = document.getElementById('overview');
+      ov.textContent = plan.overview;
+      ov.style.display = 'block';
+    }
+
+    if ((plan.technologies || []).length) {
+      document.getElementById('sec-tech').style.display = 'block';
+      const list = document.getElementById('tech-list');
+      list.innerHTML = '';
+      plan.technologies.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'tech-card';
+        card.innerHTML = `
+          <div class="tech-name">${esc(t.name)}</div>
+          ${t.optional ? '<span class="tech-opt">Optional upgrade</span>' : ''}
+          ${t.why ? `<div class="tech-why">${esc(t.why)}</div>` : ''}
+          ${t.timeline ? `<div class="tech-timeline">${esc(t.timeline)}</div>` : ''}`;
+        list.appendChild(card);
+      });
+    }
+
+    const hasPre = (plan.pre_care || []).length, hasPost = (plan.post_care || []).length;
+    if (hasPre || hasPost) {
+      document.getElementById('sec-care').style.display = 'block';
+      if (hasPre) {
+        document.getElementById('pre-care-col').style.display = 'block';
+        fillList('pre-care-list', plan.pre_care);
+      }
+      if (hasPost) {
+        document.getElementById('post-care-col').style.display = 'block';
+        fillList('post-care-list', plan.post_care);
+      }
+    }
+
+    if ((plan.products || []).length) {
+      document.getElementById('sec-products').style.display = 'block';
+      renderProducts(plan.products);
+    }
+
+    document.getElementById('plan').style.display = 'block';
+    window.scrollTo({ top: 0 });
+  }
+
+  function renderProducts(products) {
+    const list = document.getElementById('product-list');
+    list.innerHTML = '';
+    products.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'product-card' + (p.use_generic ? ' generic' : '');
+      card.innerHTML = `
+        <div class="product-body">
+          <div class="product-name">${esc(p.use_generic ? p.generic_name : p.brand_name)}</div>
+          <div class="product-sub">${p.use_generic ? 'What to look for' : (p.optional ? 'Recommended · Optional' : 'Recommended by your clinician')}</div>
+          ${p.detail ? `<div class="product-detail">${esc(p.detail)}</div>` : ''}
+          <div class="swap-note">You chose to use your own equivalent instead of ${esc(p.brand_name)}.</div>
+        </div>
+        <button class="swap-btn">${p.use_generic ? 'Use recommended' : 'I’ll use my own'}</button>`;
+      card.querySelector('.swap-btn').addEventListener('click', () => toggleProduct(i));
+      list.appendChild(card);
+    });
+  }
+
+  async function toggleProduct(index) {
+    const current = !!planData.products[index].use_generic;
+    // Optimistic UI, then persist
+    planData.products[index].use_generic = !current;
+    renderProducts(planData.products);
+    try {
+      const res = await fetch(`/api/plans/${SLUG}/preferences`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: unlockToken, use_generic: { [index]: !current } }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      planData = data.plan;
+    } catch {
+      // Revert on failure
+      planData.products[index].use_generic = current;
+      renderProducts(planData.products);
+    }
+  }
+
+  function fillList(id, items) {
+    const ul = document.getElementById(id);
+    ul.innerHTML = '';
+    items.forEach(t => {
+      const li = document.createElement('li');
+      li.textContent = t;
+      ul.appendChild(li);
+    });
+  }
+
+  function esc(str) {
+    return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  dobInput.focus();
+</script>
+</body>
+</html>
